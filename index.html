@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>安全教育テスト | Amazon FC</title>
+    <title>新規入場者教育 理解度テスト | Amazon FC</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -119,7 +119,7 @@
 
     <div class="container">
         <div class="header">
-            <h1>🏭 安全教育テスト</h1>
+            <h1>📋 新規入場者教育 理解度テスト</h1>
             <p>Amazon FC 安全ルール確認</p>
         </div>
 
@@ -365,7 +365,7 @@
         function generateCertificate() {
             const today = new Date(), expiry = new Date(today); expiry.setFullYear(expiry.getFullYear() + 1);
             const bd = new Date(userBirthdate);
-            document.getElementById('certificate-container').innerHTML = `<div class="certificate"><div class="certificate-content"><div class="certificate-badge">🏆</div><h2>修了証</h2><p class="subtitle">Safety Training Certificate</p><p class="name">${userName}</p><p class="name-reading">（${userNameReading}）</p><div class="details"><div class="detail-item"><div class="detail-label">一次会社名</div><div class="detail-value">${primaryCompany}</div></div><div class="detail-item"><div class="detail-label">所属会社名</div><div class="detail-value">${company}</div></div><div class="detail-item"><div class="detail-label">生年月日</div><div class="detail-value">${formatDateJP(bd)}</div></div><div class="detail-item"><div class="detail-label">受講日</div><div class="detail-value">${formatDateJP(today)}</div></div><div class="detail-item full-width"><div class="detail-label">本日の作業内容</div><div class="detail-value">${workContent}</div></div><div class="detail-item"><div class="detail-label">試験結果</div><div class="detail-value">全問正解（間違い${mistakeCount}回）</div></div><div class="detail-item"><div class="detail-label">挑戦回数</div><div class="detail-value">${attemptCount}回</div></div></div><p style="font-size:0.9em;margin-bottom:15px;">上記の者は、Amazon FC安全教育テストに<br>合格したことを証明します。</p><div class="validity"><div class="validity-label">有効期限</div><div class="validity-date">${formatDateJP(expiry)}</div></div></div></div>`;
+            document.getElementById('certificate-container').innerHTML = `<div class="certificate"><div class="certificate-content"><div class="certificate-badge">🏆</div><h2>修了証</h2><p class="subtitle">Safety Training Certificate</p><p class="name">${userName}</p><p class="name-reading">（${userNameReading}）</p><div class="details"><div class="detail-item"><div class="detail-label">一次会社名</div><div class="detail-value">${primaryCompany}</div></div><div class="detail-item"><div class="detail-label">所属会社名</div><div class="detail-value">${company}</div></div><div class="detail-item"><div class="detail-label">生年月日</div><div class="detail-value">${formatDateJP(bd)}</div></div><div class="detail-item"><div class="detail-label">受講日</div><div class="detail-value">${formatDateJP(today)}</div></div><div class="detail-item full-width"><div class="detail-label">本日の作業内容</div><div class="detail-value">${workContent}</div></div><div class="detail-item"><div class="detail-label">試験結果</div><div class="detail-value">全問正解（間違い${mistakeCount}回）</div></div><div class="detail-item"><div class="detail-label">挑戦回数</div><div class="detail-value">${attemptCount}回</div></div></div><p style="font-size:0.9em;margin-bottom:15px;">上記の者は、Amazon FC新規入場者教育 理解度テストに<br>合格したことを証明します。</p><div class="validity"><div class="validity-label">有効期限</div><div class="validity-date">${formatDateJP(expiry)}</div></div></div></div>`;
         }
 
         function savePassLog() {
@@ -397,5 +397,6 @@
     </script>
 </body>
 </html>
+
 
 
