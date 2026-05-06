@@ -1,1432 +1,399 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>螳牙・謨呵ご繝・せ繝・| Amazon FC</title>
+    <title>安全教育テスト | Amazon FC</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            min-height: 100vh;
-            color: #fff;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            min-height: 100vh;
-        }
-
-        /* Header */
-        .header {
-            text-align: center;
-            padding: 30px 0;
-            border-bottom: 2px solid rgba(255,255,255,0.1);
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            font-size: 1.8em;
-            margin-bottom: 10px;
-            background: linear-gradient(90deg, #ff9a56, #ff6b6b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .header p {
-            color: rgba(255,255,255,0.7);
-            font-size: 0.95em;
-        }
-
-        /* Screens */
-        .screen {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .screen.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Form Styles */
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: rgba(255,255,255,0.9);
-        }
-
-        .form-group label .required {
-            color: #ff6b6b;
-            margin-left: 5px;
-        }
-
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid rgba(255,255,255,0.2);
-            border-radius: 12px;
-            background: rgba(255,255,255,0.1);
-            color: #fff;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-
-        .form-group textarea {
-            min-height: 80px;
-            resize: vertical;
-            font-family: inherit;
-        }
-
-        .form-group input:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: #ff9a56;
-            background: rgba(255,255,255,0.15);
-        }
-
-        .form-group input::placeholder, .form-group textarea::placeholder {
-            color: rgba(255,255,255,0.5);
-        }
-
-        .form-group .input-hint {
-            font-size: 0.85em;
-            color: rgba(255,255,255,0.6);
-            margin-top: 5px;
-        }
-
-        .form-group.error input, .form-group.error textarea {
-            border-color: #ef4444;
-        }
-
-        .form-group .error-message {
-            font-size: 0.85em;
-            color: #ef4444;
-            margin-top: 5px;
-            display: none;
-        }
-
-        .form-group.error .error-message {
-            display: block;
-        }
-
-        /* Input Group */
-        .input-group {
-            background: rgba(255,255,255,0.05);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .input-group-title {
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #ff9a56;
-        }
-
-        /* Buttons */
-        .btn {
-            width: 100%;
-            padding: 18px;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.1em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #ff9a56, #ff6b6b);
-            color: #fff;
-            box-shadow: 0 4px 15px rgba(255,107,107,0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255,107,107,0.5);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
-        .btn-secondary {
-            background: rgba(255,255,255,0.1);
-            color: #fff;
-            border: 2px solid rgba(255,255,255,0.3);
-        }
-
-        /* Progress Bar */
-        .progress-container {
-            margin-bottom: 30px;
-        }
-
-        .progress-text {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            font-size: 0.9em;
-            color: rgba(255,255,255,0.8);
-        }
-
-        .progress-bar {
-            height: 8px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #4ade80, #22c55e);
-            border-radius: 10px;
-            transition: width 0.5s ease;
-        }
-
-        /* Question Card */
-        .question-card {
-            background: rgba(255,255,255,0.08);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 25px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .question-number {
-            display: inline-block;
-            background: linear-gradient(135deg, #ff9a56, #ff6b6b);
-            color: #fff;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .question-text {
-            font-size: 1.1em;
-            line-height: 1.8;
-            color: #fff;
-        }
-
-        /* Answer Buttons */
-        .answer-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .answer-btn {
-            flex: 1;
-            padding: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-radius: 15px;
-            background: rgba(255,255,255,0.05);
-            color: #fff;
-            font-size: 1.5em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .answer-btn:hover:not(:disabled) {
-            background: rgba(255,255,255,0.15);
-            transform: scale(1.02);
-        }
-
-        .answer-btn.correct {
-            background: linear-gradient(135deg, #4ade80, #22c55e);
-            border-color: #22c55e;
-            animation: pulse 0.5s ease;
-        }
-
-        .answer-btn.incorrect {
-            background: linear-gradient(135deg, #f87171, #ef4444);
-            border-color: #ef4444;
-            animation: shake 0.5s ease;
-        }
-
-        .answer-btn.correct-hint {
-            border-color: #22c55e;
-            box-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
-        }
-
-        /* Feedback */
-        .feedback {
-            margin-top: 20px;
-            padding: 20px;
-            border-radius: 15px;
-            display: none;
-        }
-
-        .feedback.show {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .feedback.correct {
-            background: rgba(34, 197, 94, 0.2);
-            border: 2px solid #22c55e;
-        }
-
-        .feedback.incorrect {
-            background: rgba(239, 68, 68, 0.2);
-            border: 2px solid #ef4444;
-        }
-
-        .feedback h3 {
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .feedback p {
-            color: rgba(255,255,255,0.9);
-            font-size: 0.95em;
-        }
-
-        .retry-hint {
-            margin-top: 15px;
-            padding: 12px;
-            background: rgba(255, 154, 86, 0.2);
-            border-radius: 10px;
-            font-size: 0.9em;
-            color: #ff9a56;
-            text-align: center;
-        }
-
-        /* Results Screen */
-        .results-card {
-            background: rgba(255,255,255,0.08);
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .score-circle {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            margin: 0 auto 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5em;
-            font-weight: 700;
-        }
-
-        .score-circle.pass {
-            background: linear-gradient(135deg, #4ade80, #22c55e);
-            box-shadow: 0 0 40px rgba(34, 197, 94, 0.5);
-        }
-
-        .score-circle.fail {
-            background: linear-gradient(135deg, #f87171, #ef4444);
-            box-shadow: 0 0 40px rgba(239, 68, 68, 0.5);
-        }
-
-        .score-circle small {
-            font-size: 0.4em;
-            opacity: 0.9;
-        }
-
-        .results-message {
-            font-size: 1.3em;
-            margin-bottom: 10px;
-        }
-
-        .results-detail {
-            color: rgba(255,255,255,0.7);
-            margin-bottom: 25px;
-        }
-
-        /* Stats */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .stat-item {
-            background: rgba(255,255,255,0.1);
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 1.8em;
-            font-weight: 700;
-            color: #ff9a56;
-        }
-
-        .stat-label {
-            font-size: 0.85em;
-            color: rgba(255,255,255,0.7);
-        }
-
-        /* Review Section */
-        .review-section {
-            text-align: left;
-            margin-top: 30px;
-        }
-
-        .review-section h3 {
-            margin-bottom: 15px;
-            color: #ff9a56;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .review-item {
-            background: rgba(255, 154, 86, 0.15);
-            border-left: 4px solid #ff9a56;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 0 10px 10px 0;
-        }
-
-        .review-item .question {
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .review-item .your-answer {
-            font-size: 0.9em;
-            color: #ef4444;
-            margin-bottom: 5px;
-        }
-
-        .review-item .correct-answer {
-            font-size: 0.9em;
-            color: #4ade80;
-            font-weight: 600;
-        }
-
-        .review-item .explanation {
-            margin-top: 10px;
-            font-size: 0.9em;
-            color: rgba(255,255,255,0.8);
-            padding-top: 10px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-
-        /* Certificate */
-        .certificate {
-            background: linear-gradient(135deg, #fef3c7, #fde68a);
-            border-radius: 20px;
-            padding: 40px 30px;
-            text-align: center;
-            color: #1a1a2e;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .certificate::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4a574' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            opacity: 0.5;
-        }
-
-        .certificate-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .certificate-badge {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            border-radius: 50%;
-            margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5em;
-            box-shadow: 0 4px 15px rgba(217, 119, 6, 0.4);
-        }
-
-        .certificate h2 {
-            font-size: 1.8em;
-            margin-bottom: 5px;
-            color: #92400e;
-        }
-
-        .certificate .subtitle {
-            color: #b45309;
-            margin-bottom: 25px;
-        }
-
-        .certificate .name {
-            font-size: 1.8em;
-            font-weight: 700;
-            color: #1a1a2e;
-            margin-bottom: 5px;
-        }
-
-        .certificate .name-reading {
-            font-size: 1em;
-            color: #666;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #d97706;
-            padding-bottom: 15px;
-        }
-
-        .certificate .details {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .certificate .detail-item {
-            background: rgba(255,255,255,0.5);
-            padding: 12px;
-            border-radius: 10px;
-        }
-
-        .certificate .detail-item.full-width {
-            grid-column: 1 / -1;
-        }
-
-        .certificate .detail-label {
-            font-size: 0.8em;
-            color: #92400e;
-            margin-bottom: 3px;
-        }
-
-        .certificate .detail-value {
-            font-weight: 600;
-            color: #1a1a2e;
-        }
-
-        .certificate .validity {
-            background: linear-gradient(135deg, #22c55e, #16a34a);
-            color: #fff;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-
-        .certificate .validity-label {
-            font-size: 0.85em;
-            opacity: 0.9;
-        }
-
-        .certificate .validity-date {
-            font-size: 1.2em;
-            font-weight: 700;
-        }
-
-        /* Attempt Counter */
-        .attempt-badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.1);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            margin-bottom: 20px;
-        }
-
-        /* History Button */
-        .history-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: #fff;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.2em;
-            transition: all 0.3s ease;
-        }
-
-        .history-btn:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
-        /* History Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.8);
-            z-index: 1000;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        .modal.active {
-            display: block;
-        }
-
-        .modal-content {
-            background: #1a1a2e;
-            border-radius: 20px;
-            padding: 25px;
-            max-width: 500px;
-            margin: 50px auto;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 1.5em;
-            cursor: pointer;
-        }
-
-        .history-item {
-            background: rgba(255,255,255,0.08);
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-        }
-
-        .history-item .name {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .history-item .date {
-            font-size: 0.85em;
-            color: rgba(255,255,255,0.6);
-        }
-
-        .history-item .validity {
-            font-size: 0.85em;
-            color: #4ade80;
-        }
-
-        .no-history {
-            text-align: center;
-            color: rgba(255,255,255,0.5);
-            padding: 30px;
-        }
-
-        /* Saving indicator */
-        .saving-indicator {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.8);
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            display: none;
-            z-index: 1000;
-        }
-
-        .saving-indicator.show {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        /* Responsive */
+            min-height: 100vh; color: #fff; line-height: 1.6;
+        }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; min-height: 100vh; }
+        .header { text-align: center; padding: 30px 0; border-bottom: 2px solid rgba(255,255,255,0.1); margin-bottom: 30px; }
+        .header h1 { font-size: 1.8em; margin-bottom: 10px; background: linear-gradient(90deg, #ff9a56, #ff6b6b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .header p { color: rgba(255,255,255,0.7); font-size: 0.95em; }
+        .screen { display: none; animation: fadeIn 0.5s ease; }
+        .screen.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: rgba(255,255,255,0.9); }
+        .form-group label .required { color: #ff6b6b; margin-left: 5px; }
+        .form-group input, .form-group textarea { width: 100%; padding: 15px; border: 2px solid rgba(255,255,255,0.2); border-radius: 12px; background: rgba(255,255,255,0.1); color: #fff; font-size: 16px; transition: all 0.3s ease; }
+        .form-group textarea { min-height: 80px; resize: vertical; font-family: inherit; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #ff9a56; background: rgba(255,255,255,0.15); }
+        .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,0.5); }
+        .form-group .input-hint { font-size: 0.85em; color: rgba(255,255,255,0.6); margin-top: 5px; }
+        .form-group.error input, .form-group.error textarea { border-color: #ef4444; }
+        .form-group .error-message { font-size: 0.85em; color: #ef4444; margin-top: 5px; display: none; }
+        .form-group.error .error-message { display: block; }
+        .input-group { background: rgba(255,255,255,0.05); border-radius: 15px; padding: 20px; margin-bottom: 20px; }
+        .input-group-title { font-weight: 600; margin-bottom: 15px; color: #ff9a56; }
+        .btn { width: 100%; padding: 18px; border: none; border-radius: 12px; font-size: 1.1em; font-weight: 700; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-primary { background: linear-gradient(135deg, #ff9a56, #ff6b6b); color: #fff; box-shadow: 0 4px 15px rgba(255,107,107,0.4); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,107,107,0.5); }
+        .btn-primary:active { transform: translateY(0); }
+        .progress-container { margin-bottom: 30px; }
+        .progress-text { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9em; color: rgba(255,255,255,0.8); }
+        .progress-bar { height: 8px; background: rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #4ade80, #22c55e); border-radius: 10px; transition: width 0.5s ease; }
+        .question-card { background: rgba(255,255,255,0.08); border-radius: 20px; padding: 25px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.1); }
+        .question-number { display: inline-block; background: linear-gradient(135deg, #ff9a56, #ff6b6b); color: #fff; padding: 5px 15px; border-radius: 20px; font-size: 0.85em; font-weight: 600; margin-bottom: 15px; }
+        .question-text { font-size: 1.1em; line-height: 1.8; color: #fff; }
+        .answer-buttons { display: flex; gap: 15px; margin-top: 20px; }
+        .answer-btn { flex: 1; padding: 20px; border: 3px solid rgba(255,255,255,0.3); border-radius: 15px; background: rgba(255,255,255,0.05); color: #fff; font-size: 1.5em; font-weight: 700; cursor: pointer; transition: all 0.3s ease; }
+        .answer-btn:hover:not(:disabled) { background: rgba(255,255,255,0.15); transform: scale(1.02); }
+        .answer-btn.correct { background: linear-gradient(135deg, #4ade80, #22c55e); border-color: #22c55e; animation: pulse 0.5s ease; }
+        .answer-btn.incorrect { background: linear-gradient(135deg, #f87171, #ef4444); border-color: #ef4444; animation: shake 0.5s ease; }
+        .answer-btn.correct-hint { border-color: #22c55e; box-shadow: 0 0 20px rgba(34, 197, 94, 0.5); }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+        .feedback { margin-top: 20px; padding: 20px; border-radius: 15px; display: none; }
+        .feedback.show { display: block; animation: fadeIn 0.3s ease; }
+        .feedback.correct { background: rgba(34, 197, 94, 0.2); border: 2px solid #22c55e; }
+        .feedback.incorrect { background: rgba(239, 68, 68, 0.2); border: 2px solid #ef4444; }
+        .feedback h3 { margin-bottom: 10px; }
+        .feedback p { color: rgba(255,255,255,0.9); font-size: 0.95em; }
+        .retry-hint { margin-top: 15px; padding: 12px; background: rgba(255, 154, 86, 0.2); border-radius: 10px; font-size: 0.9em; color: #ff9a56; text-align: center; }
+        .results-card { background: rgba(255,255,255,0.08); border-radius: 20px; padding: 30px; text-align: center; margin-bottom: 25px; }
+        .score-circle { width: 150px; height: 150px; border-radius: 50%; margin: 0 auto 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 2.5em; font-weight: 700; }
+        .score-circle.pass { background: linear-gradient(135deg, #4ade80, #22c55e); box-shadow: 0 0 40px rgba(34, 197, 94, 0.5); }
+        .results-message { font-size: 1.3em; margin-bottom: 10px; }
+        .results-detail { color: rgba(255,255,255,0.7); margin-bottom: 25px; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
+        .stat-item { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; text-align: center; }
+        .stat-value { font-size: 1.8em; font-weight: 700; color: #ff9a56; }
+        .stat-label { font-size: 0.85em; color: rgba(255,255,255,0.7); }
+        .review-section { text-align: left; margin-top: 30px; }
+        .review-section h3 { margin-bottom: 15px; color: #ff9a56; }
+        .review-item { background: rgba(255, 154, 86, 0.15); border-left: 4px solid #ff9a56; padding: 15px; margin-bottom: 15px; border-radius: 0 10px 10px 0; }
+        .review-item .question { font-weight: 600; margin-bottom: 8px; }
+        .review-item .your-answer { font-size: 0.9em; color: #ef4444; margin-bottom: 5px; }
+        .review-item .correct-answer { font-size: 0.9em; color: #4ade80; font-weight: 600; }
+        .review-item .explanation { margin-top: 10px; font-size: 0.9em; color: rgba(255,255,255,0.8); padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .certificate { background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 20px; padding: 40px 30px; text-align: center; color: #1a1a2e; position: relative; overflow: hidden; }
+        .certificate-content { position: relative; z-index: 1; }
+        .certificate-badge { width: 80px; height: 80px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5em; box-shadow: 0 4px 15px rgba(217, 119, 6, 0.4); }
+        .certificate h2 { font-size: 1.8em; margin-bottom: 5px; color: #92400e; }
+        .certificate .subtitle { color: #b45309; margin-bottom: 25px; }
+        .certificate .name { font-size: 1.8em; font-weight: 700; color: #1a1a2e; margin-bottom: 5px; }
+        .certificate .name-reading { font-size: 1em; color: #666; margin-bottom: 20px; border-bottom: 2px solid #d97706; padding-bottom: 15px; }
+        .certificate .details { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; text-align: left; }
+        .certificate .detail-item { background: rgba(255,255,255,0.5); padding: 12px; border-radius: 10px; }
+        .certificate .detail-item.full-width { grid-column: 1 / -1; }
+        .certificate .detail-label { font-size: 0.8em; color: #92400e; margin-bottom: 3px; }
+        .certificate .detail-value { font-weight: 600; color: #1a1a2e; }
+        .certificate .validity { background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; padding: 15px; border-radius: 10px; margin-top: 20px; }
+        .certificate .validity-label { font-size: 0.85em; opacity: 0.9; }
+        .certificate .validity-date { font-size: 1.2em; font-weight: 700; }
+        .attempt-badge { display: inline-block; background: rgba(255,255,255,0.1); padding: 8px 15px; border-radius: 20px; font-size: 0.85em; margin-bottom: 20px; }
+        .history-btn { position: fixed; top: 20px; right: 20px; background: rgba(255,255,255,0.1); border: none; color: #fff; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 1.2em; transition: all 0.3s ease; }
+        .history-btn:hover { background: rgba(255,255,255,0.2); }
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; padding: 20px; overflow-y: auto; }
+        .modal.active { display: block; }
+        .modal-content { background: #1a1a2e; border-radius: 20px; padding: 25px; max-width: 500px; margin: 50px auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-close { background: none; border: none; color: #fff; font-size: 1.5em; cursor: pointer; }
+        .history-item { background: rgba(255,255,255,0.08); padding: 15px; border-radius: 12px; margin-bottom: 10px; }
+        .history-item .name { font-weight: 600; margin-bottom: 5px; }
+        .history-item .date { font-size: 0.85em; color: rgba(255,255,255,0.6); }
+        .history-item .validity { font-size: 0.85em; color: #4ade80; }
+        .no-history { text-align: center; color: rgba(255,255,255,0.5); padding: 30px; }
+        .saving-indicator { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); color: #fff; padding: 10px 20px; border-radius: 20px; font-size: 0.9em; display: none; z-index: 1000; }
+        .saving-indicator.show { display: block; animation: fadeIn 0.3s ease; }
         @media (max-width: 400px) {
-            .container {
-                padding: 15px;
-            }
-            
-            .header h1 {
-                font-size: 1.5em;
-            }
-            
-            .question-text {
-                font-size: 1em;
-            }
-            
-            .certificate .details {
-                grid-template-columns: 1fr;
-            }
-
-            .certificate .detail-item.full-width {
-                grid-column: 1;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
+            .container { padding: 15px; }
+            .header h1 { font-size: 1.5em; }
+            .question-text { font-size: 1em; }
+            .certificate .details { grid-template-columns: 1fr; }
+            .certificate .detail-item.full-width { grid-column: 1; }
+            .stats-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <button class="history-btn" onclick="showHistory()" title="蜷域ｼ螻･豁ｴ">搭</button>
-    <div class="saving-indicator" id="saving-indicator">豆 繝・・繧ｿ繧剃ｿ晏ｭ倅ｸｭ...</div>
+    <button class="history-btn" onclick="showHistory()" title="合格履歴">📋</button>
+    <div class="saving-indicator" id="saving-indicator">📤 データを保存中...</div>
 
     <div class="container">
         <div class="header">
-            <h1>少 螳牙・謨呵ご繝・せ繝・/h1>
-            <p>Amazon FC 螳牙・繝ｫ繝ｼ繝ｫ遒ｺ隱・/p>
+            <h1>🏭 安全教育テスト</h1>
+            <p>Amazon FC 安全ルール確認</p>
         </div>
 
-        <!-- Registration Screen -->
         <div id="registration-screen" class="screen active">
-            <!-- 莨夂､ｾ諠・ｱ -->
             <div class="input-group">
-                <div class="input-group-title">召 莨夂､ｾ諠・ｱ</div>
+                <div class="input-group-title">🏢 会社情報</div>
                 <div class="form-group" id="primary-company-group">
-                    <label for="primary-company">荳谺｡莨夂､ｾ蜷・<span class="required">*</span></label>
-                    <input type="text" id="primary-company" placeholder="萓具ｼ壽ｪ蠑丈ｼ夂､ｾ縲・・ required>
-                    <div class="error-message">荳谺｡莨夂､ｾ蜷阪ｒ蜈･蜉帙＠縺ｦ縺上□縺輔＞</div>
+                    <label for="primary-company">一次会社名 <span class="required">*</span></label>
+                    <input type="text" id="primary-company" placeholder="例：株式会社〇〇" required>
+                    <div class="error-message">一次会社名を入力してください</div>
                 </div>
                 <div class="form-group" id="company-group">
-                    <label for="company">謇螻樔ｼ夂､ｾ蜷・<span class="required">*</span></label>
-                    <input type="text" id="company" placeholder="萓具ｼ壽ｪ蠑丈ｼ夂､ｾ笆ｳ笆ｳ">
-                    <div class="input-hint">荳谺｡莨夂､ｾ縺ｨ蜷後§蝣ｴ蜷医・縲悟酔荳翫阪→蜈･蜉・/div>
-                    <div class="error-message">謇螻樔ｼ夂､ｾ蜷阪ｒ蜈･蜉帙＠縺ｦ縺上□縺輔＞</div>
+                    <label for="company">所属会社名 <span class="required">*</span></label>
+                    <input type="text" id="company" placeholder="例：株式会社△△">
+                    <div class="input-hint">一次会社と同じ場合は「同上」と入力</div>
+                    <div class="error-message">所属会社名を入力してください</div>
                 </div>
             </div>
 
-            <!-- 蛟倶ｺｺ諠・ｱ -->
             <div class="input-group">
-                <div class="input-group-title">側 縺雁錐蜑・/div>
+                <div class="input-group-title">👤 お名前</div>
                 <div class="form-group" id="name-group">
-                    <label for="name">豌丞錐・域ｼ｢蟄暦ｼ・span class="required">*</span></label>
-                    <input type="text" id="name" placeholder="萓具ｼ壼ｱｱ逕ｰ 螟ｪ驛・ required>
-                    <div class="input-hint">蟋薙→蜷阪・髢薙↓繧ｹ繝壹・繧ｹ繧貞・繧後※縺上□縺輔＞</div>
-                    <div class="error-message">豌丞錐繧貞・蜉帙＠縺ｦ縺上□縺輔＞</div>
+                    <label for="name">氏名（漢字）<span class="required">*</span></label>
+                    <input type="text" id="name" placeholder="例：山田 太郎" required>
+                    <div class="input-hint">姓と名の間にスペースを入れてください</div>
+                    <div class="error-message">氏名を入力してください</div>
                 </div>
                 <div class="form-group" id="name-reading-group">
-                    <label for="name-reading">縺ｵ繧翫′縺ｪ・医・繧峨′縺ｪ・・span class="required">*</span></label>
-                    <input type="text" id="name-reading" placeholder="萓具ｼ壹ｄ縺ｾ縺 縺溘ｍ縺・ required>
-                    <div class="input-hint">縺ｲ繧峨′縺ｪ縺ｧ蜈･蜉帙＠縺ｦ縺上□縺輔＞</div>
-                    <div class="error-message">縺ｵ繧翫′縺ｪ繧偵・繧峨′縺ｪ縺ｧ蜈･蜉帙＠縺ｦ縺上□縺輔＞</div>
+                    <label for="name-reading">ふりがな（ひらがな）<span class="required">*</span></label>
+                    <input type="text" id="name-reading" placeholder="例：やまだ たろう" required>
+                    <div class="input-hint">ひらがなで入力してください</div>
+                    <div class="error-message">ふりがなをひらがなで入力してください</div>
                 </div>
             </div>
 
             <div class="form-group" id="birthdate-group">
-                <label for="birthdate">逕溷ｹｴ譛域律 <span class="required">*</span></label>
+                <label for="birthdate">生年月日 <span class="required">*</span></label>
                 <input type="date" id="birthdate" required>
-                <div class="error-message">逕溷ｹｴ譛域律繧貞・蜉帙＠縺ｦ縺上□縺輔＞</div>
+                <div class="error-message">生年月日を入力してください</div>
             </div>
 
-            <!-- 菴懈･ｭ蜀・ｮｹ -->
             <div class="input-group">
-                <div class="input-group-title">肌 譛ｬ譌･縺ｮ菴懈･ｭ</div>
+                <div class="input-group-title">🔧 本日の作業</div>
                 <div class="form-group" id="work-content-group">
-                    <label for="work-content">菴懈･ｭ蜀・ｮｹ <span class="required">*</span></label>
-                    <textarea id="work-content" placeholder="萓具ｼ夂ｩｺ隱ｿ險ｭ蛯咏せ讀懊・崕豌鈴・邱壼ｷ･莠九↑縺ｩ" required></textarea>
-                    <div class="error-message">譛ｬ譌･縺ｮ菴懈･ｭ蜀・ｮｹ繧貞・蜉帙＠縺ｦ縺上□縺輔＞</div>
+                    <label for="work-content">作業内容 <span class="required">*</span></label>
+                    <textarea id="work-content" placeholder="例：空調設備点検、電気配線工事など" required></textarea>
+                    <div class="error-message">本日の作業内容を入力してください</div>
                 </div>
             </div>
 
-            <button class="btn btn-primary" onclick="startQuiz()">繝・せ繝磯幕蟋・/button>
+            <button class="btn btn-primary" onclick="startQuiz()">テスト開始</button>
             
             <div style="margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 12px;">
-                <h3 style="margin-bottom: 10px; font-size: 1em;">統 繝・せ繝医↓縺､縺・※</h3>
+                <h3 style="margin-bottom: 10px; font-size: 1em;">📝 テストについて</h3>
                 <ul style="font-size: 0.9em; color: rgba(255,255,255,0.7); padding-left: 20px;">
-                    <li>蜈ｨ20蝠上・笳凝怜撫鬘後〒縺・/li>
-                    <li>髢馴＆縺医◆繧峨◎縺ｮ蝣ｴ縺ｧ豁｣隗｣繧帝∈縺ｳ逶ｴ縺帙∪縺・/li>
-                    <li>蜈ｨ蝠乗ｭ｣隗｣縺ｧ蜷域ｼ縺ｨ縺ｪ繧翫∪縺・/li>
-                    <li>譛蠕後↓髢馴＆縺医◆蝠城｡後ｒ蠕ｩ鄙偵〒縺阪∪縺・/li>
-                    <li>蜷域ｼ縺吶ｋ縺ｨ菫ｮ莠・ｨｼ縺檎匱陦後＆繧後∪縺・/li>
-                    <li>菫ｮ莠・ｨｼ縺ｮ譛牙柑譛滄剞縺ｯ1蟷ｴ髢薙〒縺・/li>
+                    <li>全20問の○×問題です</li>
+                    <li>間違えたらその場で正解を選び直せます</li>
+                    <li>全問正解で合格となります</li>
+                    <li>最後に間違えた問題を復習できます</li>
+                    <li>合格すると修了証が発行されます</li>
+                    <li>修了証の有効期限は1年間です</li>
                 </ul>
             </div>
         </div>
 
-        <!-- Quiz Screen -->
         <div id="quiz-screen" class="screen">
-            <div class="attempt-badge" id="attempt-badge">謖第姶蝗樊焚: 1蝗樒岼</div>
-            
+            <div class="attempt-badge" id="attempt-badge">挑戦回数: 1回目</div>
             <div class="progress-container">
                 <div class="progress-text">
-                    <span id="progress-current">蝠城｡・1/20</span>
-                    <span id="progress-score">髢馴＆縺・ 0</span>
+                    <span id="progress-current">問題 1/20</span>
+                    <span id="progress-score">間違い: 0</span>
                 </div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
                 </div>
             </div>
-
             <div class="question-card">
-                <span class="question-number" id="question-number">隨ｬ1蝠・/span>
+                <span class="question-number" id="question-number">第1問</span>
                 <p class="question-text" id="question-text"></p>
             </div>
-
             <div class="answer-buttons" id="answer-buttons">
-                <button class="answer-btn" id="btn-true" onclick="submitAnswer(true)">箝・/button>
-                <button class="answer-btn" id="btn-false" onclick="submitAnswer(false)">笶・/button>
+                <button class="answer-btn" id="btn-true" onclick="submitAnswer(true)">⭕</button>
+                <button class="answer-btn" id="btn-false" onclick="submitAnswer(false)">❌</button>
             </div>
-
             <div class="feedback" id="feedback">
                 <h3 id="feedback-title"></h3>
                 <p id="feedback-text"></p>
-                <div class="retry-hint" id="retry-hint" style="display: none;">
-                    漕 豁｣隗｣縺ｮ繝懊ち繝ｳ繧呈款縺励※谺｡縺ｫ騾ｲ繧薙〒縺上□縺輔＞
-                </div>
+                <div class="retry-hint" id="retry-hint" style="display: none;">👆 正解のボタンを押して次に進んでください</div>
             </div>
-
-            <button class="btn btn-primary" id="next-btn" style="display: none; margin-top: 20px;" onclick="nextQuestion()">谺｡縺ｮ蝠城｡後∈</button>
+            <button class="btn btn-primary" id="next-btn" style="display: none; margin-top: 20px;" onclick="nextQuestion()">次の問題へ</button>
         </div>
 
-        <!-- Results Screen -->
         <div id="results-screen" class="screen">
             <div class="results-card">
-                <div class="score-circle pass" id="score-circle">
-                    <span>脂</span>
-                </div>
-                <h2 class="results-message">蜷域ｼ縺翫ａ縺ｧ縺ｨ縺・＃縺悶＞縺ｾ縺呻ｼ・/h2>
-                <p class="results-detail">蜈ｨ20蝠上け繝ｪ繧｢縺励∪縺励◆</p>
-
+                <div class="score-circle pass" id="score-circle"><span>🎉</span></div>
+                <h2 class="results-message">合格おめでとうございます！</h2>
+                <p class="results-detail">全20問クリアしました</p>
                 <div class="stats-grid">
                     <div class="stat-item">
                         <div class="stat-value" id="stat-mistakes">0</div>
-                        <div class="stat-label">髢馴＆縺医◆蝗樊焚</div>
+                        <div class="stat-label">間違えた回数</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-value" id="stat-attempts">1</div>
-                        <div class="stat-label">謖第姶蝗樊焚</div>
+                        <div class="stat-label">挑戦回数</div>
                     </div>
                 </div>
             </div>
-
             <div class="review-section" id="review-section" style="display: none;">
-                <h3>答 髢馴＆縺医◆蝠城｡後・蠕ｩ鄙・/h3>
-                <p style="font-size: 0.9em; color: rgba(255,255,255,0.7); margin-bottom: 15px;">
-                    谺｡蝗槭・髢馴＆縺医↑縺・ｈ縺・↓蠕ｩ鄙偵＠縺ｾ縺励ｇ縺・ｼ・
-                </p>
+                <h3>📚 間違えた問題の復習</h3>
+                <p style="font-size: 0.9em; color: rgba(255,255,255,0.7); margin-bottom: 15px;">次回は間違えないように復習しましょう！</p>
                 <div id="review-list"></div>
             </div>
-            
             <div id="certificate-container" style="margin-top: 30px;"></div>
         </div>
     </div>
 
-    <!-- History Modal -->
     <div class="modal" id="history-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>搭 蜷域ｼ螻･豁ｴ</h3>
-                <button class="modal-close" onclick="closeHistory()">ﾃ・/button>
+                <h3>📋 合格履歴</h3>
+                <button class="modal-close" onclick="closeHistory()">×</button>
             </div>
             <div id="history-list"></div>
         </div>
     </div>
 
     <script>
-        // Google Sheets API URL
         const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwq7_oXFDEM1HBowEfX6g6c5UvRQVc_T3iZKpSDfBKTvDTk8eietimc7SknxWwW6eAV/exec';
 
-        // Quiz Questions Data
         const questions = [
-            {
-                id: 1,
-                text: "繧ｻ繧ｭ繝･繝ｪ繝・ぅ繧ｲ繝ｼ繝医〒ID繝舌ャ繧ｸ繧呈戟縺｣縺ｦ縺・↑縺・婿縺後＞縺ｦ縲∬・蛻・・ID繝舌ャ繧ｸ繧定ｲｸ縺励※縺上□縺輔＞縺ｨ險繧上ｌ縺溘′縲∬ｲｸ縺輔★縺ｫ縺昴・縺ｾ縺ｾ隴ｦ蛯咎嚏縺ｸ騾｣邨｡縺励◆縲・,
-                answer: true,
-                explanation: "ID雋ｸ荳弱・縲後↑繧翫☆縺ｾ縺怜・鬢ｨ縲阪↓郢九′繧矩㍾螟ｧ驕募渚縺ｧ縺吶ょｿ・★隴ｦ蛯咎嚏縺ｸ騾｣邨｡縺励※縺上□縺輔＞縲・
-            },
-            {
-                id: 2,
-                text: "髦ｲ轣ｫ繧ｷ繝｣繝・ち繝ｼ荳矩剄驛ｨ・医ヨ繝ｩ繧ｷ繝樣Κ蛻・ｼ峨ｒ驕ｿ縺代√◎繧御ｻ･螟悶・蝣ｴ謇繧貞ｷ･莠句玄逕ｻ縺ｨ縺励※險ｭ螳壹＠縺溘・,
-                answer: true,
-                explanation: "髦ｲ轣ｫ繧ｷ繝｣繝・ち繝ｼ荳矩剄驛ｨ縺ｯ蟶ｸ縺ｫ遨ｺ縺代※縺翫￥蠢・ｦ√′縺ゅｊ縺ｾ縺吶よｭ｣縺励＞蛻､譁ｭ縺ｧ縺吶・
-            },
-            {
-                id: 3,
-                text: "蟒ｺ螻九さ繝ｳ繧ｻ繝ｳ繝井ｽｿ逕ｨ譎ゅ∵ｼ城崕驕ｮ譁ｭ蝎ｨ繧堤ｵ檎罰縺輔○縺ｦ菴ｿ逕ｨ縺励◆縲・,
-                answer: true,
-                explanation: "貍城崕縺ｫ繧医ｋ轣ｫ轣ｽ繧・─髮ｻ髦ｲ豁｢縺檎岼逧・〒縺吶ょｿ・★貍城崕驕ｮ譁ｭ蝎ｨ繧堤ｵ檎罰縺輔○縺ｦ縺上□縺輔＞縲・
-            },
-            {
-                id: 4,
-                text: "繝医う繝ｬ縺ｮ謨・囿繧堤匱隕九＠縺溘・縺ｧ縲∬・繧臥峩縺昴≧縺ｨ縺帙★繧｢繝槭だ繝ｳ諡・ｽ楢・∪縺溘・隴ｦ蛯吶∈騾｣邨｡縺励◆縲・,
-                answer: true,
-                explanation: "蜍晄焔縺ｫ菫ｮ逅・○縺壹∝ｿ・★諡・ｽ楢・∈騾｣邨｡縺吶ｋ縺薙→縺梧ｭ｣縺励＞蟇ｾ蠢懊〒縺吶・
-            },
-            {
-                id: 5,
-                text: "閼夂ｫ倶ｽｿ逕ｨ譎ゅ・險ｱ蜿ｯ逕ｳ隲九ｒ陦後＞縲∫筏隲区嶌繧定・遶九・隕九∴繧・☆縺・ｽ咲ｽｮ縺ｫ雋ｼ莉倥＠縺溘・,
-                answer: true,
-                explanation: "閼夂ｫ倶ｽｿ逕ｨ縺ｫ縺ｯ險ｱ蜿ｯ逕ｳ隲九′蠢・ｦ√〒縲∫筏隲区嶌縺ｮ謗ｲ遉ｺ縺ｯ鄒ｩ蜍吶〒縺吶・
-            },
-            {
-                id: 6,
-                text: "魑･譬芳C縺ｮ繝ｫ繝ｼ繝ｫ縺ｫ蠕薙＞縲∵凾髢灘ｸｯ縺ｫ繧医ｋ騾夊｡檎ｦ∵ｭ｢繧ｨ繝ｪ繧｢繧帝・螳医＠縺溘・,
-                answer: true,
-                explanation: "迚ｹ螳壹・蝣ｴ謇・医さ繝ｳ繝吶い蜻ｨ繧翫↑縺ｩ・峨↓縺ｯ譎る俣蟶ｯ繝ｫ繝ｼ繝ｫ縺後≠繧翫∪縺吶ょｿ・★遒ｺ隱阪＠縺ｦ縺上□縺輔＞縲・
-            },
-            {
-                id: 7,
-                text: "繧ｳ繝ｳ繝吶い縺ｮ繧ｬ繧､繝牙叙繧贋ｻ倥￠譎ゅ∫ｨｼ蜒堺ｸｭ縺ｧ縺ゅ▲縺ｦ繧ゅ◎縺ｮ縺ｾ縺ｾ菴懈･ｭ繧定｡後▲縺溘・,
-                answer: false,
-                explanation: "縲仙些髯ｺ縲大屓霆｢菴薙∈縺ｮ蟾ｻ縺崎ｾｼ縺ｾ繧後・繝ｪ繧ｹ繧ｯ縺後≠繧翫∪縺吶ょｿ・★蛛懈ｭ｢・・OTO遲会ｼ峨ｒ遒ｺ隱阪＠縺ｦ縺九ｉ菴懈･ｭ縺励※縺上□縺輔＞縲・
-            },
-            {
-                id: 8,
-                text: "鬮倩ｻ贋ｽ懈･ｭ譎ゅ∽ｽ懈･ｭ蛹ｺ逕ｻ繧貞ｮ悟・縺ｫ髫秘屬縺励∽ｺｺ縺ｮ蜍慕ｷ壹→驥阪↑繧峨↑縺・ｈ縺・↓縺励◆縲・,
-                answer: true,
-                explanation: "豁｣縺励＞蟇ｾ蠢懊〒縺吶る夊｡御ｺｺ縺ｨ菴懈･ｭ邂・園縺瑚ｿ代＞蝣ｴ蜷医・縲御ｸ譎ゆｸｭ譁ｭ縲阪′蜴溷援縺ｧ縺吶・
-            },
-            {
-                id: 9,
-                text: "驥第屆螟懊↓ID繧堤ｴ帛､ｱ縺励◆縺後∝悄譌･縺ｯ莨代∩縺ｮ縺溘ａ縲∵怦譖懊・蜃ｺ遉ｾ譎ゅ↓荳雁昇縺ｸ蝣ｱ蜻翫＠縺溘・,
-                answer: false,
-                explanation: "縲宣㍾隕√醍ｴ帛､ｱ縺ｯ縲悟叉譎ょｱ蜻翫阪′驩・援縺ｧ縺吶ゆｸ肴ｭ｣蛻ｩ逕ｨ縺ｮ繝ｪ繧ｹ繧ｯ縺後≠繧九◆繧√√☆縺舌↓蝣ｱ蜻翫＠縺ｦ縺上□縺輔＞縲・
-            },
-            {
-                id: 10,
-                text: "關ｽ縺｡縺ｦ縺・◆蝠・刀繧呈鏡縺・∬・蛻・・蛻､譁ｭ縺ｧ遨ｺ縺・※縺・ｋ譽壹↓謌ｻ縺励◆縲・,
-                answer: false,
-                explanation: "縲千ｦ∵ｭ｢縲第ｷｷ蜈･・・ix・蛾亟豁｢縺ｮ縺溘ａ縲∝ｿ・★謇螳壹・繝ｪ繧ｫ繝舌Μ繝ｼ縺ｸ蝗槭☆繝ｫ繝ｼ繝ｫ縺後≠繧翫∪縺吶・
-            },
-            {
-                id: 11,
-                text: "蜿ｰ霆顔ｧｻ蜍穂ｸｭ縲∵ｭｩ陦瑚・′縺・◆縺悟香蛻・↑繧ｹ繝壹・繧ｹ縺後≠縺｣縺溘・縺ｧ蛛懈ｭ｢縺帙★騾夊｡後＠縺溘・,
-                answer: false,
-                explanation: "縲仙次蜑・第ｭｩ陦瑚・━蜈医・荳譎ょ●豁｢縺ｧ縺吶ょｮ牙・遒ｺ菫昴′譛蜆ｪ蜈医→縺ｪ繧翫∪縺吶・
-            },
-            {
-                id: 12,
-                text: "莠ｺ謇九′雜ｳ繧翫↑縺九▲縺溘・縺ｧ縲√ヨ繝ｩ繝・け縺ｮ驕玖ｻ｢謇九＆繧薙↓鬢ｨ蜀・・蟾･莠句ｴ謇縺ｾ縺ｧ驕区成繧呈焔莨昴▲縺ｦ繧ゅｉ縺｣縺溘・,
-                answer: false,
-                explanation: "縲千ｦ∵ｭ｢縲大･醍ｴ・､悶・菴懈･ｭ萓晞ｼ繧・∽ｸ肴・繧後↑莠ｺ縺ｮ蜈･鬢ｨ縺ｫ莨ｴ縺・ｺ区腐繝ｪ繧ｹ繧ｯ縺後≠繧翫∪縺吶・
-            },
-            {
-                id: 13,
-                text: "繝医Λ繧ｷ繝槭ユ繝ｼ繝暦ｼ磯亟轣ｫ繧ｷ繝｣繝・ち繝ｼ荳具ｼ峨・荳翫□縺後∫洒譎る俣縺ｪ縺ｮ縺ｧ雉・攝繧剃ｻｮ鄂ｮ縺阪＠縺溘・,
-                answer: false,
-                explanation: "縲仙宍遖√・遘偵〒繧らｽｮ縺・※縺ｯ縺・￠縺ｾ縺帙ｓ縲ら↓轣ｽ譎ゅ・繧ｷ繝｣繝・ち繝ｼ荳榊虚菴懊・蜻ｽ縺ｫ髢｢繧上ｊ縺ｾ縺吶・
-            },
-            {
-                id: 14,
-                text: "遘ｻ蜍穂ｸｭ縺ｫ謳ｺ蟶ｯ縺碁ｳｴ縺｣縺溘◆繧√∵ｭｩ縺阪↑縺後ｉ騾夊ｩｱ縺ｫ蠢懷ｯｾ縺励◆縲・,
-                answer: false,
-                explanation: "縲仙宍遖√羨mazon縺ｧ縺ｯ縲梧ｭｩ縺阪せ繝槭・縲阪・蜴ｳ遖√〒縺吶ょｿ・★蛛懈ｭ｢縺励※螳牙・縺ｪ蝣ｴ謇縺ｧ蟇ｾ蠢懊＠縺ｦ縺上□縺輔＞縲・
-            },
-            {
-                id: 15,
-                text: "荳｡謇九′蝪槭′縺｣縺ｦ縺・◆縺溘ａ縲∝ｷ･莠九お繝ｪ繧｢縺ｮ繝舌・繧定ｷｨ縺・〒荳ｭ縺ｫ蜈･縺｣縺溘・,
-                answer: false,
-                explanation: "縲千ｦ∵ｭ｢縲大玄逕ｻ縺ｯ縲悟ｮ牙・縺ｮ蠅・阜邱壹阪〒縺吶ょｿ・★蜈･繧雁哨縺九ｉ蜈･繧翫√ヰ繝ｼ繧呈綾縺励※縺上□縺輔＞縲・
-            },
-            {
-                id: 16,
-                text: "證代＆蟇ｾ遲悶・縺溘ａ縲・ｦ悶↓繧ｿ繧ｪ繝ｫ繧貞桙繧峨＠縺溽憾諷九〒菴懈･ｭ繧定｡後▲縺溘・,
-                answer: false,
-                explanation: "縲仙些髯ｺ縲鷹ｦ匁寺縺代ち繧ｪ繝ｫ縺ｯ縲悟ｷｻ縺崎ｾｼ縺ｿ莠区腐縲阪・蜈ｸ蝙狗噪縺ｪ蜴溷屏縺ｧ縺吶・
-            },
-            {
-                id: 17,
-                text: "繝｡繧ｶ繝九Φ・育ｶｲ迥ｶ縺ｮ蠎奇ｼ我ｸ翫〒縺ｮ菴懈･ｭ譎ゅ∵ｳｨ諢上☆繧後・鬢顔函繧ｷ繝ｼ繝医・荳崎ｦ√→閠・∴縲√◎縺ｮ縺ｾ縺ｾ菴懈･ｭ縺励◆縲・,
-                answer: false,
-                explanation: "縲仙ｿ・医大ｰ上＆縺ｪ繝阪ず荳縺､縺ｧ繧ゆｸ九・髫弱・莠ｺ縺ｫ縺ｯ蜃ｶ蝎ｨ縺ｫ縺ｪ繧翫∪縺吶る､顔函縺ｯ蠢・医〒縺吶・
-            },
-            {
-                id: 18,
-                text: "遨ｺ縺・※縺・ｋ繧ｳ繝ｳ繧ｻ繝ｳ繝医′縺ゅ▲縺溘・縺ｧ縲∫筏隲九○縺壹↓菴ｿ逕ｨ縺励◆縲・,
-                answer: false,
-                explanation: "縲千ｦ∵ｭ｢縲鷹崕蜉帛ｮｹ驥上が繝ｼ繝舌・繧・す繝ｧ繝ｼ繝医・蜊ｱ髯ｺ縺後≠繧翫∪縺吶ら┌譁ｭ菴ｿ逕ｨ縺ｯ遖∵ｭ｢縺ｧ縺吶・
-            },
-            {
-                id: 19,
-                text: "鬮倥＆2m莉･荳翫・菴懈･ｭ縺縺後∝ｮ牙ｮ壹＠縺溽ｫ九■鬥ｬ縺縺｣縺溘・縺ｧ蠅懆誠蛻ｶ豁｢逕ｨ蝎ｨ蜈ｷ繧剃ｽｿ逕ｨ縺励↑縺九▲縺溘・,
-                answer: false,
-                explanation: "縲千ｵｶ蟇ｾ繝ｫ繝ｼ繝ｫ縲鷹ｫ倥＆2m莉･荳翫・蝎ｨ蜈ｷ蠢・医〒縺吶ゆｾ句､悶・縺ゅｊ縺ｾ縺帙ｓ縲・
-            },
-            {
-                id: 20,
-                text: "蝟ｫ辣吶☆繧句ｴ蜷医・髫弱↓縺ゅｋ蝟ｫ辣呎園繧剃ｽｿ逕ｨ縺励↑縺代ｌ縺ｰ縺ｪ繧峨↑縺・・,
-                answer: false,
-                explanation: "謖・ｮ壹・蝣ｴ謇莉･螟厄ｼ亥ｱ句､也ｭ会ｼ峨〒縺ｮ蝟ｫ辣吶・蜴ｳ遖√〒縺吶ょｿ・★謖・ｮ壹＆繧後◆蝟ｫ辣呎園繧剃ｽｿ逕ｨ縺励※縺上□縺輔＞縲・
-            }
+            { id: 1, text: "セキュリティゲートでIDバッジを持っていない方がいて、自分のIDバッジを貸してくださいと言われたが、貸さずにそのまま警備隊へ連絡した。", answer: true, explanation: "ID貸与は「なりすまし入館」に繋がる重大違反です。必ず警備隊へ連絡してください。" },
+            { id: 2, text: "防火シャッター下降部（トラシマ部分）を避け、それ以外の場所を工事区画として設定した。", answer: true, explanation: "防火シャッター下降部は常に空けておく必要があります。正しい判断です。" },
+            { id: 3, text: "建屋コンセント使用時、漏電遮断器を経由させて使用した。", answer: true, explanation: "漏電による火災や感電防止が目的です。必ず漏電遮断器を経由させてください。" },
+            { id: 4, text: "トイレの故障を発見したので、自ら直そうとせずアマゾン担当者または警備へ連絡した。", answer: true, explanation: "勝手に修理せず、必ず担当者へ連絡することが正しい対応です。" },
+            { id: 5, text: "脚立使用時は許可申請を行い、申請書を脚立の見えやすい位置に貼付した。", answer: true, explanation: "脚立使用には許可申請が必要で、申請書の掲示は義務です。" },
+            { id: 6, text: "鳥栖FCのルールに従い、時間帯による通行禁止エリアを遵守した。", answer: true, explanation: "特定の場所（コンベア周りなど）には時間帯ルールがあります。必ず確認してください。" },
+            { id: 7, text: "コンベアのガイド取り付け時、稼働中であってもそのまま作業を行った。", answer: false, explanation: "【危険】回転体への巻き込まれのリスクがあります。必ず停止（LOTO等）を確認してから作業してください。" },
+            { id: 8, text: "高車作業時、作業区画を完全に隔離し、人の動線と重ならないようにした。", answer: true, explanation: "正しい対応です。通行人と作業箇所が近い場合は「一時中断」が原則です。" },
+            { id: 9, text: "金曜夜にIDを紛失したが、土日は休みのため、月曜の出社時に上司へ報告した。", answer: false, explanation: "【重要】紛失は「即時報告」が鉄則です。不正利用のリスクがあるため、すぐに報告してください。" },
+            { id: 10, text: "落ちていた商品を拾い、自分の判断で空いている棚に戻した。", answer: false, explanation: "【禁止】混入（Mix）防止のため、必ず所定のリカバリーへ回すルールがあります。" },
+            { id: 11, text: "台車移動中、歩行者がいたが十分なスペースがあったので停止せず通行した。", answer: false, explanation: "【原則】歩行者優先・一時停止です。安全確保が最優先となります。" },
+            { id: 12, text: "人手が足りなかったので、トラックの運転手さんに館内の工事場所まで運搬を手伝ってもらった。", answer: false, explanation: "【禁止】契約外の作業依頼や、不慣れな人の入館に伴う事故リスクがあります。" },
+            { id: 13, text: "トラシマテープ（防火シャッター下）の上だが、短時間なので資材を仮置きした。", answer: false, explanation: "【厳禁】1秒でも置いてはいけません。火災時のシャッター不動作は命に関わります。" },
+            { id: 14, text: "移動中に携帯が鳴ったため、歩きながら通話に応対した。", answer: false, explanation: "【厳禁】Amazonでは「歩きスマホ」は厳禁です。必ず停止して安全な場所で対応してください。" },
+            { id: 15, text: "両手が塞がっていたため、工事エリアのバーを跨いで中に入った。", answer: false, explanation: "【禁止】区画は「安全の境界線」です。必ず入り口から入り、バーを戻してください。" },
+            { id: 16, text: "暑さ対策のため、首にタオルを垂らした状態で作業を行った。", answer: false, explanation: "【危険】首掛けタオルは「巻き込み事故」の典型的な原因です。" },
+            { id: 17, text: "メザニン（網状の床）上での作業時、注意すれば養生シートは不要と考え、そのまま作業した。", answer: false, explanation: "【必須】小さなネジ一つでも下の階の人には凶器になります。養生は必須です。" },
+            { id: 18, text: "空いているコンセントがあったので、申請せずに使用した。", answer: false, explanation: "【禁止】電力容量オーバーやショートの危険があります。無断使用は禁止です。" },
+            { id: 19, text: "高さ2m以上の作業だが、安定した立ち馬だったので墜落制止用器具を使用しなかった。", answer: false, explanation: "【絶対ルール】高さ2m以上は器具必須です。例外はありません。" },
+            { id: 20, text: "喫煙する場合、2階にある喫煙所を使用しなければならない。", answer: false, explanation: "指定の場所以外（屋外等）での喫煙は厳禁です。必ず指定された喫煙所を使用してください。" }
         ];
 
-        // State
-        let currentQuestion = 0;
-        let mistakeCount = 0;
-        let mistakesList = [];
-        let attemptCount = 1;
-        let userName = '';
-        let userNameReading = '';
-        let userBirthdate = '';
-        let primaryCompany = '';
-        let company = '';
-        let workContent = '';
-        let shuffledQuestions = [];
-        let currentQuestionAnsweredCorrectly = false;
-        let currentQuestionMistake = null;
+        let currentQuestion = 0, mistakeCount = 0, mistakesList = [], attemptCount = 1;
+        let userName = '', userNameReading = '', userBirthdate = '', primaryCompany = '', company = '', workContent = '';
+        let shuffledQuestions = [], currentQuestionAnsweredCorrectly = false, currentQuestionMistake = null;
 
-        // Validate hiragana input
-        function isHiragana(str) {
-            return /^[\u3040-\u309F\u30FC\s]+$/.test(str);
-        }
+        function isHiragana(str) { return /^[\u3040-\u309F\u30FC\s]+$/.test(str); }
+        function shuffleArray(array) { const s = [...array]; for (let i = s.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [s[i], s[j]] = [s[j], s[i]]; } return s; }
 
-        // Shuffle array
-        function shuffleArray(array) {
-            const shuffled = [...array];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
-            return shuffled;
-        }
-
-        // Start Quiz
         function startQuiz() {
-            // Reset errors
-            document.getElementById('primary-company-group').classList.remove('error');
-            document.getElementById('company-group').classList.remove('error');
-            document.getElementById('name-group').classList.remove('error');
-            document.getElementById('name-reading-group').classList.remove('error');
-            document.getElementById('birthdate-group').classList.remove('error');
-            document.getElementById('work-content-group').classList.remove('error');
-
+            ['primary-company-group','company-group','name-group','name-reading-group','birthdate-group','work-content-group'].forEach(id => document.getElementById(id).classList.remove('error'));
             primaryCompany = document.getElementById('primary-company').value.trim();
             company = document.getElementById('company').value.trim();
             userName = document.getElementById('name').value.trim();
             userNameReading = document.getElementById('name-reading').value.trim();
             userBirthdate = document.getElementById('birthdate').value;
             workContent = document.getElementById('work-content').value.trim();
-
             let hasError = false;
-
-            if (!primaryCompany) {
-                document.getElementById('primary-company-group').classList.add('error');
-                hasError = true;
-            }
-
-            if (!company) {
-                document.getElementById('company-group').classList.add('error');
-                hasError = true;
-            }
-
-            if (!userName) {
-                document.getElementById('name-group').classList.add('error');
-                hasError = true;
-            }
-
-            if (!userNameReading) {
-                document.getElementById('name-reading-group').classList.add('error');
-                hasError = true;
-            } else if (!isHiragana(userNameReading)) {
-                document.getElementById('name-reading-group').classList.add('error');
-                document.querySelector('#name-reading-group .error-message').textContent = '縺ｲ繧峨′縺ｪ縺ｧ蜈･蜉帙＠縺ｦ縺上□縺輔＞';
-                hasError = true;
-            }
-
-            if (!userBirthdate) {
-                document.getElementById('birthdate-group').classList.add('error');
-                hasError = true;
-            }
-
-            if (!workContent) {
-                document.getElementById('work-content-group').classList.add('error');
-                hasError = true;
-            }
-
-            if (hasError) {
-                return;
-            }
-
-            currentQuestion = 0;
-            mistakeCount = 0;
-            mistakesList = [];
-            shuffledQuestions = shuffleArray(questions);
-            currentQuestionAnsweredCorrectly = false;
-            currentQuestionMistake = null;
-
+            if (!primaryCompany) { document.getElementById('primary-company-group').classList.add('error'); hasError = true; }
+            if (!company) { document.getElementById('company-group').classList.add('error'); hasError = true; }
+            if (!userName) { document.getElementById('name-group').classList.add('error'); hasError = true; }
+            if (!userNameReading) { document.getElementById('name-reading-group').classList.add('error'); hasError = true; }
+            else if (!isHiragana(userNameReading)) { document.getElementById('name-reading-group').classList.add('error'); document.querySelector('#name-reading-group .error-message').textContent = 'ひらがなで入力してください'; hasError = true; }
+            if (!userBirthdate) { document.getElementById('birthdate-group').classList.add('error'); hasError = true; }
+            if (!workContent) { document.getElementById('work-content-group').classList.add('error'); hasError = true; }
+            if (hasError) return;
+            currentQuestion = 0; mistakeCount = 0; mistakesList = []; shuffledQuestions = shuffleArray(questions); currentQuestionAnsweredCorrectly = false; currentQuestionMistake = null;
             document.getElementById('registration-screen').classList.remove('active');
             document.getElementById('quiz-screen').classList.add('active');
-
-            updateAttemptBadge();
+            document.getElementById('attempt-badge').textContent = `挑戦回数: ${attemptCount}回目`;
             showQuestion();
         }
 
-        // Show Question
         function showQuestion() {
-            const question = shuffledQuestions[currentQuestion];
-            currentQuestionAnsweredCorrectly = false;
-            currentQuestionMistake = null;
-            
-            document.getElementById('question-number').textContent = `隨ｬ${currentQuestion + 1}蝠汁;
-            document.getElementById('question-text').textContent = question.text;
-            document.getElementById('progress-current').textContent = `蝠城｡・${currentQuestion + 1}/20`;
-            document.getElementById('progress-score').textContent = `髢馴＆縺・ ${mistakeCount}`;
+            const q = shuffledQuestions[currentQuestion];
+            currentQuestionAnsweredCorrectly = false; currentQuestionMistake = null;
+            document.getElementById('question-number').textContent = `第${currentQuestion + 1}問`;
+            document.getElementById('question-text').textContent = q.text;
+            document.getElementById('progress-current').textContent = `問題 ${currentQuestion + 1}/20`;
+            document.getElementById('progress-score').textContent = `間違い: ${mistakeCount}`;
             document.getElementById('progress-fill').style.width = `${(currentQuestion / 20) * 100}%`;
-
-            const btnTrue = document.getElementById('btn-true');
-            const btnFalse = document.getElementById('btn-false');
-            btnTrue.classList.remove('correct', 'incorrect', 'correct-hint');
-            btnFalse.classList.remove('correct', 'incorrect', 'correct-hint');
-            btnTrue.disabled = false;
-            btnFalse.disabled = false;
-
-            document.getElementById('feedback').classList.remove('show', 'correct', 'incorrect');
+            const btnT = document.getElementById('btn-true'), btnF = document.getElementById('btn-false');
+            btnT.classList.remove('correct','incorrect','correct-hint'); btnF.classList.remove('correct','incorrect','correct-hint');
+            btnT.disabled = false; btnF.disabled = false;
+            document.getElementById('feedback').classList.remove('show','correct','incorrect');
             document.getElementById('retry-hint').style.display = 'none';
             document.getElementById('next-btn').style.display = 'none';
         }
 
-        // Submit Answer
         function submitAnswer(answer) {
-            const question = shuffledQuestions[currentQuestion];
-            const isCorrect = answer === question.answer;
-            const btnTrue = document.getElementById('btn-true');
-            const btnFalse = document.getElementById('btn-false');
-
+            const q = shuffledQuestions[currentQuestion], isCorrect = answer === q.answer;
+            const btnT = document.getElementById('btn-true'), btnF = document.getElementById('btn-false');
             if (isCorrect) {
-                if (answer) {
-                    btnTrue.classList.add('correct');
-                } else {
-                    btnFalse.classList.add('correct');
-                }
-                
-                btnTrue.disabled = true;
-                btnFalse.disabled = true;
-
-                const feedback = document.getElementById('feedback');
-                feedback.classList.remove('incorrect');
-                feedback.classList.add('correct', 'show');
-                document.getElementById('feedback-title').innerHTML = '笨・豁｣隗｣・・;
-                document.getElementById('feedback-text').textContent = question.explanation;
+                (answer ? btnT : btnF).classList.add('correct'); btnT.disabled = true; btnF.disabled = true;
+                const fb = document.getElementById('feedback'); fb.classList.remove('incorrect'); fb.classList.add('correct','show');
+                document.getElementById('feedback-title').innerHTML = '✅ 正解！';
+                document.getElementById('feedback-text').textContent = q.explanation;
                 document.getElementById('retry-hint').style.display = 'none';
-
-                if (currentQuestionMistake) {
-                    mistakesList.push(currentQuestionMistake);
-                }
-
+                if (currentQuestionMistake) mistakesList.push(currentQuestionMistake);
                 currentQuestionAnsweredCorrectly = true;
-
                 document.getElementById('next-btn').style.display = 'block';
-                document.getElementById('next-btn').textContent = 
-                    currentQuestion === 19 ? '邨先棡繧定ｦ九ｋ' : '谺｡縺ｮ蝠城｡後∈';
-
+                document.getElementById('next-btn').textContent = currentQuestion === 19 ? '結果を見る' : '次の問題へ';
             } else {
-                mistakeCount++;
-                document.getElementById('progress-score').textContent = `髢馴＆縺・ ${mistakeCount}`;
-
-                if (!currentQuestionMistake) {
-                    currentQuestionMistake = {
-                        question: question.text,
-                        yourAnswer: answer ? '箝・ : '笶・,
-                        correctAnswer: question.answer ? '箝・ : '笶・,
-                        explanation: question.explanation
-                    };
-                }
-
-                if (answer) {
-                    btnTrue.classList.add('incorrect');
-                    btnTrue.disabled = true;
-                    btnFalse.classList.add('correct-hint');
-                } else {
-                    btnFalse.classList.add('incorrect');
-                    btnFalse.disabled = true;
-                    btnTrue.classList.add('correct-hint');
-                }
-
-                const feedback = document.getElementById('feedback');
-                feedback.classList.remove('correct');
-                feedback.classList.add('incorrect', 'show');
-                document.getElementById('feedback-title').innerHTML = '笶・荳肴ｭ｣隗｣';
-                document.getElementById('feedback-text').textContent = question.explanation;
+                mistakeCount++; document.getElementById('progress-score').textContent = `間違い: ${mistakeCount}`;
+                if (!currentQuestionMistake) currentQuestionMistake = { question: q.text, yourAnswer: answer ? '⭕' : '❌', correctAnswer: q.answer ? '⭕' : '❌', explanation: q.explanation };
+                if (answer) { btnT.classList.add('incorrect'); btnT.disabled = true; btnF.classList.add('correct-hint'); }
+                else { btnF.classList.add('incorrect'); btnF.disabled = true; btnT.classList.add('correct-hint'); }
+                const fb = document.getElementById('feedback'); fb.classList.remove('correct'); fb.classList.add('incorrect','show');
+                document.getElementById('feedback-title').innerHTML = '❌ 不正解';
+                document.getElementById('feedback-text').textContent = q.explanation;
                 document.getElementById('retry-hint').style.display = 'block';
             }
         }
 
-        // Next Question
-        function nextQuestion() {
-            currentQuestion++;
+        function nextQuestion() { currentQuestion++; if (currentQuestion >= 20) showResults(); else showQuestion(); }
 
-            if (currentQuestion >= 20) {
-                showResults();
-            } else {
-                showQuestion();
-            }
-        }
-
-        // Show Results
         function showResults() {
             document.getElementById('quiz-screen').classList.remove('active');
             document.getElementById('results-screen').classList.add('active');
-
             document.getElementById('stat-mistakes').textContent = mistakeCount;
             document.getElementById('stat-attempts').textContent = attemptCount;
-
             if (mistakesList.length > 0) {
                 document.getElementById('review-section').style.display = 'block';
-                const reviewList = document.getElementById('review-list');
-                reviewList.innerHTML = mistakesList.map((m, index) => `
-                    <div class="review-item">
-                        <p class="question">${index + 1}. ${m.question}</p>
-                        <p class="your-answer">縺ゅ↑縺溘・譛蛻昴・蝗樒ｭ・ ${m.yourAnswer}</p>
-                        <p class="correct-answer">豁｣隗｣: ${m.correctAnswer}</p>
-                        <p class="explanation">${m.explanation}</p>
-                    </div>
-                `).join('');
-            } else {
-                document.getElementById('review-section').style.display = 'none';
-            }
-
-            generateCertificate();
-            savePassLog();
-            sendToGoogleSheets();
+                document.getElementById('review-list').innerHTML = mistakesList.map((m,i) => `<div class="review-item"><p class="question">${i+1}. ${m.question}</p><p class="your-answer">あなたの最初の回答: ${m.yourAnswer}</p><p class="correct-answer">正解: ${m.correctAnswer}</p><p class="explanation">${m.explanation}</p></div>`).join('');
+            } else { document.getElementById('review-section').style.display = 'none'; }
+            generateCertificate(); savePassLog(); sendToGoogleSheets();
         }
 
-        // Update Attempt Badge
-        function updateAttemptBadge() {
-            document.getElementById('attempt-badge').textContent = `謖第姶蝗樊焚: ${attemptCount}蝗樒岼`;
-        }
+        function formatDateJP(d) { return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`; }
+        function formatDateISO(d) { return `${d.getFullYear()}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getDate().toString().padStart(2,'0')}`; }
 
-        // Format date for display
-        function formatDateJP(date) {
-            return `${date.getFullYear()}蟷ｴ${date.getMonth() + 1}譛・{date.getDate()}譌･`;
-        }
-
-        // Format date for storage
-        function formatDateISO(date) {
-            return `${date.getFullYear()}/${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getDate().toString().padStart(2,'0')}`;
-        }
-
-        // Generate Certificate
         function generateCertificate() {
-            const today = new Date();
-            const expiryDate = new Date(today);
-            expiryDate.setFullYear(expiryDate.getFullYear() + 1);
-
-            const formatBirthdate = (dateStr) => {
-                const date = new Date(dateStr);
-                return formatDateJP(date);
-            };
-
-            const certificateHTML = `
-                <div class="certificate">
-                    <div class="certificate-content">
-                        <div class="certificate-badge">醇</div>
-                        <h2>菫ｮ莠・ｨｼ</h2>
-                        <p class="subtitle">Safety Training Certificate</p>
-                        
-                        <p class="name">${userName}</p>
-                        <p class="name-reading">・・{userNameReading}・・/p>
-                        
-                        <div class="details">
-                            <div class="detail-item">
-                                <div class="detail-label">荳谺｡莨夂､ｾ蜷・/div>
-                                <div class="detail-value">${primaryCompany}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">謇螻樔ｼ夂､ｾ蜷・/div>
-                                <div class="detail-value">${company}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">逕溷ｹｴ譛域律</div>
-                                <div class="detail-value">${formatBirthdate(userBirthdate)}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">蜿苓ｬ帶律</div>
-                                <div class="detail-value">${formatDateJP(today)}</div>
-                            </div>
-                            <div class="detail-item full-width">
-                                <div class="detail-label">譛ｬ譌･縺ｮ菴懈･ｭ蜀・ｮｹ</div>
-                                <div class="detail-value">${workContent}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">隧ｦ鬨鍋ｵ先棡</div>
-                                <div class="detail-value">蜈ｨ蝠乗ｭ｣隗｣・磯俣驕輔＞${mistakeCount}蝗橸ｼ・/div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">謖第姶蝗樊焚</div>
-                                <div class="detail-value">${attemptCount}蝗・/div>
-                            </div>
-                        </div>
-                        
-                        <p style="font-size: 0.9em; margin-bottom: 15px;">
-                            荳願ｨ倥・閠・・縲、mazon FC螳牙・謨呵ご繝・せ繝医↓<br>蜷域ｼ縺励◆縺薙→繧定ｨｼ譏弱＠縺ｾ縺吶・
-                        </p>
-                        
-                        <div class="validity">
-                            <div class="validity-label">譛牙柑譛滄剞</div>
-                            <div class="validity-date">${formatDateJP(expiryDate)}</div>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            document.getElementById('certificate-container').innerHTML = certificateHTML;
+            const today = new Date(), expiry = new Date(today); expiry.setFullYear(expiry.getFullYear() + 1);
+            const bd = new Date(userBirthdate);
+            document.getElementById('certificate-container').innerHTML = `<div class="certificate"><div class="certificate-content"><div class="certificate-badge">🏆</div><h2>修了証</h2><p class="subtitle">Safety Training Certificate</p><p class="name">${userName}</p><p class="name-reading">（${userNameReading}）</p><div class="details"><div class="detail-item"><div class="detail-label">一次会社名</div><div class="detail-value">${primaryCompany}</div></div><div class="detail-item"><div class="detail-label">所属会社名</div><div class="detail-value">${company}</div></div><div class="detail-item"><div class="detail-label">生年月日</div><div class="detail-value">${formatDateJP(bd)}</div></div><div class="detail-item"><div class="detail-label">受講日</div><div class="detail-value">${formatDateJP(today)}</div></div><div class="detail-item full-width"><div class="detail-label">本日の作業内容</div><div class="detail-value">${workContent}</div></div><div class="detail-item"><div class="detail-label">試験結果</div><div class="detail-value">全問正解（間違い${mistakeCount}回）</div></div><div class="detail-item"><div class="detail-label">挑戦回数</div><div class="detail-value">${attemptCount}回</div></div></div><p style="font-size:0.9em;margin-bottom:15px;">上記の者は、Amazon FC安全教育テストに<br>合格したことを証明します。</p><div class="validity"><div class="validity-label">有効期限</div><div class="validity-date">${formatDateJP(expiry)}</div></div></div></div>`;
         }
 
-        // Save to localStorage
         function savePassLog() {
-            const today = new Date();
-            const expiryDate = new Date(today);
-            expiryDate.setFullYear(expiryDate.getFullYear() + 1);
-
-            const logEntry = {
-                primaryCompany: primaryCompany,
-                company: company,
-                name: userName,
-                nameReading: userNameReading,
-                birthdate: userBirthdate,
-                workContent: workContent,
-                passDate: today.toISOString(),
-                expiryDate: expiryDate.toISOString(),
-                attempts: attemptCount,
-                mistakes: mistakeCount,
-                mistakeDetails: mistakesList
-            };
-
-            let logs = JSON.parse(localStorage.getItem('safetyTestLogs') || '[]');
-            logs.push(logEntry);
-            localStorage.setItem('safetyTestLogs', JSON.stringify(logs));
+            const today = new Date(), expiry = new Date(today); expiry.setFullYear(expiry.getFullYear() + 1);
+            const log = { primaryCompany, company, name: userName, nameReading: userNameReading, birthdate: userBirthdate, workContent, passDate: today.toISOString(), expiryDate: expiry.toISOString(), attempts: attemptCount, mistakes: mistakeCount, mistakeDetails: mistakesList };
+            let logs = JSON.parse(localStorage.getItem('safetyTestLogs') || '[]'); logs.push(log); localStorage.setItem('safetyTestLogs', JSON.stringify(logs));
         }
 
-        // Send to Google Sheets
         function sendToGoogleSheets() {
-            const indicator = document.getElementById('saving-indicator');
-            indicator.classList.add('show');
-
-            const today = new Date();
-            const expiryDate = new Date(today);
-            expiryDate.setFullYear(expiryDate.getFullYear() + 1);
-
-            const data = {
-                primaryCompany: primaryCompany,
-                company: company,
-                name: userName,
-                nameReading: userNameReading,
-                birthdate: formatDateISO(new Date(userBirthdate)),
-                workContent: workContent,
-                passDate: formatDateISO(today),
-                expiryDate: formatDateISO(expiryDate),
-                mistakes: mistakeCount,
-                attempts: attemptCount
-            };
-
-            fetch(GOOGLE_SHEETS_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
-            })
-            .then(() => {
-                indicator.textContent = '笨・繝・・繧ｿ繧剃ｿ晏ｭ倥＠縺ｾ縺励◆';
-                setTimeout(() => {
-                    indicator.classList.remove('show');
-                    indicator.textContent = '豆 繝・・繧ｿ繧剃ｿ晏ｭ倅ｸｭ...';
-                }, 2000);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                indicator.textContent = '笞・・菫晏ｭ倥↓螟ｱ謨励＠縺ｾ縺励◆';
-                setTimeout(() => {
-                    indicator.classList.remove('show');
-                    indicator.textContent = '豆 繝・・繧ｿ繧剃ｿ晏ｭ倅ｸｭ...';
-                }, 3000);
-            });
+            const ind = document.getElementById('saving-indicator'); ind.classList.add('show');
+            const today = new Date(), expiry = new Date(today); expiry.setFullYear(expiry.getFullYear() + 1);
+            const data = { primaryCompany, company, name: userName, nameReading: userNameReading, birthdate: formatDateISO(new Date(userBirthdate)), workContent, passDate: formatDateISO(today), expiryDate: formatDateISO(expiry), mistakes: mistakeCount, attempts: attemptCount };
+            fetch(GOOGLE_SHEETS_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
+            .then(() => { ind.textContent = '✅ データを保存しました'; setTimeout(() => { ind.classList.remove('show'); ind.textContent = '📤 データを保存中...'; }, 2000); })
+            .catch((e) => { console.error('Error:', e); ind.textContent = '⚠️ 保存に失敗しました'; setTimeout(() => { ind.classList.remove('show'); ind.textContent = '📤 データを保存中...'; }, 3000); });
         }
 
-        // Show History
         function showHistory() {
-            const logs = JSON.parse(localStorage.getItem('safetyTestLogs') || '[]');
-            const historyList = document.getElementById('history-list');
-
-            if (logs.length === 0) {
-                historyList.innerHTML = '<div class="no-history">蜷域ｼ螻･豁ｴ縺後≠繧翫∪縺帙ｓ</div>';
-            } else {
-                const formatDate = (dateStr) => {
-                    const date = new Date(dateStr);
-                    return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
-                };
-
-                const isExpired = (dateStr) => new Date(dateStr) < new Date();
-
-                historyList.innerHTML = logs.slice().reverse().map(log => `
-                    <div class="history-item">
-                        <div class="name">${log.name}・・{log.nameReading || ''}・・/div>
-                        <div class="date">蜷域ｼ譌･: ${formatDate(log.passDate)} | 髢馴＆縺・ ${log.mistakes || 0}蝗・/div>
-                        <div class="validity" style="color: ${isExpired(log.expiryDate) ? '#ef4444' : '#4ade80'}">
-                            ${isExpired(log.expiryDate) ? '譛滄剞蛻・ｌ' : `譛牙柑譛滄剞: ${formatDate(log.expiryDate)}`}
-                        </div>
-                    </div>
-                `).join('');
-            }
-
+            const logs = JSON.parse(localStorage.getItem('safetyTestLogs') || '[]'), hl = document.getElementById('history-list');
+            if (logs.length === 0) { hl.innerHTML = '<div class="no-history">合格履歴がありません</div>'; }
+            else { const fd = (ds) => { const d = new Date(ds); return `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`; }; const ie = (ds) => new Date(ds) < new Date();
+                hl.innerHTML = logs.slice().reverse().map(l => `<div class="history-item"><div class="name">${l.name}（${l.nameReading||''}）</div><div class="date">合格日: ${fd(l.passDate)} | 間違い: ${l.mistakes||0}回</div><div class="validity" style="color:${ie(l.expiryDate)?'#ef4444':'#4ade80'}">${ie(l.expiryDate)?'期限切れ':`有効期限: ${fd(l.expiryDate)}`}</div></div>`).join(''); }
             document.getElementById('history-modal').classList.add('active');
         }
 
-        // Close History
-        function closeHistory() {
-            document.getElementById('history-modal').classList.remove('active');
-        }
-
-        // Close modal on outside click
-        document.getElementById('history-modal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeHistory();
-            }
-        });
-
-        // Real-time validation for hiragana input
-        document.getElementById('name-reading').addEventListener('input', function(e) {
-            const value = e.target.value;
-            if (value && !isHiragana(value)) {
-                document.getElementById('name-reading-group').classList.add('error');
-                document.querySelector('#name-reading-group .error-message').textContent = '縺ｲ繧峨′縺ｪ縺ｧ蜈･蜉帙＠縺ｦ縺上□縺輔＞';
-            } else {
-                document.getElementById('name-reading-group').classList.remove('error');
-            }
-        });
+        function closeHistory() { document.getElementById('history-modal').classList.remove('active'); }
+        document.getElementById('history-modal').addEventListener('click', function(e) { if (e.target === this) closeHistory(); });
+        document.getElementById('name-reading').addEventListener('input', function(e) { const v = e.target.value; if (v && !isHiragana(v)) { document.getElementById('name-reading-group').classList.add('error'); document.querySelector('#name-reading-group .error-message').textContent = 'ひらがなで入力してください'; } else { document.getElementById('name-reading-group').classList.remove('error'); } });
     </script>
 </body>
 </html>
-
