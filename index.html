@@ -650,6 +650,26 @@
             padding: 30px;
         }
 
+        /* Saving indicator */
+        .saving-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            display: none;
+            z-index: 1000;
+        }
+
+        .saving-indicator.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
         /* Responsive */
         @media (max-width: 400px) {
             .container {
@@ -676,6 +696,7 @@
 </head>
 <body>
     <button class="history-btn" onclick="showHistory()" title="合格履歴">📋</button>
+    <div class="saving-indicator" id="saving-indicator">📤 データを保存中...</div>
 
     <div class="container">
         <div class="header">
@@ -802,6 +823,9 @@
     </div>
 
     <script>
+        // Google Sheets API URL
+        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwss-P4UEZA8s7TCGOlB4J7djrfCCtWkzqhA0WIOgJ609ezO7iB5nZedUV86wxMGm8P/exec';
+
         // Quiz Questions Data
         const questions = [
             {
@@ -940,7 +964,6 @@
 
         // Validate hiragana input
         function isHiragana(str) {
-            // Allow hiragana, spaces, and prolonged sound mark
             return /^[\u3040-\u309F\u30FC\s]+$/.test(str);
         }
 
@@ -956,7 +979,6 @@
 
         // Start Quiz
         function startQuiz() {
-            // Reset error states
             document.getElementById('name-group').classList.remove('error');
             document.getElementById('name-reading-group').classList.remove('error');
             document.getElementById('birthdate-group').classList.remove('error');
@@ -990,7 +1012,6 @@
                 return;
             }
 
-            // Reset state
             currentQuestion = 0;
             mistakeCount = 0;
             mistakesList = [];
@@ -998,7 +1019,6 @@
             currentQuestionAnsweredCorrectly = false;
             currentQuestionMistake = null;
 
-            // Switch screen
             document.getElementById('registration-screen').classList.remove('active');
             document.getElementById('quiz-screen').classList.add('active');
 
@@ -1018,7 +1038,6 @@
             document.getElementById('progress-score').textContent = `間違い: ${mistakeCount}`;
             document.getElementById('progress-fill').style.width = `${(currentQuestion / 20) * 100}%`;
 
-            // Reset buttons
             const btnTrue = document.getElementById('btn-true');
             const btnFalse = document.getElementById('btn-false');
             btnTrue.classList.remove('correct', 'incorrect', 'correct-hint');
@@ -1026,7 +1045,6 @@
             btnTrue.disabled = false;
             btnFalse.disabled = false;
 
-            // Hide feedback and next button
             document.getElementById('feedback').classList.remove('show', 'correct', 'incorrect');
             document.getElementById('retry-hint').style.display = 'none';
             document.getElementById('next-btn').style.display = 'none';
@@ -1040,18 +1058,15 @@
             const btnFalse = document.getElementById('btn-false');
 
             if (isCorrect) {
-                // Correct answer
                 if (answer) {
                     btnTrue.classList.add('correct');
                 } else {
                     btnFalse.classList.add('correct');
                 }
                 
-                // Disable both buttons
                 btnTrue.disabled = true;
                 btnFalse.disabled = true;
 
-                // Show success feedback
                 const feedback = document.getElementById('feedback');
                 feedback.classList.remove('incorrect');
                 feedback.classList.add('correct', 'show');
@@ -1059,24 +1074,20 @@
                 document.getElementById('feedback-text').textContent = question.explanation;
                 document.getElementById('retry-hint').style.display = 'none';
 
-                // If this question was previously answered wrong, record it
                 if (currentQuestionMistake) {
                     mistakesList.push(currentQuestionMistake);
                 }
 
                 currentQuestionAnsweredCorrectly = true;
 
-                // Show next button
                 document.getElementById('next-btn').style.display = 'block';
                 document.getElementById('next-btn').textContent = 
                     currentQuestion === 19 ? '結果を見る' : '次の問題へ';
 
             } else {
-                // Wrong answer - allow retry
                 mistakeCount++;
                 document.getElementById('progress-score').textContent = `間違い: ${mistakeCount}`;
 
-                // Record mistake details (only first time for this question)
                 if (!currentQuestionMistake) {
                     currentQuestionMistake = {
                         question: question.text,
@@ -1086,7 +1097,6 @@
                     };
                 }
 
-                // Mark wrong button
                 if (answer) {
                     btnTrue.classList.add('incorrect');
                     btnTrue.disabled = true;
@@ -1097,7 +1107,6 @@
                     btnTrue.classList.add('correct-hint');
                 }
 
-                // Show error feedback with retry hint
                 const feedback = document.getElementById('feedback');
                 feedback.classList.remove('correct');
                 feedback.classList.add('incorrect', 'show');
@@ -1123,11 +1132,9 @@
             document.getElementById('quiz-screen').classList.remove('active');
             document.getElementById('results-screen').classList.add('active');
 
-            // Update stats
             document.getElementById('stat-mistakes').textContent = mistakeCount;
             document.getElementById('stat-attempts').textContent = attemptCount;
 
-            // Show review section if there were mistakes
             if (mistakesList.length > 0) {
                 document.getElementById('review-section').style.display = 'block';
                 const reviewList = document.getElementById('review-list');
@@ -1143,16 +1150,24 @@
                 document.getElementById('review-section').style.display = 'none';
             }
 
-            // Generate certificate
             generateCertificate();
-            
-            // Save to log
             savePassLog();
+            sendToGoogleSheets();
         }
 
         // Update Attempt Badge
         function updateAttemptBadge() {
             document.getElementById('attempt-badge').textContent = `挑戦回数: ${attemptCount}回目`;
+        }
+
+        // Format date for display
+        function formatDateJP(date) {
+            return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
+        }
+
+        // Format date for storage
+        function formatDateISO(date) {
+            return `${date.getFullYear()}/${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getDate().toString().padStart(2,'0')}`;
         }
 
         // Generate Certificate
@@ -1161,13 +1176,9 @@
             const expiryDate = new Date(today);
             expiryDate.setFullYear(expiryDate.getFullYear() + 1);
 
-            const formatDate = (date) => {
-                return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
-            };
-
             const formatBirthdate = (dateStr) => {
                 const date = new Date(dateStr);
-                return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
+                return formatDateJP(date);
             };
 
             const certificateHTML = `
@@ -1187,7 +1198,7 @@
                             </div>
                             <div class="detail-item">
                                 <div class="detail-label">受講日</div>
-                                <div class="detail-value">${formatDate(today)}</div>
+                                <div class="detail-value">${formatDateJP(today)}</div>
                             </div>
                             <div class="detail-item">
                                 <div class="detail-label">試験結果</div>
@@ -1205,7 +1216,7 @@
                         
                         <div class="validity">
                             <div class="validity-label">有効期限</div>
-                            <div class="validity-date">${formatDate(expiryDate)}</div>
+                            <div class="validity-date">${formatDateJP(expiryDate)}</div>
                         </div>
                     </div>
                 </div>
@@ -1214,7 +1225,7 @@
             document.getElementById('certificate-container').innerHTML = certificateHTML;
         }
 
-        // Save Pass Log
+        // Save to localStorage
         function savePassLog() {
             const today = new Date();
             const expiryDate = new Date(today);
@@ -1231,10 +1242,53 @@
                 mistakeDetails: mistakesList
             };
 
-            // Get existing logs
             let logs = JSON.parse(localStorage.getItem('safetyTestLogs') || '[]');
             logs.push(logEntry);
             localStorage.setItem('safetyTestLogs', JSON.stringify(logs));
+        }
+
+        // Send to Google Sheets
+        function sendToGoogleSheets() {
+            const indicator = document.getElementById('saving-indicator');
+            indicator.classList.add('show');
+
+            const today = new Date();
+            const expiryDate = new Date(today);
+            expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+
+            const data = {
+                name: userName,
+                nameReading: userNameReading,
+                birthdate: formatDateISO(new Date(userBirthdate)),
+                passDate: formatDateISO(today),
+                expiryDate: formatDateISO(expiryDate),
+                mistakes: mistakeCount,
+                attempts: attemptCount
+            };
+
+            fetch(GOOGLE_SHEETS_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
+                indicator.textContent = '✅ データを保存しました';
+                setTimeout(() => {
+                    indicator.classList.remove('show');
+                    indicator.textContent = '📤 データを保存中...';
+                }, 2000);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                indicator.textContent = '⚠️ 保存に失敗しました';
+                setTimeout(() => {
+                    indicator.classList.remove('show');
+                    indicator.textContent = '📤 データを保存中...';
+                }, 3000);
+            });
         }
 
         // Show History
