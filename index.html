@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>安全教育テスト | Amazon FC</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #ff9a56, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.95em;
+        }
+
+        /* Screens */
+        .screen {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .form-group label .required {
+            color: #ff6b6b;
+            margin-left: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ff9a56;
+            background: rgba(255,255,255,0.15);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .form-group .input-hint {
+            font-size: 0.85em;
+            color: rgba(255,255,255,0.6);
+            margin-top: 5px;
+        }
+
+        .form-group.error input {
+            border-color: #ef4444;
+        }
+
+        .form-group .error-message {
+            font-size: 0.85em;
+            color: #ef4444;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .form-group.error .error-message {
+            display: block;
+        }
+
+        /* Name Input Group */
+        .name-group {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .name-group-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #ff9a56;
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff9a56, #ff6b6b);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(255,107,107,0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,107,107,0.5);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-bottom: 30px;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4ade80, #22c55e);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        /* Question Card */
+        .question-card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .question-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff9a56, #ff6b6b);
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #fff;
+        }
+
+        /* Answer Buttons */
+        .answer-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .answer-btn {
+            flex: 1;
+            padding: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 15px;
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            font-size: 1.5em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .answer-btn:hover:not(:disabled) {
+            background: rgba(255,255,255,0.15);
+            transform: scale(1.02);
+        }
+
+        .answer-btn.correct {
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            border-color: #22c55e;
+            animation: pulse 0.5s ease;
+        }
+
+        .answer-btn.incorrect {
+            background: linear-gradient(135deg, #f87171, #ef4444);
+            border-color: #ef4444;
+            animation: shake 0.5s ease;
+        }
+
+        .answer-btn.correct-hint {
+            border-color: #22c55e;
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        /* Feedback */
+        .feedback {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 15px;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .feedback.correct {
+            background: rgba(34, 197, 94, 0.2);
+            border: 2px solid #22c55e;
+        }
+
+        .feedback.incorrect {
+            background: rgba(239, 68, 68, 0.2);
+            border: 2px solid #ef4444;
+        }
+
+        .feedback h3 {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feedback p {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.95em;
+        }
+
+        .retry-hint {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(255, 154, 86, 0.2);
+            border-radius: 10px;
+            font-size: 0.9em;
+            color: #ff9a56;
+            text-align: center;
+        }
+
+        /* Results Screen */
+        .results-card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+
+        .score-circle.pass {
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            box-shadow: 0 0 40px rgba(34, 197, 94, 0.5);
+        }
+
+        .score-circle.fail {
+            background: linear-gradient(135deg, #f87171, #ef4444);
+            box-shadow: 0 0 40px rgba(239, 68, 68, 0.5);
+        }
+
+        .score-circle small {
+            font-size: 0.4em;
+            opacity: 0.9;
+        }
+
+        .results-message {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .results-detail {
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 25px;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-item {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #ff9a56;
+        }
+
+        .stat-label {
+            font-size: 0.85em;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* Review Section */
+        .review-section {
+            text-align: left;
+            margin-top: 30px;
+        }
+
+        .review-section h3 {
+            margin-bottom: 15px;
+            color: #ff9a56;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .review-item {
+            background: rgba(255, 154, 86, 0.15);
+            border-left: 4px solid #ff9a56;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .review-item .question {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .review-item .your-answer {
+            font-size: 0.9em;
+            color: #ef4444;
+            margin-bottom: 5px;
+        }
+
+        .review-item .correct-answer {
+            font-size: 0.9em;
+            color: #4ade80;
+            font-weight: 600;
+        }
+
+        .review-item .explanation {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: rgba(255,255,255,0.8);
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Certificate */
+        .certificate {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            color: #1a1a2e;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .certificate::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4a574' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        .certificate-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .certificate-badge {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            box-shadow: 0 4px 15px rgba(217, 119, 6, 0.4);
+        }
+
+        .certificate h2 {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+            color: #92400e;
+        }
+
+        .certificate .subtitle {
+            color: #b45309;
+            margin-bottom: 25px;
+        }
+
+        .certificate .name {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 5px;
+        }
+
+        .certificate .name-reading {
+            font-size: 1em;
+            color: #666;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #d97706;
+            padding-bottom: 15px;
+        }
+
+        .certificate .details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .certificate .detail-item {
+            background: rgba(255,255,255,0.5);
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        .certificate .detail-label {
+            font-size: 0.8em;
+            color: #92400e;
+            margin-bottom: 3px;
+        }
+
+        .certificate .detail-value {
+            font-weight: 600;
+            color: #1a1a2e;
+        }
+
+        .certificate .validity {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .certificate .validity-label {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+
+        .certificate .validity-date {
+            font-size: 1.2em;
+            font-weight: 700;
+        }
+
+        /* Attempt Counter */
+        .attempt-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-bottom: 20px;
+        }
+
+        /* History Button */
+        .history-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #fff;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: all 0.3s ease;
+        }
+
+        .history-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* History Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        .modal-content {
+            background: #1a1a2e;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 500px;
+            margin: 50px auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        .history-item {
+            background: rgba(255,255,255,0.08);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+
+        .history-item .name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .history-item .date {
+            font-size: 0.85em;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .history-item .validity {
+            font-size: 0.85em;
+            color: #4ade80;
+        }
+
+        .no-history {
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+            padding: 30px;
+        }
+
+        /* Responsive */
+        @media (max-width: 400px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.5em;
+            }
+            
+            .question-text {
+                font-size: 1em;
+            }
+            
+            .certificate .details {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="history-btn" onclick="showHistory()" title="合格履歴">📋</button>
+
+    <div class="container">
+        <div class="header">
+            <h1>🏭 安全教育テスト</h1>
+            <p>Amazon FC 安全ルール確認</p>
+        </div>
+
+        <!-- Registration Screen -->
+        <div id="registration-screen" class="screen active">
+            <div class="name-group">
+                <div class="name-group-title">👤 お名前</div>
+                <div class="form-group" id="name-group">
+                    <label for="name">氏名（漢字）<span class="required">*</span></label>
+                    <input type="text" id="name" placeholder="例：山田 太郎" required>
+                    <div class="input-hint">姓と名の間にスペースを入れてください</div>
+                    <div class="error-message">氏名を入力してください</div>
+                </div>
+                <div class="form-group" id="name-reading-group">
+                    <label for="name-reading">ふりがな（ひらがな）<span class="required">*</span></label>
+                    <input type="text" id="name-reading" placeholder="例：やまだ たろう" required>
+                    <div class="input-hint">ひらがなで入力してください</div>
+                    <div class="error-message">ふりがなをひらがなで入力してください</div>
+                </div>
+            </div>
+
+            <div class="form-group" id="birthdate-group">
+                <label for="birthdate">生年月日 <span class="required">*</span></label>
+                <input type="date" id="birthdate" required>
+                <div class="error-message">生年月日を入力してください</div>
+            </div>
+
+            <button class="btn btn-primary" onclick="startQuiz()">テスト開始</button>
+            
+            <div style="margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 12px;">
+                <h3 style="margin-bottom: 10px; font-size: 1em;">📝 テストについて</h3>
+                <ul style="font-size: 0.9em; color: rgba(255,255,255,0.7); padding-left: 20px;">
+                    <li>全20問の○×問題です</li>
+                    <li>間違えたらその場で正解を選び直せます</li>
+                    <li>全問正解で合格となります</li>
+                    <li>最後に間違えた問題を復習できます</li>
+                    <li>合格すると修了証が発行されます</li>
+                    <li>修了証の有効期限は1年間です</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="screen">
+            <div class="attempt-badge" id="attempt-badge">挑戦回数: 1回目</div>
+            
+            <div class="progress-container">
+                <div class="progress-text">
+                    <span id="progress-current">問題 1/20</span>
+                    <span id="progress-score">間違い: 0</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <span class="question-number" id="question-number">第1問</span>
+                <p class="question-text" id="question-text"></p>
+            </div>
+
+            <div class="answer-buttons" id="answer-buttons">
+                <button class="answer-btn" id="btn-true" onclick="submitAnswer(true)">⭕</button>
+                <button class="answer-btn" id="btn-false" onclick="submitAnswer(false)">❌</button>
+            </div>
+
+            <div class="feedback" id="feedback">
+                <h3 id="feedback-title"></h3>
+                <p id="feedback-text"></p>
+                <div class="retry-hint" id="retry-hint" style="display: none;">
+                    👆 正解のボタンを押して次に進んでください
+                </div>
+            </div>
+
+            <button class="btn btn-primary" id="next-btn" style="display: none; margin-top: 20px;" onclick="nextQuestion()">次の問題へ</button>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results-screen" class="screen">
+            <div class="results-card">
+                <div class="score-circle pass" id="score-circle">
+                    <span>🎉</span>
+                </div>
+                <h2 class="results-message">合格おめでとうございます！</h2>
+                <p class="results-detail">全20問クリアしました</p>
+
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="stat-mistakes">0</div>
+                        <div class="stat-label">間違えた回数</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="stat-attempts">1</div>
+                        <div class="stat-label">挑戦回数</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="review-section" id="review-section" style="display: none;">
+                <h3>📚 間違えた問題の復習</h3>
+                <p style="font-size: 0.9em; color: rgba(255,255,255,0.7); margin-bottom: 15px;">
+                    次回は間違えないように復習しましょう！
+                </p>
+                <div id="review-list"></div>
+            </div>
+            
+            <div id="certificate-container" style="margin-top: 30px;"></div>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div class="modal" id="history-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📋 合格履歴</h3>
+                <button class="modal-close" onclick="closeHistory()">×</button>
+            </div>
+            <div id="history-list"></div>
+        </div>
+    </div>
+
+    <script>
+        // Quiz Questions Data
+        const questions = [
+            {
+                id: 1,
+                text: "セキュリティゲートでIDバッジを持っていない方がいて、自分のIDバッジを貸してくださいと言われたが、貸さずにそのまま警備隊へ連絡した。",
+                answer: true,
+                explanation: "ID貸与は「なりすまし入館」に繋がる重大違反です。必ず警備隊へ連絡してください。"
+            },
+            {
+                id: 2,
+                text: "防火シャッター下降部（トラシマ部分）を避け、それ以外の場所を工事区画として設定した。",
+                answer: true,
+                explanation: "防火シャッター下降部は常に空けておく必要があります。正しい判断です。"
+            },
+            {
+                id: 3,
+                text: "建屋コンセント使用時、漏電遮断器を経由させて使用した。",
+                answer: true,
+                explanation: "漏電による火災や感電防止が目的です。必ず漏電遮断器を経由させてください。"
+            },
+            {
+                id: 4,
+                text: "トイレの故障を発見したので、自ら直そうとせずアマゾン担当者または警備へ連絡した。",
+                answer: true,
+                explanation: "勝手に修理せず、必ず担当者へ連絡することが正しい対応です。"
+            },
+            {
+                id: 5,
+                text: "脚立使用時は許可申請を行い、申請書を脚立の見えやすい位置に貼付した。",
+                answer: true,
+                explanation: "脚立使用には許可申請が必要で、申請書の掲示は義務です。"
+            },
+            {
+                id: 6,
+                text: "鳥栖FCのルールに従い、時間帯による通行禁止エリアを遵守した。",
+                answer: true,
+                explanation: "特定の場所（コンベア周りなど）には時間帯ルールがあります。必ず確認してください。"
+            },
+            {
+                id: 7,
+                text: "コンベアのガイド取り付け時、稼働中であってもそのまま作業を行った。",
+                answer: false,
+                explanation: "【危険】回転体への巻き込まれのリスクがあります。必ず停止（LOTO等）を確認してから作業してください。"
+            },
+            {
+                id: 8,
+                text: "高車作業時、作業区画を完全に隔離し、人の動線と重ならないようにした。",
+                answer: true,
+                explanation: "正しい対応です。通行人と作業箇所が近い場合は「一時中断」が原則です。"
+            },
+            {
+                id: 9,
+                text: "金曜夜にIDを紛失したが、土日は休みのため、月曜の出社時に上司へ報告した。",
+                answer: false,
+                explanation: "【重要】紛失は「即時報告」が鉄則です。不正利用のリスクがあるため、すぐに報告してください。"
+            },
+            {
+                id: 10,
+                text: "落ちていた商品を拾い、自分の判断で空いている棚に戻した。",
+                answer: false,
+                explanation: "【禁止】混入（Mix）防止のため、必ず所定のリカバリーへ回すルールがあります。"
+            },
+            {
+                id: 11,
+                text: "台車移動中、歩行者がいたが十分なスペースがあったので停止せず通行した。",
+                answer: false,
+                explanation: "【原則】歩行者優先・一時停止です。安全確保が最優先となります。"
+            },
+            {
+                id: 12,
+                text: "人手が足りなかったので、トラックの運転手さんに館内の工事場所まで運搬を手伝ってもらった。",
+                answer: false,
+                explanation: "【禁止】契約外の作業依頼や、不慣れな人の入館に伴う事故リスクがあります。"
+            },
+            {
+                id: 13,
+                text: "トラシマテープ（防火シャッター下）の上だが、短時間なので資材を仮置きした。",
+                answer: false,
+                explanation: "【厳禁】1秒でも置いてはいけません。火災時のシャッター不動作は命に関わります。"
+            },
+            {
+                id: 14,
+                text: "移動中に携帯が鳴ったため、歩きながら通話に応対した。",
+                answer: false,
+                explanation: "【厳禁】Amazonでは「歩きスマホ」は厳禁です。必ず停止して安全な場所で対応してください。"
+            },
+            {
+                id: 15,
+                text: "両手が塞がっていたため、工事エリアのバーを跨いで中に入った。",
+                answer: false,
+                explanation: "【禁止】区画は「安全の境界線」です。必ず入り口から入り、バーを戻してください。"
+            },
+            {
+                id: 16,
+                text: "暑さ対策のため、首にタオルを垂らした状態で作業を行った。",
+                answer: false,
+                explanation: "【危険】首掛けタオルは「巻き込み事故」の典型的な原因です。"
+            },
+            {
+                id: 17,
+                text: "メザニン（網状の床）上での作業時、注意すれば養生シートは不要と考え、そのまま作業した。",
+                answer: false,
+                explanation: "【必須】小さなネジ一つでも下の階の人には凶器になります。養生は必須です。"
+            },
+            {
+                id: 18,
+                text: "空いているコンセントがあったので、申請せずに使用した。",
+                answer: false,
+                explanation: "【禁止】電力容量オーバーやショートの危険があります。無断使用は禁止です。"
+            },
+            {
+                id: 19,
+                text: "高さ2m以上の作業だが、安定した立ち馬だったので墜落制止用器具を使用しなかった。",
+                answer: false,
+                explanation: "【絶対ルール】高さ2m以上は器具必須です。例外はありません。"
+            },
+            {
+                id: 20,
+                text: "喫煙する場合、2階にある喫煙所を使用しなければならない。",
+                answer: false,
+                explanation: "指定の場所以外（屋外等）での喫煙は厳禁です。必ず指定された喫煙所を使用してください。"
+            }
+        ];
+
+        // State
+        let currentQuestion = 0;
+        let mistakeCount = 0;
+        let mistakesList = [];
+        let attemptCount = 1;
+        let userName = '';
+        let userNameReading = '';
+        let userBirthdate = '';
+        let shuffledQuestions = [];
+        let currentQuestionAnsweredCorrectly = false;
+        let currentQuestionMistake = null;
+
+        // Validate hiragana input
+        function isHiragana(str) {
+            // Allow hiragana, spaces, and prolonged sound mark
+            return /^[\u3040-\u309F\u30FC\s]+$/.test(str);
+        }
+
+        // Shuffle array
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Start Quiz
+        function startQuiz() {
+            // Reset error states
+            document.getElementById('name-group').classList.remove('error');
+            document.getElementById('name-reading-group').classList.remove('error');
+            document.getElementById('birthdate-group').classList.remove('error');
+
+            userName = document.getElementById('name').value.trim();
+            userNameReading = document.getElementById('name-reading').value.trim();
+            userBirthdate = document.getElementById('birthdate').value;
+
+            let hasError = false;
+
+            if (!userName) {
+                document.getElementById('name-group').classList.add('error');
+                hasError = true;
+            }
+
+            if (!userNameReading) {
+                document.getElementById('name-reading-group').classList.add('error');
+                hasError = true;
+            } else if (!isHiragana(userNameReading)) {
+                document.getElementById('name-reading-group').classList.add('error');
+                document.querySelector('#name-reading-group .error-message').textContent = 'ひらがなで入力してください';
+                hasError = true;
+            }
+
+            if (!userBirthdate) {
+                document.getElementById('birthdate-group').classList.add('error');
+                hasError = true;
+            }
+
+            if (hasError) {
+                return;
+            }
+
+            // Reset state
+            currentQuestion = 0;
+            mistakeCount = 0;
+            mistakesList = [];
+            shuffledQuestions = shuffleArray(questions);
+            currentQuestionAnsweredCorrectly = false;
+            currentQuestionMistake = null;
+
+            // Switch screen
+            document.getElementById('registration-screen').classList.remove('active');
+            document.getElementById('quiz-screen').classList.add('active');
+
+            updateAttemptBadge();
+            showQuestion();
+        }
+
+        // Show Question
+        function showQuestion() {
+            const question = shuffledQuestions[currentQuestion];
+            currentQuestionAnsweredCorrectly = false;
+            currentQuestionMistake = null;
+            
+            document.getElementById('question-number').textContent = `第${currentQuestion + 1}問`;
+            document.getElementById('question-text').textContent = question.text;
+            document.getElementById('progress-current').textContent = `問題 ${currentQuestion + 1}/20`;
+            document.getElementById('progress-score').textContent = `間違い: ${mistakeCount}`;
+            document.getElementById('progress-fill').style.width = `${(currentQuestion / 20) * 100}%`;
+
+            // Reset buttons
+            const btnTrue = document.getElementById('btn-true');
+            const btnFalse = document.getElementById('btn-false');
+            btnTrue.classList.remove('correct', 'incorrect', 'correct-hint');
+            btnFalse.classList.remove('correct', 'incorrect', 'correct-hint');
+            btnTrue.disabled = false;
+            btnFalse.disabled = false;
+
+            // Hide feedback and next button
+            document.getElementById('feedback').classList.remove('show', 'correct', 'incorrect');
+            document.getElementById('retry-hint').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'none';
+        }
+
+        // Submit Answer
+        function submitAnswer(answer) {
+            const question = shuffledQuestions[currentQuestion];
+            const isCorrect = answer === question.answer;
+            const btnTrue = document.getElementById('btn-true');
+            const btnFalse = document.getElementById('btn-false');
+
+            if (isCorrect) {
+                // Correct answer
+                if (answer) {
+                    btnTrue.classList.add('correct');
+                } else {
+                    btnFalse.classList.add('correct');
+                }
+                
+                // Disable both buttons
+                btnTrue.disabled = true;
+                btnFalse.disabled = true;
+
+                // Show success feedback
+                const feedback = document.getElementById('feedback');
+                feedback.classList.remove('incorrect');
+                feedback.classList.add('correct', 'show');
+                document.getElementById('feedback-title').innerHTML = '✅ 正解！';
+                document.getElementById('feedback-text').textContent = question.explanation;
+                document.getElementById('retry-hint').style.display = 'none';
+
+                // If this question was previously answered wrong, record it
+                if (currentQuestionMistake) {
+                    mistakesList.push(currentQuestionMistake);
+                }
+
+                currentQuestionAnsweredCorrectly = true;
+
+                // Show next button
+                document.getElementById('next-btn').style.display = 'block';
+                document.getElementById('next-btn').textContent = 
+                    currentQuestion === 19 ? '結果を見る' : '次の問題へ';
+
+            } else {
+                // Wrong answer - allow retry
+                mistakeCount++;
+                document.getElementById('progress-score').textContent = `間違い: ${mistakeCount}`;
+
+                // Record mistake details (only first time for this question)
+                if (!currentQuestionMistake) {
+                    currentQuestionMistake = {
+                        question: question.text,
+                        yourAnswer: answer ? '⭕' : '❌',
+                        correctAnswer: question.answer ? '⭕' : '❌',
+                        explanation: question.explanation
+                    };
+                }
+
+                // Mark wrong button
+                if (answer) {
+                    btnTrue.classList.add('incorrect');
+                    btnTrue.disabled = true;
+                    btnFalse.classList.add('correct-hint');
+                } else {
+                    btnFalse.classList.add('incorrect');
+                    btnFalse.disabled = true;
+                    btnTrue.classList.add('correct-hint');
+                }
+
+                // Show error feedback with retry hint
+                const feedback = document.getElementById('feedback');
+                feedback.classList.remove('correct');
+                feedback.classList.add('incorrect', 'show');
+                document.getElementById('feedback-title').innerHTML = '❌ 不正解';
+                document.getElementById('feedback-text').textContent = question.explanation;
+                document.getElementById('retry-hint').style.display = 'block';
+            }
+        }
+
+        // Next Question
+        function nextQuestion() {
+            currentQuestion++;
+
+            if (currentQuestion >= 20) {
+                showResults();
+            } else {
+                showQuestion();
+            }
+        }
+
+        // Show Results
+        function showResults() {
+            document.getElementById('quiz-screen').classList.remove('active');
+            document.getElementById('results-screen').classList.add('active');
+
+            // Update stats
+            document.getElementById('stat-mistakes').textContent = mistakeCount;
+            document.getElementById('stat-attempts').textContent = attemptCount;
+
+            // Show review section if there were mistakes
+            if (mistakesList.length > 0) {
+                document.getElementById('review-section').style.display = 'block';
+                const reviewList = document.getElementById('review-list');
+                reviewList.innerHTML = mistakesList.map((m, index) => `
+                    <div class="review-item">
+                        <p class="question">${index + 1}. ${m.question}</p>
+                        <p class="your-answer">あなたの最初の回答: ${m.yourAnswer}</p>
+                        <p class="correct-answer">正解: ${m.correctAnswer}</p>
+                        <p class="explanation">${m.explanation}</p>
+                    </div>
+                `).join('');
+            } else {
+                document.getElementById('review-section').style.display = 'none';
+            }
+
+            // Generate certificate
+            generateCertificate();
+            
+            // Save to log
+            savePassLog();
+        }
+
+        // Update Attempt Badge
+        function updateAttemptBadge() {
+            document.getElementById('attempt-badge').textContent = `挑戦回数: ${attemptCount}回目`;
+        }
+
+        // Generate Certificate
+        function generateCertificate() {
+            const today = new Date();
+            const expiryDate = new Date(today);
+            expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+
+            const formatDate = (date) => {
+                return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
+            };
+
+            const formatBirthdate = (dateStr) => {
+                const date = new Date(dateStr);
+                return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
+            };
+
+            const certificateHTML = `
+                <div class="certificate">
+                    <div class="certificate-content">
+                        <div class="certificate-badge">🏆</div>
+                        <h2>修了証</h2>
+                        <p class="subtitle">Safety Training Certificate</p>
+                        
+                        <p class="name">${userName}</p>
+                        <p class="name-reading">（${userNameReading}）</p>
+                        
+                        <div class="details">
+                            <div class="detail-item">
+                                <div class="detail-label">生年月日</div>
+                                <div class="detail-value">${formatBirthdate(userBirthdate)}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">受講日</div>
+                                <div class="detail-value">${formatDate(today)}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">試験結果</div>
+                                <div class="detail-value">全問正解（間違い${mistakeCount}回）</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">挑戦回数</div>
+                                <div class="detail-value">${attemptCount}回</div>
+                            </div>
+                        </div>
+                        
+                        <p style="font-size: 0.9em; margin-bottom: 15px;">
+                            上記の者は、Amazon FC安全教育テストに<br>合格したことを証明します。
+                        </p>
+                        
+                        <div class="validity">
+                            <div class="validity-label">有効期限</div>
+                            <div class="validity-date">${formatDate(expiryDate)}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('certificate-container').innerHTML = certificateHTML;
+        }
+
+        // Save Pass Log
+        function savePassLog() {
+            const today = new Date();
+            const expiryDate = new Date(today);
+            expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+
+            const logEntry = {
+                name: userName,
+                nameReading: userNameReading,
+                birthdate: userBirthdate,
+                passDate: today.toISOString(),
+                expiryDate: expiryDate.toISOString(),
+                attempts: attemptCount,
+                mistakes: mistakeCount,
+                mistakeDetails: mistakesList
+            };
+
+            // Get existing logs
+            let logs = JSON.parse(localStorage.getItem('safetyTestLogs') || '[]');
+            logs.push(logEntry);
+            localStorage.setItem('safetyTestLogs', JSON.stringify(logs));
+        }
+
+        // Show History
+        function showHistory() {
+            const logs = JSON.parse(localStorage.getItem('safetyTestLogs') || '[]');
+            const historyList = document.getElementById('history-list');
+
+            if (logs.length === 0) {
+                historyList.innerHTML = '<div class="no-history">合格履歴がありません</div>';
+            } else {
+                const formatDate = (dateStr) => {
+                    const date = new Date(dateStr);
+                    return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+                };
+
+                const isExpired = (dateStr) => new Date(dateStr) < new Date();
+
+                historyList.innerHTML = logs.slice().reverse().map(log => `
+                    <div class="history-item">
+                        <div class="name">${log.name}（${log.nameReading || ''}）</div>
+                        <div class="date">合格日: ${formatDate(log.passDate)} | 間違い: ${log.mistakes || 0}回</div>
+                        <div class="validity" style="color: ${isExpired(log.expiryDate) ? '#ef4444' : '#4ade80'}">
+                            ${isExpired(log.expiryDate) ? '期限切れ' : `有効期限: ${formatDate(log.expiryDate)}`}
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            document.getElementById('history-modal').classList.add('active');
+        }
+
+        // Close History
+        function closeHistory() {
+            document.getElementById('history-modal').classList.remove('active');
+        }
+
+        // Close modal on outside click
+        document.getElementById('history-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeHistory();
+            }
+        });
+
+        // Real-time validation for hiragana input
+        document.getElementById('name-reading').addEventListener('input', function(e) {
+            const value = e.target.value;
+            if (value && !isHiragana(value)) {
+                document.getElementById('name-reading-group').classList.add('error');
+                document.querySelector('#name-reading-group .error-message').textContent = 'ひらがなで入力してください';
+            } else {
+                document.getElementById('name-reading-group').classList.remove('error');
+            }
+        });
+    </script>
+</body>
+</html>

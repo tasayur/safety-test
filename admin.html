@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理画面 | 安全教育テスト</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(90deg, #ff9a56, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .card h2 {
+            color: #ff9a56;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        /* QR Code Section */
+        .qr-section {
+            text-align: center;
+        }
+
+        .url-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .url-input-group input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .url-input-group input:focus {
+            outline: none;
+            border-color: #ff9a56;
+        }
+
+        .url-input-group input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff9a56, #ff6b6b);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255,107,107,0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .qr-display {
+            margin: 30px 0;
+            padding: 30px;
+            background: #fff;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .qr-display img {
+            display: block;
+        }
+
+        .qr-instructions {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(34, 197, 94, 0.2);
+            border-radius: 12px;
+            text-align: left;
+        }
+
+        .qr-instructions h3 {
+            color: #4ade80;
+            margin-bottom: 10px;
+        }
+
+        .qr-instructions ol {
+            padding-left: 20px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .qr-instructions li {
+            margin-bottom: 8px;
+        }
+
+        /* Logs Section */
+        .logs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logs-header h2 {
+            margin-bottom: 0;
+        }
+
+        .export-btn {
+            padding: 10px 20px;
+            font-size: 0.9em;
+        }
+
+        .logs-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .logs-table th,
+        .logs-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logs-table th {
+            background: rgba(255,255,255,0.1);
+            color: #ff9a56;
+            font-weight: 600;
+        }
+
+        .logs-table tr:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .status-valid {
+            color: #4ade80;
+        }
+
+        .status-expired {
+            color: #ef4444;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .clear-btn {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 2px solid #ef4444;
+            margin-left: 10px;
+        }
+
+        .clear-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #ff9a56;
+        }
+
+        .stat-label {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9em;
+        }
+
+        /* Deploy Instructions */
+        .deploy-section {
+            margin-top: 30px;
+        }
+
+        .deploy-option {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .deploy-option h3 {
+            color: #4ade80;
+            margin-bottom: 10px;
+        }
+
+        .deploy-option p {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.95em;
+        }
+
+        .deploy-option a {
+            color: #ff9a56;
+            text-decoration: none;
+        }
+
+        .deploy-option a:hover {
+            text-decoration: underline;
+        }
+
+        .copy-url {
+            background: rgba(255,255,255,0.1);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .copy-url code {
+            flex: 1;
+            color: #4ade80;
+            word-break: break-all;
+        }
+
+        .copy-url button {
+            padding: 8px 15px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .url-input-group {
+                flex-direction: column;
+            }
+
+            .logs-table {
+                font-size: 0.85em;
+            }
+
+            .logs-table th,
+            .logs-table td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 管理画面</h1>
+
+        <!-- QR Code Generator -->
+        <div class="card qr-section">
+            <h2>📱 QRコード生成</h2>
+            
+            <div class="deploy-section">
+                <div class="deploy-option">
+                    <h3>📤 Step 1: アプリを公開する</h3>
+                    <p><strong>Netlify Drop（最も簡単）：</strong></p>
+                    <ol style="margin-top: 10px; padding-left: 20px; color: rgba(255,255,255,0.8);">
+                        <li><a href="https://app.netlify.com/drop" target="_blank">https://app.netlify.com/drop</a> を開く</li>
+                        <li>「Shinki App」フォルダ全体をドラッグ&ドロップ</li>
+                        <li>数秒で公開URL（例: https://xxx-xxx.netlify.app）が発行される</li>
+                    </ol>
+                </div>
+
+                <div class="deploy-option">
+                    <h3>🔗 Step 2: URLを入力してQRコード生成</h3>
+                    <p>公開されたURLを下に入力してください：</p>
+                </div>
+            </div>
+
+            <div class="url-input-group">
+                <input type="url" id="site-url" placeholder="https://your-site.netlify.app">
+                <button class="btn btn-primary" onclick="generateQR()">QRコード生成</button>
+            </div>
+
+            <div id="qr-container" style="display: none;">
+                <div class="qr-display">
+                    <img id="qr-image" src="" alt="QR Code">
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <button class="btn btn-secondary" onclick="downloadQR()">📥 QRコードをダウンロード</button>
+                    <button class="btn btn-secondary" onclick="printQR()" style="margin-left: 10px;">🖨️ 印刷用ページ</button>
+                </div>
+
+                <div class="qr-instructions">
+                    <h3>📋 使い方</h3>
+                    <ol>
+                        <li>上のQRコードを印刷またはスクリーンに表示</li>
+                        <li>受講者がスマートフォンのカメラでスキャン</li>
+                        <li>自動的にテストページが開きます</li>
+                        <li>名前・生年月日を入力してテスト開始</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logs Section -->
+        <div class="card">
+            <div class="logs-header">
+                <h2>📊 合格者ログ</h2>
+                <div>
+                    <button class="btn btn-secondary export-btn" onclick="exportCSV()">📥 CSV出力</button>
+                    <button class="btn btn-secondary clear-btn" onclick="clearLogs()">🗑️ クリア</button>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="total-count">0</div>
+                    <div class="stat-label">総合格者数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="valid-count">0</div>
+                    <div class="stat-label">有効期限内</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="expired-count">0</div>
+                    <div class="stat-label">期限切れ</div>
+                </div>
+            </div>
+
+            <div id="logs-container">
+                <table class="logs-table" id="logs-table">
+                    <thead>
+                        <tr>
+                            <th>氏名</th>
+                            <th>ふりがな</th>
+                            <th>生年月日</th>
+                            <th>合格日</th>
+                            <th>有効期限</th>
+                            <th>状態</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logs-body">
+                    </tbody>
+                </table>
+                <div class="no-data" id="no-data">合格者データがありません</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>💡 ヒント</h2>
+            <ul style="padding-left: 20px; color: rgba(255,255,255,0.8);">
+                <li>合格データはブラウザのローカルストレージに保存されます</li>
+                <li>定期的にCSV出力してバックアップを取ることをお勧めします</li>
+                <li>各受講者のブラウザにも合格履歴が保存されます</li>
+                <li>QRコードは掲示用に印刷できます</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Load and display logs on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadLogs();
+        });
+
+        // Generate QR Code using Google Charts API
+        function generateQR() {
+            const url = document.getElementById('site-url').value.trim();
+            
+            if (!url) {
+                alert('URLを入力してください');
+                return;
+            }
+
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                alert('有効なURL（http:// または https:// で始まる）を入力してください');
+                return;
+            }
+
+            // Use Google Charts API for QR code generation
+            const qrUrl = `https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=${encodeURIComponent(url)}&choe=UTF-8`;
+            
+            document.getElementById('qr-image').src = qrUrl;
+            document.getElementById('qr-container').style.display = 'block';
+        }
+
+        // Download QR Code
+        function downloadQR() {
+            const img = document.getElementById('qr-image');
+            const link = document.createElement('a');
+            link.href = img.src;
+            link.download = 'safety-test-qrcode.png';
+            link.click();
+        }
+
+        // Print QR Code
+        function printQR() {
+            const url = document.getElementById('site-url').value.trim();
+            const qrUrl = document.getElementById('qr-image').src;
+            
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>安全教育テスト QRコード</title>
+                    <style>
+                        body {
+                            font-family: sans-serif;
+                            text-align: center;
+                            padding: 40px;
+                        }
+                        h1 { margin-bottom: 10px; }
+                        .subtitle { color: #666; margin-bottom: 30px; }
+                        img { margin: 20px 0; }
+                        .url { 
+                            background: #f5f5f5; 
+                            padding: 10px 20px; 
+                            border-radius: 8px;
+                            display: inline-block;
+                            word-break: break-all;
+                        }
+                        .instructions {
+                            margin-top: 30px;
+                            text-align: left;
+                            max-width: 400px;
+                            margin-left: auto;
+                            margin-right: auto;
+                            background: #f9f9f9;
+                            padding: 20px;
+                            border-radius: 10px;
+                        }
+                        .instructions h3 { margin-bottom: 10px; }
+                        .instructions ol { padding-left: 20px; }
+                        .instructions li { margin-bottom: 8px; }
+                    </style>
+                </head>
+                <body>
+                    <h1>🏭 安全教育テスト</h1>
+                    <p class="subtitle">Amazon FC 安全ルール確認</p>
+                    
+                    <img src="${qrUrl}" alt="QR Code">
+                    
+                    <p class="url">${url}</p>
+                    
+                    <div class="instructions">
+                        <h3>📱 受講方法</h3>
+                        <ol>
+                            <li>スマートフォンのカメラでQRコードをスキャン</li>
+                            <li>表示されたリンクをタップ</li>
+                            <li>氏名・ふりがな・生年月日を入力</li>
+                            <li>「テスト開始」をタップして受講</li>
+                        </ol>
+                    </div>
+                    
+                    <script>window.onload = function() { window.print(); }<\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        }
+
+        // Load logs from localStorage
+        function loadLogs() {
+            const logs = JSON.parse(localStorage.getItem('safetyTestLogs') || '[]');
+            const tbody = document.getElementById('logs-body');
+            const noData = document.getElementById('no-data');
+            const table = document.getElementById('logs-table');
+
+            // Calculate stats
+            const now = new Date();
+            let validCount = 0;
+            let expiredCount = 0;
+
+            logs.forEach(log => {
+                if (new Date(log.expiryDate) >= now) {
+                    validCount++;
+                } else {
+                    expiredCount++;
+                }
+            });
+
+            document.getElementById('total-count').textContent = logs.length;
+            document.getElementById('valid-count').textContent = validCount;
+            document.getElementById('expired-count').textContent = expiredCount;
+
+            if (logs.length === 0) {
+                table.style.display = 'none';
+                noData.style.display = 'block';
+                return;
+            }
+
+            table.style.display = 'table';
+            noData.style.display = 'none';
+
+            const formatDate = (dateStr) => {
+                const date = new Date(dateStr);
+                return `${date.getFullYear()}/${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getDate().toString().padStart(2,'0')}`;
+            };
+
+            tbody.innerHTML = logs.slice().reverse().map(log => {
+                const isExpired = new Date(log.expiryDate) < now;
+                return `
+                    <tr>
+                        <td>${log.name}</td>
+                        <td>${log.nameReading || '-'}</td>
+                        <td>${formatDate(log.birthdate)}</td>
+                        <td>${formatDate(log.passDate)}</td>
+                        <td>${formatDate(log.expiryDate)}</td>
+                        <td class="${isExpired ? 'status-expired' : 'status-valid'}">
+                            ${isExpired ? '期限切れ' : '有効'}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Export to CSV
+        function exportCSV() {
+            const logs = JSON.parse(localStorage.getItem('safetyTestLogs') || '[]');
+            
+            if (logs.length === 0) {
+                alert('エクスポートするデータがありません');
+                return;
+            }
+
+            const formatDate = (dateStr) => {
+                const date = new Date(dateStr);
+                return `${date.getFullYear()}/${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getDate().toString().padStart(2,'0')}`;
+            };
+
+            const now = new Date();
+            
+            // BOM for Excel UTF-8 compatibility
+            let csv = '\uFEFF';
+            csv += '氏名,ふりがな,生年月日,合格日,有効期限,状態,間違い回数,挑戦回数\n';
+            
+            logs.forEach(log => {
+                const isExpired = new Date(log.expiryDate) < now;
+                csv += `"${log.name}","${log.nameReading || ''}","${formatDate(log.birthdate)}","${formatDate(log.passDate)}","${formatDate(log.expiryDate)}","${isExpired ? '期限切れ' : '有効'}","${log.mistakes || 0}","${log.attempts || 1}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `安全教育テスト_合格者ログ_${new Date().toISOString().slice(0,10)}.csv`;
+            link.click();
+        }
+
+        // Clear logs
+        function clearLogs() {
+            if (confirm('本当にすべての合格者ログを削除しますか？\nこの操作は取り消せません。')) {
+                localStorage.removeItem('safetyTestLogs');
+                loadLogs();
+                alert('ログを削除しました');
+            }
+        }
+    </script>
+</body>
+</html>
