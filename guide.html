@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新規入場者教育 受講ガイド | HSG1</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+      background: #fff;
+      color: #1a1a1a;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0 0 40px;
+    }
+
+    /* ヘッダー */
+    header {
+      background: #1a1a1a;
+      color: #fff;
+      padding: 20px 20px 18px;
+    }
+    header h1 {
+      font-size: 1.1rem;
+      font-weight: bold;
+      letter-spacing: 0.02em;
+    }
+    header p {
+      font-size: 0.78rem;
+      color: #aaa;
+      margin-top: 4px;
+    }
+
+    /* ステップ共通 */
+    .step {
+      padding: 24px 20px 20px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: #fff;
+      margin-bottom: 10px;
+      flex-shrink: 0;
+    }
+    .s1 .step-num { background: #6d28d9; }
+    .s2 .step-num { background: #374151; }
+    .s3 .step-num { background: #1d4ed8; }
+    .s4 .step-num { background: #15803d; }
+    .s5 .step-num { background: #b91c1c; }
+
+    .step-title {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .step-sub {
+      font-size: 0.78rem;
+      color: #888;
+      margin-bottom: 10px;
+    }
+
+    .step-desc {
+      font-size: 0.88rem;
+      color: #444;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    /* 動画 */
+    video {
+      width: 100%;
+      border-radius: 8px;
+      background: #000;
+      display: block;
+    }
+
+    /* 注意ボックス */
+    .note {
+      background: #fffbeb;
+      border-left: 3px solid #f59e0b;
+      padding: 10px 14px;
+      font-size: 0.82rem;
+      color: #78350f;
+      border-radius: 0 6px 6px 0;
+      margin-top: 12px;
+      line-height: 1.6;
+    }
+
+    /* QRブロック */
+    .qr-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      margin: 4px 0 12px;
+    }
+    .qr-wrap img {
+      width: 180px;
+      height: 180px;
+      border-radius: 8px;
+      border: 1px solid #eee;
+    }
+    .qr-url {
+      font-size: 0.78rem;
+      color: #1d4ed8;
+      word-break: break-all;
+      text-align: center;
+    }
+    .qr-list {
+      font-size: 0.82rem;
+      color: #555;
+      line-height: 1.8;
+      padding-left: 16px;
+      width: 100%;
+    }
+
+    /* STEP4リスト */
+    .save-list {
+      list-style: none;
+      padding: 0;
+      margin: 8px 0 12px;
+    }
+    .save-list li {
+      font-size: 0.88rem;
+      padding: 10px 14px;
+      background: #f9fafb;
+      border-radius: 6px;
+      margin-bottom: 6px;
+      color: #333;
+    }
+
+    /* STEP5フロー */
+    .flow {
+      margin-top: 4px;
+    }
+    .flow-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px;
+      background: #f9fafb;
+      border-radius: 8px;
+      margin-bottom: 4px;
+    }
+    .flow-icon {
+      font-size: 1.3rem;
+      min-width: 28px;
+      text-align: center;
+      margin-top: 1px;
+    }
+    .flow-label {
+      font-size: 0.9rem;
+      font-weight: bold;
+      margin-bottom: 3px;
+    }
+    .flow-desc {
+      font-size: 0.82rem;
+      color: #666;
+      line-height: 1.5;
+    }
+    .flow-arrow {
+      text-align: center;
+      color: #ccc;
+      font-size: 1rem;
+      margin: 2px 0;
+    }
+
+    /* フッター */
+    footer {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #bbb;
+      padding: 24px 20px 0;
+      line-height: 1.8;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>新規入場者教育 受講ガイド</h1>
+    <p>HSG1 アマゾンフルフィルメントセンター ／ 工事関係者向け</p>
+  </header>
+
+  <!-- STEP 1 -->
+  <div class="step s1">
+    <div class="step-num">1</div>
+    <p class="step-title">教育動画①を視聴する</p>
+    <p class="step-sub">共通ルール ｜ 音声あり・イヤホン推奨</p>
+    <video controls>
+      <source src="共通ルール.mp4" type="video/mp4">
+      お使いのブラウザは動画再生に対応していません。
+    </video>
+    <p class="note">⚠️ 最後まで視聴してください</p>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step s2">
+    <div class="step-num">2</div>
+    <p class="step-title">教育動画②を視聴する</p>
+    <p class="step-sub">HSG1ローカルルール ｜ 約10分程・音声あり・イヤホン推奨</p>
+    <video controls>
+      <source src="新規入場者教育HSG1ローカルルール.mp4" type="video/mp4">
+      お使いのブラウザは動画再生に対応していません。
+    </video>
+    <p class="note">⚠️ 最後まで視聴してください</p>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step s3">
+    <div class="step-num">3</div>
+    <p class="step-title">理解度テストを受ける</p>
+    <p class="step-desc">QRコードをスマートフォンで読み取り、テストを受けてください。</p>
+    <div class="qr-wrap">
+      <img src="QR_056698.png" alt="テスト用QRコード">
+      <a href="https://tasayur.github.io/safety-test/?v=5" target="_blank" class="qr-url">
+        https://tasayur.github.io/safety-test/?v=5
+      </a>
+      <ul class="qr-list">
+        <li>・ 全問正解で「終了証」が表示されます</li>
+        <li>・ 不合格の場合は再挑戦できます</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step s4">
+    <div class="step-num">4</div>
+    <p class="step-title">終了証を保存する</p>
+    <p class="step-desc">テスト合格後に表示される「終了証」を保管してください。</p>
+    <ul class="save-list">
+      <li>📱　スクリーンショットを撮影してスマホに保存</li>
+      <li>🖨️　印刷して書面で保管</li>
+    </ul>
+    <p class="note">⚠️ 入館当日に提示を求める場合があります</p>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step s5">
+    <div class="step-num">5</div>
+    <p class="step-title">入館当日の流れ</p>
+    <p class="step-sub">作業開始前に確認が行われます</p>
+    <div class="flow">
+      <div class="flow-row">
+        <div class="flow-icon">📋</div>
+        <div>
+          <p class="flow-label">終了証の提示</p>
+          <p class="flow-desc">工事担当者（Amazon）に終了証（画面または印刷）をご提示ください。</p>
+        </div>
+      </div>
+      <p class="flow-arrow">↓</p>
+      <div class="flow-row">
+        <div class="flow-icon">✅</div>
+        <div>
+          <p class="flow-label">受講履歴の確認</p>
+          <p class="flow-desc">担当者が受講完了を確認します。</p>
+        </div>
+      </div>
+      <p class="flow-arrow">↓</p>
+      <div class="flow-row">
+        <div class="flow-icon">🪖</div>
+        <div>
+          <p class="flow-label">ヘルメットステッカーの付与</p>
+          <p class="flow-desc">確認完了後、ヘルメットにステッカーが貼られます。</p>
+        </div>
+      </div>
+      <p class="flow-arrow">↓</p>
+      <div class="flow-row">
+        <div class="flow-icon">🚧</div>
+        <div>
+          <p class="flow-label">作業開始</p>
+          <p class="flow-desc">ステッカー確認後、入場・作業が許可されます。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>お問い合わせ：工事担当者まで</p>
+    <p><a href="https://docs.google.com/spreadsheets/d/1UHeUjO8vVwBhf8tUjkUTwGe4giIVfRPsfYbgDuglNBE/edit?gid=0#gid=0" target="_blank" style="color:#bbb; text-decoration:none; cursor:default;">HSG1 アマゾンフルフィルメントセンター</a></p>
+  </footer>
+
+</body>
+</html>
