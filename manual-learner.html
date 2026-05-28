@@ -26,6 +26,11 @@
   .footer { text-align:center; font-size:0.78em; color:#999; margin-top:32px; padding-top:18px; border-top:1px solid #eee; }
   .cert-preview { background:#fffbeb; border:1.5px solid #f59e0b; border-radius:8px; padding:12px 16px; margin-top:10px; font-size:0.85em; }
   .cert-preview .ct { font-weight:700; color:#92400e; margin-bottom:4px; font-size:0.92em; }
+  .qr-block { display:flex; align-items:center; gap:20px; background:#f9f9f9; border:1px solid #e0e0e0; border-radius:8px; padding:12px 16px; margin-top:10px; }
+  .qr-block img { width:100px; height:100px; flex-shrink:0; }
+  .qr-block .qr-info { font-size:0.83em; color:#444; line-height:1.8; }
+  .qr-block .qr-info .qr-label { font-weight:700; color:#ff6b35; margin-bottom:2px; font-size:0.9em; }
+  .qr-block .qr-info a { color:#0f6ab4; word-break:break-all; }
   .input-table { width:100%; border-collapse:collapse; margin-top:8px; font-size:0.88em; }
   .input-table td { padding:6px 10px; border:1px solid #e5e7eb; }
   .input-table td:first-child { background:#f9fafb; font-weight:600; width:40%; color:#374151; }
@@ -63,6 +68,14 @@
       <div class="step-body">
         <h3>アプリを開く</h3>
         <p>担当者から案内されたQRコードをスマホで読み取るか、URLをブラウザに入力してください。</p>
+        <div class="qr-block">
+          <img src="https://tasayur.github.io/safety-test/QR_elearning.png" alt="QRコード">
+          <div class="qr-info">
+            <div class="qr-label">📱 QRコードを読み取る</div>
+            または、ブラウザに直接入力：<br>
+            <a href="https://tasayur.github.io/safety-test/elearning.html">https://tasayur.github.io/safety-test/elearning.html</a>
+          </div>
+        </div>
         <div class="note">スマホ・タブレット・PCどこからでも受講できます。</div>
       </div>
     </div>
