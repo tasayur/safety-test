@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>受講者向け説明書</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Hiragino Sans','Meiryo',sans-serif; background:#f5f5f5; color:#222; }
+  .page { max-width:680px; margin:0 auto; background:#fff; padding:40px 44px; }
+  .top-bar { background:#ff6b35; color:#fff; border-radius:8px; padding:18px 24px; margin-bottom:28px; display:flex; align-items:center; gap:16px; }
+  .top-bar .icon { font-size:2.2em; }
+  .top-bar h1 { font-size:1.35em; font-weight:900; letter-spacing:0.04em; }
+  .top-bar p { font-size:0.82em; opacity:0.9; margin-top:3px; }
+  .pw-box { background:#fff3cd; border:2px solid #f59e0b; border-radius:10px; padding:14px 20px; margin-bottom:28px; display:flex; align-items:center; gap:14px; }
+  .pw-box .label { font-size:0.82em; color:#92400e; font-weight:700; }
+  .pw-box .pw { font-size:1.6em; font-weight:900; letter-spacing:0.15em; color:#92400e; }
+  .steps { counter-reset: step; }
+  .step { display:flex; gap:16px; margin-bottom:22px; align-items:flex-start; }
+  .step-num { background:#ff6b35; color:#fff; border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:1.05em; flex-shrink:0; margin-top:2px; }
+  .step-body h3 { font-size:1.05em; font-weight:700; margin-bottom:5px; color:#111; }
+  .step-body p { font-size:0.9em; color:#555; line-height:1.7; }
+  .step-body .note { background:#f0fdf4; border-left:3px solid #22c55e; padding:7px 12px; margin-top:8px; font-size:0.85em; color:#166534; border-radius:0 6px 6px 0; }
+  .step-body .warn { background:#fef2f2; border-left:3px solid #ef4444; padding:7px 12px; margin-top:8px; font-size:0.85em; color:#991b1b; border-radius:0 6px 6px 0; }
+  .divider { border:none; border-top:1px dashed #ddd; margin:24px 0; }
+  .footer { text-align:center; font-size:0.78em; color:#999; margin-top:32px; padding-top:18px; border-top:1px solid #eee; }
+  .cert-preview { background:#fffbeb; border:1.5px solid #f59e0b; border-radius:8px; padding:12px 16px; margin-top:10px; font-size:0.85em; }
+  .cert-preview .ct { font-weight:700; color:#92400e; margin-bottom:4px; font-size:0.92em; }
+  .input-table { width:100%; border-collapse:collapse; margin-top:8px; font-size:0.88em; }
+  .input-table td { padding:6px 10px; border:1px solid #e5e7eb; }
+  .input-table td:first-child { background:#f9fafb; font-weight:600; width:40%; color:#374151; }
+  @media print {
+    body { background:#fff; }
+    .page { padding:24px 28px; box-shadow:none; }
+    .top-bar { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .step-num { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="top-bar">
+    <div class="icon">📋</div>
+    <div>
+      <h1>新規入場者教育　受講手順</h1>
+      <p>受講者向け説明書　― eラーニング版</p>
+    </div>
+  </div>
+
+  <div class="pw-box">
+    <div>
+      <div class="label">ログインパスワード</div>
+      <div class="pw">RFESHINKI</div>
+    </div>
+    <div style="font-size:0.82em;color:#92400e;margin-left:auto;line-height:1.7">大文字・小文字どちらでも可<br>担当者に確認してください</div>
+  </div>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>アプリを開く</h3>
+        <p>担当者から案内されたQRコードをスマホで読み取るか、URLをブラウザに入力してください。</p>
+        <div class="note">スマホ・タブレット・PCどこからでも受講できます。</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>パスワードを入力する</h3>
+        <p>上に記載のパスワードを入力して「入力」ボタンを押してください。</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>現場・工事を選ぶ</h3>
+        <p>一覧から自分が作業する現場・工事名を選んで「選択して受講開始」を押してください。</p>
+        <div class="warn">わからない場合は担当者に確認してください。</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h3>動画①を最後まで視聴する</h3>
+        <p>安全共通ルールの動画を最後まで見てください。視聴が終わったら「動画を最後まで視聴しました」にチェックを入れて「次へ」を押します。</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <h3>動画②を最後まで視聴する</h3>
+        <p>現場のローカルルール動画を最後まで見てください。同様にチェックを入れて「次へ」を押します。</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-body">
+        <h3>受講者情報を入力する</h3>
+        <p>以下の項目をすべて入力してください。</p>
+        <table class="input-table">
+          <tr><td>一次会社名</td><td>元請け会社名を入力</td></tr>
+          <tr><td>所属会社名</td><td>自分が所属する会社名</td></tr>
+          <tr><td>氏名</td><td>フルネーム（漢字）</td></tr>
+          <tr><td>ふりがな</td><td>ひらがなで入力</td></tr>
+          <tr><td>生年月日</td><td>カレンダーから選択</td></tr>
+          <tr><td>本日の作業内容</td><td>例：2階 棚工事 組立作業</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">7</div>
+      <div class="step-body">
+        <h3>理解度テストを受ける（20問）</h3>
+        <p>○か×を選んでください。間違えてもその場で解説が出ます。正解するまで次に進めません。全問正解で合格です。</p>
+        <div class="note">何度でもやり直せます。焦らず取り組んでください。</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">8</div>
+      <div class="step-body">
+        <h3>修了証を受け取る</h3>
+        <p>合格すると修了証が発行されます。「印刷/保存」ボタンで印刷するか、スクリーンショットを担当者に提出してください。</p>
+        <div class="cert-preview">
+          <div class="ct">修了証に記載される内容</div>
+          氏名・所属会社・受講日・有効期限（1年間）・修了証番号
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="divider">
+  <div class="footer">
+    Amazon FC 新規入場者教育　eラーニング版　―　受講者向け説明書
+  </div>
+
+</div>
+</body>
+</html>

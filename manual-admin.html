@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管理者向け説明書</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Hiragino Sans','Meiryo',sans-serif; background:#f5f5f5; color:#222; }
+  .page { max-width:680px; margin:0 auto; background:#fff; padding:40px 44px; }
+  .top-bar { background:#1e40af; color:#fff; border-radius:8px; padding:18px 24px; margin-bottom:28px; display:flex; align-items:center; gap:16px; }
+  .top-bar .icon { font-size:2.2em; }
+  .top-bar h1 { font-size:1.35em; font-weight:900; letter-spacing:0.04em; }
+  .top-bar p { font-size:0.82em; opacity:0.9; margin-top:3px; }
+  .pw-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:28px; }
+  .pw-box { border-radius:10px; padding:14px 18px; }
+  .pw-box.user { background:#fff3cd; border:2px solid #f59e0b; }
+  .pw-box.admin { background:#eff6ff; border:2px solid #3b82f6; }
+  .pw-box .label { font-size:0.75em; font-weight:700; margin-bottom:4px; }
+  .pw-box.user .label { color:#92400e; }
+  .pw-box.admin .label { color:#1e40af; }
+  .pw-box .pw { font-size:1.3em; font-weight:900; letter-spacing:0.1em; }
+  .pw-box.user .pw { color:#92400e; }
+  .pw-box.admin .pw { color:#1e40af; }
+  .pw-box .sub { font-size:0.75em; margin-top:3px; }
+  .pw-box.user .sub { color:#92400e; }
+  .pw-box.admin .sub { color:#1e40af; }
+  .section { margin-bottom:30px; }
+  .section-title { font-size:1.0em; font-weight:800; color:#1e40af; padding:8px 14px; background:#eff6ff; border-radius:8px; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .steps { }
+  .step { display:flex; gap:14px; margin-bottom:18px; align-items:flex-start; }
+  .step-num { background:#1e40af; color:#fff; border-radius:50%; width:30px; height:30px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:0.95em; flex-shrink:0; margin-top:2px; }
+  .step-body h3 { font-size:0.98em; font-weight:700; margin-bottom:4px; color:#111; }
+  .step-body p { font-size:0.88em; color:#555; line-height:1.7; }
+  .step-body .code { background:#f3f4f6; border:1px solid #e5e7eb; border-radius:6px; padding:5px 12px; font-family:monospace; font-size:0.95em; color:#111; margin-top:6px; display:inline-block; }
+  .step-body .note { background:#f0fdf4; border-left:3px solid #22c55e; padding:7px 12px; margin-top:8px; font-size:0.83em; color:#166534; border-radius:0 6px 6px 0; }
+  .step-body .warn { background:#fef2f2; border-left:3px solid #ef4444; padding:7px 12px; margin-top:8px; font-size:0.83em; color:#991b1b; border-radius:0 6px 6px 0; }
+  .table { width:100%; border-collapse:collapse; margin-top:8px; font-size:0.86em; }
+  .table th { background:#dbeafe; color:#1e40af; padding:7px 10px; text-align:left; font-weight:700; border:1px solid #bfdbfe; }
+  .table td { padding:7px 10px; border:1px solid #e5e7eb; color:#444; vertical-align:top; }
+  .table tr:nth-child(even) td { background:#f8fafc; }
+  .divider { border:none; border-top:1px dashed #ddd; margin:24px 0; }
+  .footer { text-align:center; font-size:0.78em; color:#999; margin-top:32px; padding-top:18px; border-top:1px solid #eee; }
+  .secret-box { background:#fdf2f8; border:1.5px solid #d946ef; border-radius:8px; padding:12px 16px; margin-bottom:20px; font-size:0.85em; }
+  .secret-box strong { color:#86198f; }
+  @media print {
+    body { background:#fff; }
+    .page { padding:24px 28px; box-shadow:none; }
+    .top-bar, .step-num, .section-title { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="top-bar">
+    <div class="icon">⚙️</div>
+    <div>
+      <h1>新規入場者教育　管理者マニュアル</h1>
+      <p>管理者向け説明書　― eラーニング版　【取扱注意】</p>
+    </div>
+  </div>
+
+  <div class="pw-grid">
+    <div class="pw-box user">
+      <div class="label">受講者パスワード</div>
+      <div class="pw">RFESHINKI</div>
+      <div class="sub">受講者全員に共通</div>
+    </div>
+    <div class="pw-box admin">
+      <div class="label">管理者パスワード</div>
+      <div class="pw">ADMIN</div>
+      <div class="sub">管理者のみ。他言無用</div>
+    </div>
+  </div>
+
+  <!-- 現場追加 -->
+  <div class="section">
+    <div class="section-title">🏗️ 現場・工事を追加する</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>管理者設定を開く</h3>
+          <p>パスワード画面の下の「⚙️ 管理者設定」をタップ</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>管理者パスワードを入力</h3>
+          <div class="code">ADMIN</div>
+          <p style="margin-top:6px">「認証」ボタンを押す</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>「新しい現場・工事を追加」に入力</h3>
+          <table class="table" style="margin-top:8px">
+            <tr><th>項目</th><th>入力内容</th></tr>
+            <tr><td>現場名・工事名</td><td>例：HSG1 棚工事（2期）</td></tr>
+            <tr><td>動画の種類</td><td>ローカルMP4 / Google Drive / YouTube / なし</td></tr>
+            <tr><td>MP4ファイル名 or URL</td><td>動画ファイル名またはURLを入力</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h3>「追加する」ボタンを押す</h3>
+          <p>受講者の選択画面に即時反映されます。</p>
+          <div class="note">設定はブラウザに保存されます。同じブラウザ・端末からは次回以降も引き続き使えます。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 現場削除 -->
+  <div class="section">
+    <div class="section-title">🗑️ 現場・工事を削除する</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>管理者設定を開いて認証する</h3>
+          <p>上記「現場追加」の手順1〜2と同じ</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>現場一覧の「削除」ボタンを押す</h3>
+          <p>確認ダイアログが出るので「OK」を選ぶと削除されます。</p>
+          <div class="warn">削除すると元に戻せません。工事が完全に終了したときだけ削除してください。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 受講履歴 -->
+  <div class="section">
+    <div class="section-title">📊 受講履歴を確認する</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>管理者設定を開いて認証する</h3>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>「スプレッドシートを開く」ボタンを押す</h3>
+          <p>Google スプレッドシートが開き、受講者の合格記録が一覧で確認できます。</p>
+          <div class="note">テスト合格時に自動記録されます。氏名・所属会社・生年月日・受講日・有効期限・間違い回数などが記録されます。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 動画の種類早見表 -->
+  <div class="section">
+    <div class="section-title">🎬 動画の種類　設定早見表</div>
+    <table class="table">
+      <tr><th>種類</th><th>入力内容</th><th>用途</th></tr>
+      <tr><td>ローカルMP4</td><td>ファイル名<br>例：ルール_A棟.mp4</td><td>HTMLと同じフォルダにMP4を置く場合</td></tr>
+      <tr><td>Google Drive</td><td>埋め込みURL<br>https://drive.google.com/file/d/〇〇/preview</td><td>DriveにアップしてURL共有する場合</td></tr>
+      <tr><td>動画なし</td><td>なし</td><td>現場固有の動画がない場合</td></tr>
+    </table>
+  </div>
+
+  <hr class="divider">
+  <div class="footer">
+    Amazon FC 新規入場者教育　eラーニング版　―　管理者向け説明書　【取扱注意】
+  </div>
+
+</div>
+</body>
+</html>
