@@ -25,6 +25,11 @@
   .pw-box .sub { font-size:0.75em; margin-top:3px; }
   .pw-box.user .sub { color:#92400e; }
   .pw-box.admin .sub { color:#1e40af; }
+  .qr-block { display:flex; align-items:center; gap:20px; background:#f0fdf4; border:1.5px solid #22c55e; border-radius:10px; padding:14px 18px; margin-bottom:24px; }
+  .qr-block img { width:100px; height:100px; flex-shrink:0; }
+  .qr-block .qr-info .qr-label { font-weight:800; color:#166534; font-size:0.88em; margin-bottom:4px; }
+  .qr-block .qr-info .qr-sub { font-size:0.8em; color:#555; line-height:1.7; }
+  .qr-block .qr-info a { color:#0f6ab4; word-break:break-all; font-size:0.83em; }
   .section { margin-bottom:30px; }
   .section-title { font-size:1.0em; font-weight:800; color:#1e40af; padding:8px 14px; background:#eff6ff; border-radius:8px; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
   .steps { }
@@ -54,7 +59,7 @@
 <div class="page">
 
   <div class="top-bar">
-    <div class="icon">⚙️</div>
+    <div class="icon">&#9881;&#65039;</div>
     <div>
       <h1>新規入場者教育　管理者マニュアル</h1>
       <p>管理者向け説明書　― eラーニング版　【取扱注意】</p>
@@ -74,15 +79,26 @@
     </div>
   </div>
 
+  <div class="qr-block">
+    <img src="https://tasayur.github.io/safety-test/QR_elearning.png" alt="QRコード">
+    <div class="qr-info">
+      <div class="qr-label">&#128241; 受講者に共有するURL・QRコード</div>
+      <div class="qr-sub">
+        受講者はこのQRコードを読み取るか、下記URLをブラウザで開いてください。<br>
+        <a href="https://tasayur.github.io/safety-test/elearning.html">https://tasayur.github.io/safety-test/elearning.html</a>
+      </div>
+    </div>
+  </div>
+
   <!-- 現場追加 -->
   <div class="section">
-    <div class="section-title">🏗️ 現場・工事を追加する</div>
+    <div class="section-title">&#127959;&#65039; 現場・工事を追加する</div>
     <div class="steps">
       <div class="step">
         <div class="step-num">1</div>
         <div class="step-body">
           <h3>管理者設定を開く</h3>
-          <p>パスワード画面の下の「⚙️ 管理者設定」をタップ</p>
+          <p>パスワード画面の下の「&#9881;&#65039; 管理者設定」をタップ</p>
         </div>
       </div>
       <div class="step">
@@ -100,7 +116,7 @@
           <table class="table" style="margin-top:8px">
             <tr><th>項目</th><th>入力内容</th></tr>
             <tr><td>現場名・工事名</td><td>例：HSG1 棚工事（2期）</td></tr>
-            <tr><td>動画の種類</td><td>ローカルMP4 / Google Drive / YouTube / なし</td></tr>
+            <tr><td>動画の種類</td><td>ローカルMP4 / Google Drive / なし</td></tr>
             <tr><td>MP4ファイル名 or URL</td><td>動画ファイル名またはURLを入力</td></tr>
           </table>
         </div>
@@ -120,7 +136,7 @@
 
   <!-- 現場削除 -->
   <div class="section">
-    <div class="section-title">🗑️ 現場・工事を削除する</div>
+    <div class="section-title">&#128465;&#65039; 現場・工事を削除する</div>
     <div class="steps">
       <div class="step">
         <div class="step-num">1</div>
@@ -144,7 +160,7 @@
 
   <!-- 受講履歴 -->
   <div class="section">
-    <div class="section-title">📊 受講履歴を確認する</div>
+    <div class="section-title">&#128202; 受講履歴を確認する</div>
     <div class="steps">
       <div class="step">
         <div class="step-num">1</div>
@@ -167,7 +183,7 @@
 
   <!-- 動画の種類早見表 -->
   <div class="section">
-    <div class="section-title">🎬 動画の種類　設定早見表</div>
+    <div class="section-title">&#127916; 動画の種類　設定早見表</div>
     <table class="table">
       <tr><th>種類</th><th>入力内容</th><th>用途</th></tr>
       <tr><td>ローカルMP4</td><td>ファイル名<br>例：ルール_A棟.mp4</td><td>HTMLと同じフォルダにMP4を置く場合</td></tr>
