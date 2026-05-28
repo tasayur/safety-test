@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>新規入場者教育 eラーニング | Amazon FC</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif; background: linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%); min-height: 100vh; color: #fff; line-height: 1.6; }
+        .container { max-width: 640px; margin: 0 auto; padding: 20px; min-height: 100vh; }
+        .header { text-align: center; padding: 30px 0; border-bottom: 2px solid rgba(255,255,255,0.1); margin-bottom: 30px; }
+        .header h1 { font-size: 1.6em; margin-bottom: 8px; background: linear-gradient(90deg,#ff9a56,#ff6b6b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .header p { color: rgba(255,255,255,0.7); font-size: 0.9em; }
+        .screen { display: none; animation: fadeIn 0.4s ease; }
+        .screen.active { display: block; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
+        @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+        .card { background: rgba(255,255,255,0.08); border-radius: 20px; padding: 25px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
+        .card h2 { font-size: 1.2em; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .step-badge { background: linear-gradient(135deg,#ff9a56,#ff6b6b); padding: 4px 12px; border-radius: 12px; font-size: 0.8em; font-weight: 700; }
+        .pw-box { background: rgba(255,255,255,0.08); border-radius: 20px; padding: 40px 30px; text-align: center; margin-top: 20px; }
+        .pw-icon { font-size: 3em; margin-bottom: 15px; }
+        .pw-box h2 { font-size: 1.3em; margin-bottom: 8px; justify-content: center; }
+        .pw-box > p { color: rgba(255,255,255,0.7); margin-bottom: 25px; font-size: 0.9em; }
+        .pw-input-wrap { position: relative; margin-bottom: 10px; }
+        .pw-input-wrap input { width: 100%; padding: 16px 50px 16px 18px; border: 2px solid rgba(255,255,255,0.2); border-radius: 12px; background: rgba(255,255,255,0.1); color: #fff; font-size: 1.1em; letter-spacing: 0.1em; }
+        .pw-input-wrap input:focus { outline: none; border-color: #ff9a56; }
+        .pw-toggle { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; color: rgba(255,255,255,0.6); font-size: 1.2em; cursor: pointer; }
+        .pw-error { color: #ef4444; font-size: 0.88em; margin-bottom: 15px; min-height: 20px; }
+        .pw-admin-link { margin-top: 25px; font-size: 0.78em; color: rgba(255,255,255,0.3); cursor: pointer; }
+        .pw-admin-link:hover { color: rgba(255,255,255,0.5); }
+        .site-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+        .site-option { display: flex; align-items: center; gap: 14px; padding: 16px 18px; background: rgba(255,255,255,0.07); border: 2px solid rgba(255,255,255,0.15); border-radius: 14px; cursor: pointer; transition: all 0.25s; }
+        .site-option:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,154,86,0.5); }
+        .site-option.selected { background: rgba(255,154,86,0.15); border-color: #ff9a56; }
+        .site-option input[type=radio] { width: 20px; height: 20px; accent-color: #ff9a56; flex-shrink: 0; cursor: pointer; }
+        .site-option-name { font-weight: 600; font-size: 1.05em; }
+        .site-option-note { font-size: 0.82em; color: rgba(255,255,255,0.55); margin-top: 2px; }
+        .no-sites { color: rgba(255,255,255,0.5); text-align: center; padding: 30px; font-size: 0.9em; }
+        .admin-box { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 28px; margin-top: 20px; }
+        .admin-box h2 { color: #ff9a56; margin-bottom: 5px; }
+        .admin-box > p { font-size: 0.85em; color: rgba(255,255,255,0.6); margin-bottom: 20px; }
+        .admin-save-msg { font-size: 0.85em; min-height: 18px; margin-top: 8px; }
+        .project-item { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.07); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; }
+        .project-item-name { flex: 1; font-weight: 600; font-size: 0.95em; }
+        .project-item-note { font-size: 0.78em; color: rgba(255,255,255,0.5); }
+        .project-del-btn { background: rgba(239,68,68,0.25); border: none; color: #f87171; border-radius: 8px; padding: 5px 12px; font-size: 0.82em; cursor: pointer; white-space: nowrap; }
+        .project-del-btn:hover { background: rgba(239,68,68,0.4); }
+        .add-project-form { background: rgba(255,255,255,0.05); border-radius: 14px; padding: 18px; margin-bottom: 16px; }
+        .add-project-form h3 { font-size: 0.95em; color: #ff9a56; margin-bottom: 14px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.92em; color: rgba(255,255,255,0.9); }
+        .form-group label .req { color: #ff6b6b; margin-left: 4px; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 13px 15px; border: 2px solid rgba(255,255,255,0.2); border-radius: 12px; background: rgba(255,255,255,0.1); color: #fff; font-size: 16px; transition: all 0.3s; font-family: inherit; }
+        .form-group select option { background: #1a1a2e; color: #fff; }
+        .form-group textarea { min-height: 78px; resize: vertical; }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: #ff9a56; background: rgba(255,255,255,0.15); }
+        .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,0.4); }
+        .form-group.error input, .form-group.error textarea { border-color: #ef4444; }
+        .form-group .err-msg { font-size: 0.82em; color: #ef4444; margin-top: 4px; display: none; }
+        .form-group.error .err-msg { display: block; }
+        .hint { font-size: 0.8em; color: rgba(255,255,255,0.45); margin-top: 4px; }
+        .btn { width: 100%; padding: 17px; border: none; border-radius: 12px; font-size: 1.05em; font-weight: 700; cursor: pointer; transition: all 0.3s; letter-spacing: 0.5px; }
+        .btn-primary { background: linear-gradient(135deg,#ff9a56,#ff6b6b); color: #fff; box-shadow: 0 4px 15px rgba(255,107,107,0.3); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,107,107,0.45); }
+        .btn-primary:active { transform: translateY(0); }
+        .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn-secondary { background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.2); margin-top: 12px; }
+        .btn-secondary:hover { background: rgba(255,255,255,0.2); }
+        .btn-sm { width: auto; padding: 10px 18px; font-size: 0.92em; }
+        .step-nav { display: flex; gap: 6px; margin-bottom: 25px; }
+        .step-dot { flex: 1; height: 6px; border-radius: 3px; background: rgba(255,255,255,0.15); }
+        .step-dot.done { background: #22c55e; }
+        .step-dot.active { background: #ff9a56; }
+        .video-wrap { position: relative; width: 100%; border-radius: 12px; overflow: hidden; background: #000; margin-bottom: 15px; aspect-ratio: 16/9; }
+        .video-wrap video, .video-wrap iframe { width: 100%; height: 100%; border: none; }
+        .video-check { display: flex; align-items: center; gap: 10px; padding: 12px 15px; background: rgba(255,255,255,0.05); border-radius: 10px; cursor: pointer; }
+        .video-check input[type=checkbox] { width: 20px; height: 20px; accent-color: #22c55e; cursor: pointer; }
+        .video-check span { font-size: 0.9em; color: rgba(255,255,255,0.8); }
+        .progress-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.88em; color: rgba(255,255,255,0.75); }
+        .progress-bar { height: 7px; background: rgba(255,255,255,0.15); border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg,#4ade80,#22c55e); border-radius: 10px; transition: width 0.4s ease; }
+        .q-number { display: inline-block; background: linear-gradient(135deg,#ff9a56,#ff6b6b); color: #fff; padding: 4px 14px; border-radius: 16px; font-size: 0.82em; font-weight: 700; margin-bottom: 14px; }
+        .q-text { font-size: 1.05em; line-height: 1.85; }
+        .answer-row { display: flex; gap: 14px; margin-top: 20px; }
+        .answer-btn { flex: 1; padding: 20px; border: 3px solid rgba(255,255,255,0.25); border-radius: 14px; background: rgba(255,255,255,0.05); color: #fff; font-size: 1.5em; font-weight: 700; cursor: pointer; transition: all 0.3s; }
+        .answer-btn:hover:not(:disabled) { background: rgba(255,255,255,0.15); transform: scale(1.03); }
+        .answer-btn.correct { background: linear-gradient(135deg,#4ade80,#22c55e); border-color: #22c55e; animation: pulse 0.5s; }
+        .answer-btn.incorrect { background: linear-gradient(135deg,#f87171,#ef4444); border-color: #ef4444; animation: shake 0.5s; }
+        .answer-btn.correct-hint { border-color: #22c55e; box-shadow: 0 0 18px rgba(34,197,94,0.5); }
+        .feedback { margin-top: 18px; padding: 18px; border-radius: 14px; display: none; }
+        .feedback.show { display: block; animation: fadeIn 0.3s; }
+        .feedback.correct { background: rgba(34,197,94,0.2); border: 2px solid #22c55e; }
+        .feedback.incorrect { background: rgba(239,68,68,0.2); border: 2px solid #ef4444; }
+        .feedback h3 { margin-bottom: 8px; }
+        .retry-hint { margin-top: 12px; padding: 10px 14px; background: rgba(255,154,86,0.2); border-radius: 8px; font-size: 0.88em; color: #ff9a56; text-align: center; }
+        .score-circle { width: 140px; height: 140px; border-radius: 50%; margin: 0 auto 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 2.3em; font-weight: 700; background: linear-gradient(135deg,#4ade80,#22c55e); box-shadow: 0 0 40px rgba(34,197,94,0.4); }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 18px 0; }
+        .stat-item { background: rgba(255,255,255,0.1); padding: 14px; border-radius: 12px; text-align: center; }
+        .stat-value { font-size: 1.7em; font-weight: 700; color: #ff9a56; }
+        .stat-label { font-size: 0.82em; color: rgba(255,255,255,0.65); }
+        .review-item { background: rgba(255,154,86,0.15); border-left: 4px solid #ff9a56; padding: 14px; margin-bottom: 12px; border-radius: 0 10px 10px 0; }
+        .certificate { background: #fff; border: 2px solid #222; border-radius: 3px; padding: 32px 28px 24px; color: #111; font-family: 'Yu Mincho','MS Mincho','Hiragino Mincho ProN',serif; font-size: 13px; }
+        .cert-header-title { font-size: 0.85em; letter-spacing: 0.06em; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid #444; color: #333; }
+        .cert-main-title { font-size: 2.2em; font-weight: 900; text-align: center; letter-spacing: 0.3em; margin: 4px 0 22px; }
+        .cert-field-row { margin-bottom: 8px; font-size: 1.0em; line-height: 1.65; }
+        .cert-field-value { font-weight: 700; }
+        .cert-name-block { text-align: center; margin: 18px 0 20px; padding: 10px 0; border-top: 1px solid #999; border-bottom: 1px solid #999; }
+        .cert-name-reading { font-size: 0.88em; color: #555; margin-bottom: 3px; }
+        .cert-name-main { font-size: 1.85em; font-weight: 700; letter-spacing: 0.18em; }
+        .cert-body-text { font-size: 0.96em; line-height: 2.0; margin: 16px 0 18px; }
+        .cert-oath-box { border: 1px solid #555; padding: 11px 14px; margin: 0 0 18px; font-size: 0.86em; line-height: 1.8; background: #f9f9f9; }
+        .cert-oath-box .oath-title { font-weight: 700; margin-bottom: 5px; }
+        .cert-validity-row { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 16px; padding-top: 12px; border-top: 1px solid #999; font-size: 0.88em; }
+        .cert-validity-date { font-weight: 700; font-size: 1.05em; }
+        .cert-issuer { text-align: right; line-height: 1.8; color: #333; }
+        .cert-num { font-size: 0.72em; color: #999; margin-top: 10px; text-align: right; }
+        .saving-indicator { position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.8); color: #fff; padding: 12px 18px; border-radius: 12px; font-size: 0.88em; display: none; z-index: 500; }
+        .saving-indicator.show { display: block; }
+        .divider { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0; }
+        @media print { body{background:none} .container{max-width:100%;padding:0} .screen:not(#certificate-screen){display:none!important} #certificate-screen{display:block!important} .btn,.step-nav,.header{display:none!important} }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>新規入場者教育</h1>
+        <p>Amazon FC | eラーニング</p>
+    </div>
+
+    <!-- パスワード -->
+    <div class="screen active" id="pw-screen">
+        <div class="pw-box">
+            <div class="pw-icon">&#x1F512;</div>
+            <h2>パスワードを入力してください</h2>
+            <p>受講者の方はご担当者から案内されたパスワードを入力してください。</p>
+            <div class="pw-input-wrap">
+                <input type="password" id="pw-input" placeholder="パスワード" onkeydown="if(event.key==='Enter')checkPassword()">
+                <button class="pw-toggle" onclick="togglePw('pw-input')">&#x1F441;</button>
+            </div>
+            <div class="pw-error" id="pw-error"></div>
+            <button class="btn btn-primary" onclick="checkPassword()">入力</button>
+            <div class="pw-admin-link" onclick="switchScreen('pw-screen','admin-screen')">&#x2699;&#xFE0F; 管理者設定</div>
+        </div>
+    </div>
+
+    <!-- 現場選択 -->
+    <div class="screen" id="site-screen">
+        <div class="card">
+            <h2>&#x1F3D7;&#xFE0F; 現場・工事を選択してください</h2>
+            <p style="font-size:0.88em;color:rgba(255,255,255,0.6);margin-bottom:18px;">受講する現場を選んでください。</p>
+            <div class="site-list" id="site-list">
+                <div class="no-sites">現場が登録されていません。<br>管理者に連絡してください。</div>
+            </div>
+            <div class="pw-error" id="site-error"></div>
+        </div>
+        <button class="btn btn-primary" onclick="confirmSite()">選択して受講開始 &#x2192;</button>
+    </div>
+
+    <!-- 管理者パネル -->
+    <div class="screen" id="admin-screen">
+        <div class="admin-box" id="admin-auth-box">
+            <h2>&#x2699;&#xFE0F; 管理者設定</h2>
+            <p>現場・工事の追加・削除ができます。設定はこのブラウザに保存されます。</p>
+            <div class="pw-input-wrap" style="margin-bottom:10px">
+                <input type="password" id="admin-pw-input" placeholder="管理者パスワード" onkeydown="if(event.key==='Enter')checkAdminPw()">
+                <button class="pw-toggle" onclick="togglePw('admin-pw-input')">&#x1F441;</button>
+            </div>
+            <div class="pw-error" id="admin-pw-error"></div>
+            <button class="btn btn-primary" onclick="checkAdminPw()">認証</button>
+            <button class="btn btn-secondary" onclick="switchScreen('admin-screen','pw-screen')">&#x2190; 戻る</button>
+        </div>
+        <div id="admin-panel" style="display:none">
+            <div class="card" style="margin-top:20px">
+                <h2><span class="step-badge">&#x1F4CA; 受講履歴</span></h2>
+                <p style="font-size:0.88em;color:rgba(255,255,255,0.65);margin-bottom:16px;">Google スプレッドシートで受講者の合格記録を確認できます。</p>
+                <a href="https://docs.google.com/spreadsheets/d/1UHeUjO8vVwBhf8tUjkUTwGe4giIVfRPsfYbgDuglNBE/edit" target="_blank" style="text-decoration:none">
+                    <button class="btn btn-primary" style="background:linear-gradient(135deg,#34d399,#059669);box-shadow:0 4px 15px rgba(5,150,105,0.35)">&#x1F517; スプレッドシートを開く</button>
+                </a>
+            </div>
+            <div class="card" style="margin-top:20px">
+                <h2><span class="step-badge">現場一覧</span></h2>
+                <div id="admin-project-list"></div>
+                <hr class="divider">
+                <div class="add-project-form">
+                    <h3>&#x2795; 新しい現場・工事を追加</h3>
+                    <div class="form-group">
+                        <label>現場名・工事名<span class="req">*</span></label>
+                        <input type="text" id="new-site-name" placeholder="例: HSG1 棚工事（2期）">
+                    </div>
+                    <div class="form-group">
+                        <label>動画の種類</label>
+                        <select id="new-video-type" onchange="toggleNewVideoInput()">
+                            <option value="local">ローカルMP4ファイル</option>
+                            <option value="drive">Google Drive URL</option>
+                            <option value="youtube">YouTube URL</option>
+                            <option value="none">動画なし</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="new-video-input-wrap">
+                        <label id="new-video-label">MP4ファイル名</label>
+                        <input type="text" id="new-video-src" placeholder="例: ローカルルール_工事A.mp4">
+                        <div class="hint" id="new-video-hint">HTMLと同じフォルダに置いたファイル名を入力</div>
+                    </div>
+                    <div class="admin-save-msg" id="admin-add-msg"></div>
+                    <button class="btn btn-primary btn-sm" onclick="addProject()">追加する</button>
+                </div>
+            </div>
+            <button class="btn btn-secondary" onclick="switchScreen('admin-screen','pw-screen')">&#x2190; 戻る</button>
+        </div>
+    </div>
+
+    <!-- ステップナビ -->
+    <div id="step-nav" class="step-nav" style="display:none">
+        <div class="step-dot" id="dot-1"></div>
+        <div class="step-dot" id="dot-2"></div>
+        <div class="step-dot" id="dot-3"></div>
+        <div class="step-dot" id="dot-4"></div>
+        <div class="step-dot" id="dot-5"></div>
+    </div>
+
+    <!-- STEP 1 -->
+    <div class="screen" id="video1-screen">
+        <div class="card">
+            <h2><span class="step-badge">STEP 1</span> 動画&#x00B9;を視聴する</h2>
+            <p style="font-size:0.88em;color:rgba(255,255,255,0.65);margin-bottom:14px;">安全共通ルールの動画を最後まで視聴してください。</p>
+            <div class="video-wrap">
+                <video id="video1-player" controls>
+                    <source src="2025&#24180;&#29256;&#12288;&#26032;&#35215;&#20837;&#22580;&#32773;&#25945;&#32946;&#12288;&#35500;&#26126;&#21205;&#30011;.mp4" type="video/mp4">
+                    <p style="color:#ff9a56;padding:20px">&#x26A0;&#xFE0F; 動画ファイルが見つかりません。</p>
+                </video>
+            </div>
+            <label class="video-check">
+                <input type="checkbox" id="video1-check" onchange="document.getElementById('btn-to-video2').disabled=!this.checked">
+                <span>動画を最後まで視聴しました</span>
+            </label>
+        </div>
+        <button class="btn btn-primary" id="btn-to-video2" onclick="goToStep(2)" disabled>次へ &#x2192;</button>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="screen" id="video2-screen">
+        <div class="card">
+            <h2><span class="step-badge">STEP 2</span> 動画&#x00B2;を視聴する</h2>
+            <p style="font-size:0.88em;color:rgba(255,255,255,0.65);margin-bottom:14px;" id="video2-desc">現場ローカルルールの動画を最後まで視聴してください。</p>
+            <div class="video-wrap" id="video2-wrap"></div>
+            <label class="video-check">
+                <input type="checkbox" id="video2-check" onchange="document.getElementById('btn-to-form').disabled=!this.checked">
+                <span>動画を最後まで視聴しました</span>
+            </label>
+        </div>
+        <button class="btn btn-primary" id="btn-to-form" onclick="goToStep(3)" disabled>次へ &#x2192;</button>
+        <button class="btn btn-secondary" onclick="goToStep(1)">&#x2190; 戻る</button>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="screen" id="reg-screen">
+        <div class="card">
+            <h2><span class="step-badge">STEP 3</span> 受講者情報を入力</h2>
+            <div class="form-group" id="fg-pc"><label>一次会社名<span class="req">*</span></label><input type="text" id="f-pc" placeholder="例：○○建設株式会社"><div class="err-msg">入力してください</div></div>
+            <div class="form-group" id="fg-co"><label>所属会社名<span class="req">*</span></label><input type="text" id="f-co" placeholder="例：△△工業"><div class="err-msg">入力してください</div></div>
+            <div class="form-group" id="fg-nm"><label>氏名<span class="req">*</span></label><input type="text" id="f-nm" placeholder="例：山田 太郎"><div class="err-msg">入力してください</div></div>
+            <div class="form-group" id="fg-rd"><label>ふりがな<span class="req">*</span></label><input type="text" id="f-rd" placeholder="例：やまだ たろう" inputmode="hiragana"><div class="err-msg" id="rd-err">入力してください</div></div>
+            <div class="form-group" id="fg-bd"><label>生年月日<span class="req">*</span></label><input type="date" id="f-bd"><div class="err-msg">入力してください</div></div>
+            <div class="form-group" id="fg-wk"><label>本日の作業内容<span class="req">*</span></label><textarea id="f-wk" placeholder="例：2階 棚工事 組立作業"></textarea><div class="err-msg">入力してください</div></div>
+        </div>
+        <button class="btn btn-primary" onclick="goToStep(4)">テストを受ける &#x2192;</button>
+        <button class="btn btn-secondary" onclick="goToStep(2)">&#x2190; 戻る</button>
+    </div>
+
+    <!-- STEP 4 クイズ -->
+    <div class="screen" id="quiz-screen">
+        <div class="progress-row"><span id="prog-text">問題 1/20</span><span id="prog-mistakes">間違い: 0</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+        <div class="card">
+            <span class="q-number" id="q-number">第1問</span>
+            <p class="q-text" id="q-text"></p>
+            <div class="answer-row">
+                <button class="answer-btn" id="btn-true" onclick="submitAnswer(true)">&#x25EF;</button>
+                <button class="answer-btn" id="btn-false" onclick="submitAnswer(false)">&#x2715;</button>
+            </div>
+            <div class="feedback" id="feedback">
+                <h3 id="fb-title"></h3><p id="fb-text"></p>
+                <div class="retry-hint" id="retry-hint" style="display:none">正しい答えを選んでください</div>
+            </div>
+        </div>
+        <button class="btn btn-primary" id="btn-next" onclick="nextQuestion()" style="display:none">次の問題へ &#x2192;</button>
+    </div>
+
+    <!-- STEP 5 結果 -->
+    <div class="screen" id="results-screen">
+        <div class="card" style="text-align:center">
+            <div class="score-circle">&#x1F3C6;</div>
+            <div style="font-size:1.25em;font-weight:700;margin-bottom:8px;">全問正解！おめでとうございます</div>
+            <div style="color:rgba(255,255,255,0.7);margin-bottom:20px;">修了証を発行します</div>
+            <div class="stats-grid">
+                <div class="stat-item"><div class="stat-value" id="stat-mistakes">0</div><div class="stat-label">間違い回数</div></div>
+                <div class="stat-item"><div class="stat-value" id="stat-attempts">1</div><div class="stat-label">挑戦回数</div></div>
+            </div>
+        </div>
+        <div id="review-section" style="display:none">
+            <h3 style="color:#ff9a56;margin-bottom:12px;">間違えた問題の復習</h3>
+            <div id="review-list"></div>
+        </div>
+        <button class="btn btn-primary" onclick="goToCertificate()">修了証を見る &#x2192;</button>
+    </div>
+
+    <!-- 修了証 -->
+    <div class="screen" id="certificate-screen">
+        <div id="certificate-container"></div>
+        <div style="height:20px"></div>
+        <button class="btn btn-primary" onclick="window.print()">&#x1F5A8; 印刷 / 保存</button>
+        <button class="btn btn-secondary" style="margin-top:10px" onclick="restartAll()">&#x21BA; 最初から（次の受講者）</button>
+    </div>
+</div>
+<div class="saving-indicator" id="saving-indicator">データを保存中...</div>
+<script>
+    const GAS_URL='https://script.google.com/macros/s/AKfycbwq7_oXFDEM1HBowEfX6g6c5UvRQVc_T3iZKpSDfBKTvDTk8eietimc7SknxWwW6eAV/exec';
+    const PW_MAIN='RFESHINKI', PW_ADMIN='ADMIN', LS_KEY='el_projects_v2';
+    const questions=[
+        {id:1,text:"\u30bb\u30ad\u30e5\u30ea\u30c6\u30a3\u30b2\u30fc\u30c8\u3067ID\u30d0\u30c3\u30b8\u3092\u6301\u3063\u3066\u3044\u306a\u3044\u65b9\u304c\u3044\u3066\u3001\u81ea\u5206\u306eID\u30d0\u30c3\u30b8\u3092\u8cb8\u3057\u3066\u304f\u3060\u3055\u3044\u3068\u8a00\u308f\u308c\u305f\u304c\u3001\u8cb8\u3055\u305a\u306b\u305d\u306e\u307e\u307e\u8b66\u5099\u968a\u3078\u9023\u7d61\u3057\u305f\u3002",answer:true,explanation:"ID\u8cb8\u4e0e\u306f\u300c\u306a\u308a\u3059\u307e\u3057\u5165\u9928\u300d\u306b\u7e4b\u304c\u308b\u91cd\u5927\u9055\u53cd\u3067\u3059\u3002\u5fc5\u305a\u8b66\u5099\u968a\u3078\u9023\u7d61\u3057\u3066\u304f\u3060\u3055\u3044\u3002"},
+        {id:2,text:"\u9632\u706b\u30b7\u30e3\u30c3\u30bf\u30fc\u4e0b\u964d\u90e8\uff08\u30c8\u30e9\u30b7\u30de\u90e8\u5206\uff09\u3092\u907f\u3051\u3001\u305d\u308c\u4ee5\u5916\u306e\u5834\u6240\u3092\u5de5\u4e8b\u533a\u753b\u3068\u3057\u3066\u8a2d\u5b9a\u3057\u305f\u3002",answer:true,explanation:"\u9632\u706b\u30b7\u30e3\u30c3\u30bf\u30fc\u4e0b\u964d\u90e8\u306f\u5e38\u306b\u7a7a\u3051\u3066\u304a\u304f\u5fc5\u8981\u304c\u3042\u308a\u307e\u3059\u3002\u6b63\u3057\u3044\u5224\u65ad\u3067\u3059\u3002"},
+        {id:3,text:"\u5efa\u5c4b\u30b3\u30f3\u30bb\u30f3\u30c8\u4f7f\u7528\u6642\u3001\u6f0f\u96fb\u9077\u65ad\u5668\u3092\u7d4c\u7531\u3055\u305b\u3066\u4f7f\u7528\u3057\u305f\u3002",answer:true,explanation:"\u6f0f\u96fb\u306b\u3088\u308b\u706b\u707d\u3084\u611f\u96fb\u9077\u65ad\u5668\u3092\u7d4c\u7531\u3055\u305b\u3066\u304f\u3060\u3055\u3044\u3002"},
+        {id:4,text:"\u30c8\u30a4\u30ec\u306e\u6545\u969c\u3092\u767a\u898b\u3057\u305f\u306e\u3067\u3001\u81ea\u3089\u76f4\u305d\u3046\u3068\u305b\u305a\u30a2\u30de\u30be\u30f3\u62c5\u5f53\u8005\u307e\u305f\u306f\u30d3\u30eb\u7ba1\u7406\u3078\u9023\u7d61\u3057\u305f\u3002",answer:true,explanation:"\u52dd\u624b\u306b\u4fee\u7406\u305b\u305a\u3001\u5fc5\u305a\u30a2\u30de\u30be\u30f3\u62c5\u5f53\u8005\u307e\u305f\u306f\u30d3\u30eb\u7ba1\u7406\u3078\u9023\u7d61\u3059\u308b\u3053\u3068\u304c\u6b63\u3057\u3044\u5bfe\u5fdc\u3067\u3059\u3002"},
+        {id:5,text:"\u811a\u7acb\u4f7f\u7528\u6642\u306f\u8a31\u53ef\u7533\u8acb\u3092\u884c\u3044\u3001\u7533\u8acb\u66f8\u3092\u811a\u7acb\u306e\u898b\u3048\u3084\u3059\u3044\u4f4d\u7f6e\u306b\u8cbc\u4ed8\u3057\u305f\u3002",answer:true,explanation:"\u811a\u7acb\u4f7f\u7528\u306b\u306f\u8a31\u53ef\u7533\u8acb\u304c\u5fc5\u8981\u3067\u3001\u7533\u8acb\u66f8\u306e\u63b2\u793a\u306f\u7fa9\u52d9\u3067\u3059\u3002"},
+        {id:6,text:"\u9ce5\u6816FC\u306e\u30eb\u30fc\u30eb\u306b\u5f93\u3044\u3001\u6642\u9593\u5e2f\u306b\u3088\u308b\u901a\u884c\u7981\u6b62\u30a8\u30ea\u30a2\u3092\u9075\u5b88\u3057\u305f\u3002",answer:true,explanation:"\u7279\u5b9a\u306e\u5834\u6240\u306b\u306f\u6642\u9593\u5e2f\u30eb\u30fc\u30eb\u304c\u3042\u308a\u307e\u3059\u3002\u5fc5\u305a\u78ba\u8a8d\u3057\u3066\u304f\u3060\u3055\u3044\u3002"},
+        {id:7,text:"\u30b3\u30f3\u30d9\u30a2\u306e\u30ac\u30a4\u30c9\u53d6\u308a\u4ed8\u3051\u6642\u3001\u7a3c\u50cd\u4e2d\u3067\u3042\u3063\u3066\u3082\u305d\u306e\u307e\u307e\u4f5c\u696d\u3092\u884c\u3063\u305f\u3002",answer:false,explanation:"\u3010\u5371\u967a\u3011\u5fc5\u305a\u505c\u6b62\uff08LOTO\u7b49\uff09\u3092\u78ba\u8a8d\u3057\u3066\u304b\u3089\u4f5c\u696d\u3057\u3066\u304f\u3060\u3055\u3044\u3002"},
+        {id:8,text:"\u9ad8\u8eca\u4f5c\u696d\u6642\u3001\u4f5c\u696d\u533a\u753b\u3092\u5b8c\u5168\u306b\u9694\u96e2\u3057\u3001\u4eba\u306e\u52d5\u7dda\u3068\u91cd\u306a\u3089\u306a\u3044\u3088\u3046\u306b\u3057\u305f\u3002",answer:true,explanation:"\u6b63\u3057\u3044\u5bfe\u5fdc\u3067\u3059\u3002\u901a\u884c\u4eba\u3068\u4f5c\u696d\u7b87\u6240\u304c\u8fd1\u3044\u5834\u5408\u306f\u300c\u4e00\u6642\u4e2d\u65ad\u300d\u304c\u539f\u5247\u3067\u3059\u3002"},
+        {id:9,text:"\u91d1\u66dc\u591c\u306bID\u3092\u7d1a\u5931\u3057\u305f\u304c\u3001\u571f\u65e5\u306f\u4f11\u307f\u306e\u305f\u3081\u3001\u6708\u66dc\u306e\u51fa\u793e\u6642\u306b\u4e0a\u53f8\u3078\u5831\u544a\u3057\u305f\u3002",answer:false,explanation:"\u3010\u91cd\u8981\u3011\u7d1a\u5931\u306f\u300c\u5373\u6642\u5831\u544a\u300d\u304c\u9244\u5247\u3067\u3059\u3002\u3059\u3050\u306b\u5831\u544a\u3057\u3066\u304f\u3060\u3055\u3044\u3002"},
+        {id:10,text:"\u843d\u3061\u3066\u3044\u305f\u5546\u54c1\u3092\u62fe\u3044\u3001\u81ea\u5206\u306e\u5224\u65ad\u3067\u7a7a\u3044\u3066\u3044\u308b\u68da\u306b\u623b\u3057\u305f\u3002",answer:false,explanation:"\u3010\u7981\u6b62\u3011\u5fc5\u305a\u6240\u5b9a\u306e\u30ea\u30ab\u30d0\u30ea\u30fc\u3078\u56de\u3059\u30eb\u30fc\u30eb\u304c\u3042\u308a\u307e\u3059\u3002"},
+        {id:11,text:"\u53f0\u8eca\u79fb\u52d5\u4e2d\u3001\u6b69\u884c\u8005\u304c\u3044\u305f\u304c\u5341\u5206\u306a\u30b9\u30da\u30fc\u30b9\u304c\u3042\u3063\u305f\u306e\u3067\u505c\u6b62\u305b\u305a\u901a\u884c\u3057\u305f\u3002",answer:false,explanation:"\u3010\u539f\u5247\u3011\u6b69\u884c\u8005\u512a\u5148\u30fb\u4e00\u6642\u505c\u6b62\u3067\u3059\u3002"},
+        {id:12,text:"\u4eba\u624b\u304c\u8db3\u308a\u306a\u304b\u3063\u305f\u306e\u3067\u3001\u30c8\u30e9\u30c3\u30af\u306e\u904b\u8ee2\u624b\u3055\u3093\u306b\u9928\u5185\u306e\u5de5\u4e8b\u5834\u6240\u307e\u3067\u904b\u642c\u3092\u624b\u4f1d\u3063\u3066\u3082\u3089\u3063\u305f\u3002",answer:false,explanation:"\u3010\u7981\u6b62\u3011\u5951\u7d04\u5916\u306e\u4f5c\u696d\u4f9d\u983c\u3084\u4e0d\u6185\u308c\u306a\u4eba\u306e\u5165\u9928\u306b\u4f34\u3046\u4e8b\u6545\u30ea\u30b9\u30af\u304c\u3042\u308a\u307e\u3059\u3002"},
+        {id:13,text:"\u30c8\u30e9\u30b7\u30de\u30c6\u30fc\u30d7\uff08\u9632\u706b\u30b7\u30e3\u30c3\u30bf\u30fc\u4e0b\uff09\u306e\u4e0a\u3060\u304c\u3001\u77ed\u6642\u9593\u306a\u306e\u3067\u8cc7\u6750\u3092\u4ecb\u7f6e\u3057\u305f\u3002",answer:false,explanation:"\u3010\u53b3\u7981\u30111\u79d2\u3067\u3082\u7f6e\u3044\u3066\u306f\u3044\u3051\u307e\u305b\u3093\u3002\u706b\u707d\u6642\u306e\u30b7\u30e3\u30c3\u30bf\u30fc\u4e0d\u52d5\u4f5c\u306f\u547d\u306b\u95a2\u308f\u308a\u307e\u3059\u3002"},
+        {id:14,text:"\u79fb\u52d5\u4e2d\u306b\u643a\u5e2f\u304c\u9cf4\u3063\u305f\u305f\u3081\u3001\u6b69\u304d\u306a\u304c\u3089\u901a\u8a71\u306b\u5fdc\u5bfe\u3057\u305f\u3002",answer:false,explanation:"\u3010\u53b3\u7981\u3011Amazon\u3067\u306f\u300c\u6b69\u304d\u30b9\u30de\u30db\u300d\u306f\u53b3\u7981\u3067\u3059\u3002\u5fc5\u305a\u505c\u6b62\u3057\u3066\u5b89\u5168\u306a\u5834\u6240\u3067\u5bfe\u5fdc\u3057\u3066\u304f\u3060\u3055\u3044\u3002"},
+        {id:15,text:"\u4e21\u624b\u304c\u585e\u304c\u3063\u3066\u3044\u305f\u305f\u3081\u3001\u5de5\u4e8b\u30a8\u30ea\u30a2\u306e\u30d0\u30fc\u3092\u8de8\u3044\u3067\u4e2d\u306b\u5165\u3063\u305f\u3002",answer:false,explanation:"\u3010\u7981\u6b62\u3011\u533a\u753b\u306f\u300c\u5b89\u5168\u306e\u5883\u754c\u7dda\u300d\u3067\u3059\u3002\u5fc5\u305a\u5165\u308a\u53e3\u304b\u3089\u5165\u308a\u3001\u30d0\u30fc\u3092\u623b\u3057\u3066\u304f\u3060\u3055\u3044\u3002"},
+        {id:16,text:"\u6691\u3055\u5bfe\u7b56\u306e\u305f\u3081\u3001\u9996\u306b\u30bf\u30aa\u30eb\u3092\u5782\u3089\u3057\u305f\u72b6\u614b\u3067\u4f5c\u696d\u3092\u884c\u3063\u305f\u3002",answer:false,explanation:"\u3010\u5371\u967a\u3011\u9996\u639b\u3051\u30bf\u30aa\u30eb\u306f\u300c\u5dfb\u304d\u8fbc\u307f\u4e8b\u6545\u300d\u306e\u5178\u578b\u7684\u306a\u539f\u56e0\u3067\u3059\u3002"},
+        {id:17,text:"\u30e1\u30b6\u30cb\u30f3\uff08\u7db2\u72b6\u306e\u5e8a\uff09\u4e0a\u3067\u306e\u4f5c\u696d\u6642\u3001\u6ce8\u610f\u3059\u308c\u3070\u990a\u751f\u30b7\u30fc\u30c8\u306f\u4e0d\u8981\u3068\u8003\u3048\u3001\u305d\u306e\u307e\u307e\u4f5c\u696d\u3057\u305f\u3002",answer:false,explanation:"\u3010\u5fc5\u9808\u3011\u5c0f\u3055\u306a\u30cd\u30b8\u4e00\u3064\u3067\u3082\u4e0b\u306e\u968e\u306e\u4eba\u306b\u306f\u51f6\u5668\u306b\u306a\u308a\u307e\u3059\u3002\u990a\u751f\u306f\u5fc5\u9808\u3067\u3059\u3002"},
+        {id:18,text:"\u7a7a\u3044\u3066\u3044\u308b\u30b3\u30f3\u30bb\u30f3\u30c8\u304c\u3042\u3063\u305f\u306e\u3067\u3001\u7533\u8acb\u305b\u305a\u306b\u4f7f\u7528\u3057\u305f\u3002",answer:false,explanation:"\u3010\u7981\u6b62\u3011\u96fb\u529b\u5bb9\u91cf\u30aa\u30fc\u30d0\u30fc\u3084\u30b7\u30e7\u30fc\u30c8\u306e\u5371\u967a\u304c\u3042\u308a\u307e\u3059\u3002\u7121\u65ad\u4f7f\u7528\u306f\u7981\u6b62\u3067\u3059\u3002"},
+        {id:19,text:"\u9ad8\u30552m\u4ee5\u4e0a\u306e\u4f5c\u696d\u3060\u304c\u3001\u5b89\u5b9a\u3057\u305f\u7acb\u3061\u99ac\u3060\u3063\u305f\u306e\u3067\u5922\u843d\u5236\u6b62\u7528\u5668\u5177\u3092\u4f7f\u7528\u3057\u306a\u304b\u3063\u305f\u3002",answer:false,explanation:"\u3010\u7d76\u5bfe\u30eb\u30fc\u30eb\u3011\u9ad8\u30552m\u4ee5\u4e0a\u306f\u5668\u5177\u5fc5\u9808\u3067\u3059\u3002\u4f8b\u5916\u306f\u3042\u308a\u307e\u305b\u3093\u3002"},
+        {id:20,text:"\u55ab\u7159\u3059\u308b\u5834\u5408\u30012\u968e\u306b\u3042\u308b\u55ab\u7159\u6240\u3092\u4f7f\u7528\u3057\u306a\u3051\u308c\u3070\u306a\u3089\u306a\u3044\u3002",answer:false,explanation:"\u6307\u5b9a\u306e\u5834\u6240\u4ee5\u5916\u3067\u306e\u55ab\u7159\u306f\u53b3\u7981\u3067\u3059\u3002\u5fc5\u305a\u6307\u5b9a\u3055\u308c\u305f\u55ab\u7159\u6240\u3092\u4f7f\u7528\u3057\u3066\u304f\u3060\u3055\u3044\u3002"}
+    ];
+    let currentQ=0,mistakeCount=0,mistakesList=[],attemptCount=1,shuffled=[],qMistake=null;
+    let userName='',userReading='',userBirthdate='',primaryCompany='',company='',workContent='',selectedProject=null;
+    function loadProjects(){ try{return JSON.parse(localStorage.getItem(LS_KEY)||'[]');}catch(e){return[];} }
+    function saveProjects(list){ localStorage.setItem(LS_KEY,JSON.stringify(list)); }
+    function renderSiteList(){
+        const projects=loadProjects(), c=document.getElementById('site-list');
+        if(!projects.length){ c.innerHTML='<div class="no-sites">現場が登録されていません。<br>管理者に連絡してください。</div>'; return; }
+        c.innerHTML=projects.map((p,i)=>'<label class="site-option" id="site-opt-'+i+'" onclick="selectSite('+i+')"><input type="radio" name="site" value="'+i+'"><div><div class="site-option-name">'+p.name+'</div><div class="site-option-note">'+(p.videoType==='none'?'ローカル動画なし':'動画あり')+'</div></div></label>').join('');
+    }
+    function selectSite(i){ document.querySelectorAll('.site-option').forEach(el=>el.classList.remove('selected')); const o=document.getElementById('site-opt-'+i); if(o){o.classList.add('selected');o.querySelector('input').checked=true;} }
+    function confirmSite(){
+        const checked=document.querySelector('input[name="site"]:checked');
+        if(!checked){document.getElementById('site-error').textContent='現場を選択してください';return;}
+        document.getElementById('site-error').textContent='';
+        selectedProject=loadProjects()[parseInt(checked.value)];
+        buildVideo2(selectedProject);
+        switchScreen('site-screen','video1-screen');
+        document.getElementById('step-nav').style.display='flex'; updateDots(1); window.scrollTo(0,0);
+    }
+    function buildVideo2(p){
+        const wrap=document.getElementById('video2-wrap'), desc=document.getElementById('video2-desc');
+        if(!p||p.videoType==='none'){ wrap.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:200px;color:rgba(255,255,255,0.5);font-size:0.9em;padding:20px;text-align:center">この現場では共通動画のみです。<br>チェックを入れて次へ進んでください。</div>'; desc.textContent='この現場ではローカル動画はありません。'; }
+        else if(p.videoType==='local'){ wrap.innerHTML='<video controls style="width:100%;height:100%"><source src="'+p.videoSrc+'" type="video/mp4"><p style="color:#ff9a56;padding:20px">動画ファイルが見つかりません</p></video>'; desc.textContent='現場ローカルルールの動画を最後まで視聴してください。'; }
+        else{ wrap.innerHTML='<iframe src="'+p.videoSrc+'" allow="autoplay;encrypted-media" allowfullscreen style="width:100%;height:100%;border:none"></iframe>'; desc.textContent='現場ローカルルールの動画を最後まで視聴してください。'; }
+    }
+    function renderAdminProjectList(){
+        const projects=loadProjects(), c=document.getElementById('admin-project-list');
+        const tl={local:'ローカルMP4',drive:'Google Drive',youtube:'YouTube',none:'動画なし'};
+        if(!projects.length){c.innerHTML='<div style="color:rgba(255,255,255,0.45);font-size:0.88em;padding:10px 0">登録されている現場はありません</div>';return;}
+        c.innerHTML=projects.map((p,i)=>'<div class="project-item"><div><div class="project-item-name">'+p.name+'</div><div class="project-item-note">'+(tl[p.videoType]||p.videoType)+(p.videoSrc?' | '+p.videoSrc:'')+'</div></div><button class="project-del-btn" onclick="deleteProject('+i+')">削除</button></div>').join('');
+    }
+    function addProject(){
+        const name=document.getElementById('new-site-name').value.trim(), type=document.getElementById('new-video-type').value, src=document.getElementById('new-video-src').value.trim(), msg=document.getElementById('admin-add-msg');
+        if(!name){msg.style.color='#ef4444';msg.textContent='現場名を入力してください';return;}
+        if(type!=='none'&&!src){msg.style.color='#ef4444';msg.textContent='動画ファイル名/URLを入力してください';return;}
+        const projects=loadProjects(); projects.push({name,videoType:type,videoSrc:type==='none'?'':src}); saveProjects(projects);
+        document.getElementById('new-site-name').value=''; document.getElementById('new-video-src').value='';
+        msg.style.color='#4ade80'; msg.textContent='"'+name+'" を追加しました'; setTimeout(()=>{msg.textContent='';},2500);
+        renderAdminProjectList();
+    }
+    function deleteProject(i){ const projects=loadProjects(); if(!confirm('"'+projects[i].name+'" を削除しますか？'))return; projects.splice(i,1); saveProjects(projects); renderAdminProjectList(); }
+    function toggleNewVideoInput(){
+        const t=document.getElementById('new-video-type').value, wrap=document.getElementById('new-video-input-wrap');
+        if(t==='none'){wrap.style.display='none';return;} wrap.style.display='block';
+        const h={local:['MP4ファイル名','HTMLと同じフォルダのファイル名','例: ローカルルール.mp4'],drive:['Google Drive URL','「共有」→「埋め込み」のsrc値','https://drive.google.com/file/d/xxx/preview'],youtube:['YouTube URL','「埋め込み」のsrc値','https://www.youtube.com/embed/xxx']}[t];
+        document.getElementById('new-video-label').textContent=h[0]; document.getElementById('new-video-hint').textContent=h[1]; document.getElementById('new-video-src').placeholder=h[2];
+    }
+    function checkPassword(){ const v=document.getElementById('pw-input').value.trim().toUpperCase(); if(v===PW_MAIN){renderSiteList();switchScreen('pw-screen','site-screen');}else{const el=document.getElementById('pw-error');el.textContent='パスワードが違います';const inp=document.getElementById('pw-input');inp.style.animation='shake 0.5s';setTimeout(()=>{inp.style.animation='';},600);} }
+    function togglePw(id){ const i=document.getElementById(id); i.type=i.type==='password'?'text':'password'; }
+    function checkAdminPw(){ const v=document.getElementById('admin-pw-input').value.trim().toUpperCase(); if(v===PW_ADMIN){document.getElementById('admin-auth-box').style.display='none';document.getElementById('admin-panel').style.display='block';renderAdminProjectList();toggleNewVideoInput();}else{document.getElementById('admin-pw-error').textContent='パスワードが違います';} }
+    function switchScreen(from,to){ document.getElementById(from).classList.remove('active'); document.getElementById(to).classList.add('active'); }
+    function updateDots(step){ ['dot-1','dot-2','dot-3','dot-4','dot-5'].forEach((id,i)=>{ const el=document.getElementById(id);el.className='step-dot';if(i+1<step)el.classList.add('done');if(i+1===step)el.classList.add('active'); }); }
+    function goToStep(n){ if(n===4){startQuiz();return;} const sc={1:'video1-screen',2:'video2-screen',3:'reg-screen',5:'results-screen'}; const cur=document.querySelector('.screen.active');if(cur)cur.classList.remove('active'); document.getElementById(sc[n]).classList.add('active'); updateDots(n); window.scrollTo(0,0); }
+    function startQuiz(){
+        let ok=true; [{id:'fg-pc',vid:'f-pc'},{id:'fg-co',vid:'f-co'},{id:'fg-nm',vid:'f-nm'},{id:'fg-rd',vid:'f-rd'},{id:'fg-bd',vid:'f-bd'},{id:'fg-wk',vid:'f-wk'}].forEach(f=>{ const el=document.getElementById(f.id); if(!document.getElementById(f.vid).value.trim()){el.classList.add('error');ok=false;}else{el.classList.remove('error');} });
+        const rd=document.getElementById('f-rd').value.trim(); if(rd&&!/^[\u3040-\u309F\u30FC\s]+$/.test(rd)){document.getElementById('fg-rd').classList.add('error');document.getElementById('rd-err').textContent='\u3072\u3089\u304c\u306a\u3067\u5165\u529b';ok=false;}
+        if(!ok)return;
+        primaryCompany=document.getElementById('f-pc').value.trim(); company=document.getElementById('f-co').value.trim(); userName=document.getElementById('f-nm').value.trim(); userReading=document.getElementById('f-rd').value.trim(); userBirthdate=document.getElementById('f-bd').value; workContent=document.getElementById('f-wk').value.trim();
+        currentQ=0;mistakeCount=0;mistakesList=[];shuffled=shuffleArray(questions);
+        const cur=document.querySelector('.screen.active');if(cur)cur.classList.remove('active');
+        document.getElementById('quiz-screen').classList.add('active'); updateDots(4); showQuestion(); window.scrollTo(0,0);
+    }
+    function shuffleArray(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+    function showQuestion(){
+        const q=shuffled[currentQ];qMistake=null;
+        document.getElementById('q-number').textContent='\u7b2c'+(currentQ+1)+'\u554f'; document.getElementById('q-text').textContent=q.text;
+        document.getElementById('prog-text').textContent='\u554f\u984c '+(currentQ+1)+'/20'; document.getElementById('prog-mistakes').textContent='\u9593\u9055\u3044: '+mistakeCount;
+        document.getElementById('prog-fill').style.width=(currentQ/20*100)+'%';
+        ['btn-true','btn-false'].forEach(id=>{const b=document.getElementById(id);b.className='answer-btn';b.disabled=false;});
+        document.getElementById('feedback').className='feedback'; document.getElementById('retry-hint').style.display='none'; document.getElementById('btn-next').style.display='none';
+    }
+    function submitAnswer(ans){
+        const q=shuffled[currentQ],ok=(ans===q.answer); const bT=document.getElementById('btn-true'),bF=document.getElementById('btn-false'),fb=document.getElementById('feedback');
+        if(ok){ (ans?bT:bF).classList.add('correct');bT.disabled=true;bF.disabled=true; fb.className='feedback correct show'; document.getElementById('fb-title').textContent='\u6b63\u89e3\uff01'; document.getElementById('fb-text').textContent=q.explanation; document.getElementById('retry-hint').style.display='none'; if(qMistake)mistakesList.push(qMistake); const nb=document.getElementById('btn-next');nb.style.display='block';nb.textContent=currentQ===19?'\u7d50\u679c\u3092\u898b\u308b':'\u6b21\u306e\u554f\u984c\u3078 \u2192'; }
+        else{ mistakeCount++;document.getElementById('prog-mistakes').textContent='\u9593\u9055\u3044: '+mistakeCount; if(!qMistake)qMistake={question:q.text,yourAnswer:ans?'\u25ef':'\u00d7',correctAnswer:q.answer?'\u25ef':'\u00d7',explanation:q.explanation}; if(ans){bT.classList.add('incorrect');bT.disabled=true;bF.classList.add('correct-hint');}else{bF.classList.add('incorrect');bF.disabled=true;bT.classList.add('correct-hint');} fb.className='feedback incorrect show'; document.getElementById('fb-title').textContent='\u4e0d\u6b63\u89e3'; document.getElementById('fb-text').textContent=q.explanation; document.getElementById('retry-hint').style.display='block'; }
+    }
+    function nextQuestion(){ currentQ++;if(currentQ>=20)showResults();else showQuestion(); }
+    function showResults(){
+        const cur=document.querySelector('.screen.active');if(cur)cur.classList.remove('active');
+        document.getElementById('results-screen').classList.add('active');updateDots(5);
+        document.getElementById('stat-mistakes').textContent=mistakeCount; document.getElementById('stat-attempts').textContent=attemptCount;
+        if(mistakesList.length>0){ document.getElementById('review-section').style.display='block'; document.getElementById('review-list').innerHTML=mistakesList.map((m,i)=>'<div class="review-item"><p style="font-weight:600;margin-bottom:5px">'+(i+1)+'. '+m.question+'</p><p style="font-size:0.87em;color:#ef4444">\u6700\u521d\u306e\u56de\u7b54: '+m.yourAnswer+'</p><p style="font-size:0.87em;color:#4ade80">\u6b63\u89e3: '+m.correctAnswer+'</p><p style="font-size:0.87em;color:rgba(255,255,255,0.7);margin-top:5px">'+m.explanation+'</p></div>').join('');}
+        else{document.getElementById('review-section').style.display='none';} window.scrollTo(0,0);
+    }
+    function goToCertificate(){ const cur=document.querySelector('.screen.active');if(cur)cur.classList.remove('active'); document.getElementById('certificate-screen').classList.add('active'); generateCertificate();saveLog();sendToSheets();window.scrollTo(0,0); }
+    function fmtJP(d){ return d.getFullYear()+'\u5e74'+(d.getMonth()+1)+'\u6708'+d.getDate()+'\u65e5'; }
+    function fmtISO(d){ return d.getFullYear()+'/'+(d.getMonth()+1).toString().padStart(2,'0')+'/'+d.getDate().toString().padStart(2,'0'); }
+    function generateCertificate(){
+        const site=selectedProject?selectedProject.name:'Amazon FC HSG1', today=new Date(), expiry=new Date(today); expiry.setFullYear(expiry.getFullYear()+1);
+        const num='HSG1-'+Math.random().toString(36).substring(2,10).toUpperCase();
+        document.getElementById('certificate-container').innerHTML='<div class="certificate"><div class="cert-header-title">\u30a2\u30de\u30be\u30f3\u30b8\u30e3\u30d1\u30f3\u3000'+site+'\u306b\u304a\u3051\u308b\u65b0\u898f\u5165\u5834\u8005\u6559\u80b2</div><div class="cert-main-title">\u4fee\u4e86\u8a3c</div><div class="cert-field-row">\u5143\u8acb\u3051\u4f1a\u793e\uff1a<span class="cert-field-value">'+primaryCompany+'</span></div><div class="cert-field-row">\u6240\u5c5e\u4f1a\u793e\uff1a<span class="cert-field-value">'+company+'</span></div><div class="cert-field-row">\u53d7\u8b1b\u65e5\uff1a<span class="cert-field-value">'+fmtJP(today)+'</span></div><div class="cert-field-row">\u751f\u5e74\u6708\u65e5\uff1a<span class="cert-field-value">'+fmtJP(new Date(userBirthdate))+'</span></div><div class="cert-name-block"><div class="cert-name-reading">\uff08'+userReading+'\uff09</div><div class="cert-name-main">'+userName+'\u3000\u6bbf</div></div><div class="cert-body-text">\u3042\u306a\u305f\u306f\u30a2\u30de\u30be\u30f3\u30b8\u30e3\u30d1\u30f3\u5408\u540c\u4f1a\u793e\u304c\u5b9f\u65bd\u3057\u305f<br>\u65b0\u898f\u5165\u5834\u8005\u6559\u80b2\u3092\u53d7\u8b1b\u3057\u3001\u305d\u306e\u8ab2\u7a0b\u3092<br>\u4fee\u4e86\u3057\u305f\u3053\u3068\u3092\u3053\u3053\u306b\u8a3c\u3057\u307e\u3059\u3002</div><div class="cert-oath-box"><div class="oath-title">\u79c1\u306f\u65b0\u898f\u5165\u5834\u8005\u6559\u80b2\u306b\u95a2\u3059\u308b\u78ba\u8a8d\u30fb\u8a93\u7d04\u4e8b\u9805\u306b\u8a93\u7d04\u3057\u307e\u3057\u305f\u3002</div>'+company+'<br>'+userName+'</div><div class="cert-validity-row"><div><span style="color:#555;font-size:0.85em">\u6709\u52b9\u671f\u9650\uff1a</span><span class="cert-validity-date">'+fmtJP(expiry)+'\u307e\u3067</span></div><div class="cert-issuer">\u30a2\u30de\u30be\u30f3\u30b8\u30e3\u30d1\u30f3\u5408\u540c\u4f1a\u793e<br>\u5b89\u5168committee\u4e00\u540c</div></div><div class="cert-num">\u4fee\u4e86\u8a3c\u756a\u53f7: '+num+'\u3000\u8a66\u9a13\u7d50\u679c: \u5168\u554f\u6b63\u89e3\uff08\u9593\u9055\u3044'+mistakeCount+'\u56de\uff09</div></div>';
+    }
+    function saveLog(){ const today=new Date(),expiry=new Date(today);expiry.setFullYear(expiry.getFullYear()+1); const logs=JSON.parse(localStorage.getItem('safetyTestLogs')||'[]'); logs.push({primaryCompany,company,name:userName,nameReading:userReading,birthdate:userBirthdate,workContent,siteName:selectedProject?selectedProject.name:'',passDate:today.toISOString(),expiryDate:expiry.toISOString(),attempts:attemptCount,mistakes:mistakeCount}); localStorage.setItem('safetyTestLogs',JSON.stringify(logs)); }
+    function sendToSheets(){ const ind=document.getElementById('saving-indicator');ind.classList.add('show'); const today=new Date(),expiry=new Date(today);expiry.setFullYear(expiry.getFullYear()+1); const data={primaryCompany,company,name:userName,nameReading:userReading,birthdate:userBirthdate,workContent,siteName:selectedProject?selectedProject.name:'',passDate:fmtISO(today),expiryDate:fmtISO(expiry),mistakes:mistakeCount,attempts:attemptCount}; fetch(GAS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).then(()=>{ind.textContent='\u30c7\u30fc\u30bf\u3092\u4fdd\u5b58\u3057\u307e\u3057\u305f';setTimeout(()=>{ind.classList.remove('show');ind.textContent='\u30c7\u30fc\u30bf\u3092\u4fdd\u5b58\u4e2d...';},2000);}).catch(()=>{ind.textContent='\u4fdd\u5b58\u306b\u5931\u6557\u3057\u307e\u3057\u305f';setTimeout(()=>{ind.classList.remove('show');},3000);}); }
+    function restartAll(){ attemptCount++; ['video1-check','video2-check'].forEach(id=>{document.getElementById(id).checked=false;}); document.getElementById('btn-to-video2').disabled=true; document.getElementById('btn-to-form').disabled=true; ['f-pc','f-co','f-nm','f-rd','f-bd','f-wk'].forEach(id=>{document.getElementById(id).value='';}); selectedProject=null; const cur=document.querySelector('.screen.active');if(cur)cur.classList.remove('active'); document.getElementById('pw-screen').classList.add('active'); document.getElementById('step-nav').style.display='none'; document.getElementById('pw-input').value=''; document.getElementById('pw-error').textContent=''; window.scrollTo(0,0); }
+    document.getElementById('f-rd').addEventListener('input',function(){ const v=this.value; if(v&&!/^[\u3040-\u309F\u30FC\s]+$/.test(v)){document.getElementById('fg-rd').classList.add('error');document.getElementById('rd-err').textContent='\u3072\u3089\u304c\u306a\u3067\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044';}else{document.getElementById('fg-rd').classList.remove('error');} });
+</script>
+</body>
+</html>
