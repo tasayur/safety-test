@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>修了証 真正性確認 | Amazon FC HSG1</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Hiragino Sans','Meiryo',sans-serif;background:linear-gradient(135deg,#1a1a2e,#0f3460);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .card{background:#fff;border-radius:16px;padding:36px 32px;max-width:460px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.4);}
+  .logo{text-align:center;margin-bottom:24px;}
+  .logo h1{font-size:1.1em;color:#1e40af;font-weight:900;letter-spacing:0.04em;}
+  .logo p{font-size:0.8em;color:#999;margin-top:4px;}
+  .status{text-align:center;padding:24px;border-radius:12px;margin-bottom:20px;}
+  .status.loading{background:#f1f5f9;}
+  .status.valid{background:#f0fdf4;border:2px solid #22c55e;}
+  .status.invalid{background:#fef2f2;border:2px solid #ef4444;}
+  .status-icon{font-size:3em;margin-bottom:8px;}
+  .status-title{font-size:1.2em;font-weight:800;margin-bottom:4px;}
+  .status.valid .status-title{color:#166534;}
+  .status.invalid .status-title{color:#991b1b;}
+  .status.loading .status-title{color:#64748b;}
+  .detail-table{width:100%;border-collapse:collapse;font-size:0.9em;margin-top:16px;}
+  .detail-table td{padding:9px 12px;border-bottom:1px solid #f0f0f0;}
+  .detail-table td:first-child{color:#888;width:40%;font-size:0.85em;}
+  .detail-table td:last-child{font-weight:600;color:#111;}
+  .cert-id{text-align:center;margin-top:16px;font-size:0.75em;color:#aaa;font-family:monospace;}
+  .footer{text-align:center;margin-top:24px;font-size:0.75em;color:#bbb;}
+  .spinner{width:32px;height:32px;border:3px solid #e2e8f0;border-top-color:#3b82f6;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 12px;}
+  @keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">
+    <h1>🏭 Amazon FC HSG1</h1>
+    <p>新規入場者教育　修了証 真正性確認システム</p>
+  </div>
+
+  <div class="status loading" id="status-box">
+    <div class="spinner"></div>
+    <div class="status-title">確認中...</div>
+  </div>
+
+  <div id="detail-area"></div>
+  <div class="cert-id" id="cert-id-display"></div>
+  <div class="footer">本システムは受講履歴台帳（Google Sheets）に基づき照合します。</div>
+</div>
+
+<script>
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbwq7_oXFDEM1HBowEfX6g6c5UvRQVc_T3iZKpSDfBKTvDTk8eietimc7SknxWwW6eAV/exec';
+
+function getParam(name) {
+  return new URLSearchParams(window.location.search).get(name);
+}
+
+function showValid(d) {
+  document.getElementById('status-box').className = 'status valid';
+  document.getElementById('status-box').innerHTML = `
+    <div class="status-icon">✅</div>
+    <div class="status-title">有効な修了証です</div>
+    <div style="font-size:0.85em;color:#166534;margin-top:4px;">受講履歴台帳に記録が確認されました</div>
+  `;
+  document.getElementById('detail-area').innerHTML = `
+    <table class="detail-table">
+      <tr><td>氏名</td><td>${d.name}</td></tr>
+      <tr><td>所属会社</td><td>${d.company}</td></tr>
+      <tr><td>現場名</td><td>${d.siteName}</td></tr>
+      <tr><td>合格日</td><td>${d.passDate}</td></tr>
+      <tr><td>有効期限</td><td>${d.expiryDate}</td></tr>
+    </table>
+  `;
+  document.getElementById('cert-id-display').textContent = '修了証番号：' + d.certNum;
+}
+
+function showInvalid(certId) {
+  document.getElementById('status-box').className = 'status invalid';
+  document.getElementById('status-box').innerHTML = `
+    <div class="status-icon">❌</div>
+    <div class="status-title">記録が見つかりません</div>
+    <div style="font-size:0.85em;color:#991b1b;margin-top:4px;">この修了証番号は台帳に存在しません。管理者にお問い合わせください。</div>
+  `;
+  document.getElementById('cert-id-display').textContent = '照会番号：' + certId;
+}
+
+function showError() {
+  document.getElementById('status-box').className = 'status invalid';
+  document.getElementById('status-box').innerHTML = `
+    <div class="status-icon">⚠️</div>
+    <div class="status-title">確認できませんでした</div>
+    <div style="font-size:0.85em;color:#991b1b;margin-top:4px;">通信エラーが発生しました。しばらくしてから再度お試しください。</div>
+  `;
+}
+
+const certId = getParam('id');
+if (!certId) {
+  showInvalid('（番号なし）');
+} else {
+  fetch(GAS_URL + '?action=verify&id=' + encodeURIComponent(certId))
+    .then(r => r.json())
+    .then(data => {
+      if (data.found) showValid(data);
+      else showInvalid(certId);
+    })
+    .catch(() => showError());
+}
+</script>
+</body>
+</html>
