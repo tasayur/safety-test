@@ -180,6 +180,14 @@
                 </a>
             </div>
             <div class="card" style="margin-top:20px">
+                <h2><span class="step-badge">&#x1F3A5; 動画① 共通ルール URL</span></h2>
+                <p style="font-size:0.85em;color:rgba(255,255,255,0.6);margin-bottom:12px;">Google Drive の埋め込みURL（/preview 形式）を設定してください。</p>
+                <div id="v1-current" style="font-size:0.78em;color:rgba(255,200,100,0.8);margin-bottom:10px;word-break:break-all;"></div>
+                <input id="v1-url-input" type="text" placeholder="https://drive.google.com/file/d/.../preview" style="width:100%;background:rgba(255,255,255,0.08);color:#fff;border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:10px 14px;font-size:0.85em;margin-bottom:10px">
+                <button onclick="saveVideo1URL()" class="btn btn-primary" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8)">&#x1F4BE; 更新する</button>
+                <div id="v1-msg" style="font-size:0.82em;margin-top:8px;"></div>
+            </div>
+            <div class="card" style="margin-top:20px">
                 <h2><span class="step-badge">現場一覧</span></h2>
                 <div id="admin-project-list"></div>
                 <hr class="divider">
@@ -413,10 +421,15 @@
     }
     function checkPassword(){ const v=document.getElementById('pw-input').value.trim().toUpperCase(); if(v===PW_MAIN){renderSiteList();switchScreen('pw-screen','site-screen');}else{const el=document.getElementById('pw-error');el.textContent='パスワードが違います';const inp=document.getElementById('pw-input');inp.style.animation='shake 0.5s';setTimeout(()=>{inp.style.animation='';},600);} }
     function togglePw(id){ const i=document.getElementById(id); i.type=i.type==='password'?'text':'password'; }
-    function checkAdminPw(){ const v=document.getElementById('admin-pw-input').value.trim().toUpperCase(); if(v===PW_ADMIN){document.getElementById('admin-auth-box').style.display='none';document.getElementById('admin-panel').style.display='block';renderAdminProjectList();toggleNewVideoInput();}else{document.getElementById('admin-pw-error').textContent='パスワードが違います';} }
+    function checkAdminPw(){ const v=document.getElementById('admin-pw-input').value.trim().toUpperCase(); if(v===PW_ADMIN){document.getElementById('admin-auth-box').style.display='none';document.getElementById('admin-panel').style.display='block';renderAdminProjectList();toggleNewVideoInput();
+        const cur=localStorage.getItem('el_video1_url')||DEFAULT_VIDEO1;
+        const el=document.getElementById('v1-current');
+        if(el) el.textContent='現在の設定: '+cur;
+        const inp=document.getElementById('v1-url-input');
+        if(inp) inp.value=cur;}else{document.getElementById('admin-pw-error').textContent='パスワードが違います';} }
     function switchScreen(from,to){ document.getElementById(from).classList.remove('active'); document.getElementById(to).classList.add('active'); }
     function updateDots(step){ ['dot-1','dot-2','dot-3','dot-4','dot-5'].forEach((id,i)=>{ const el=document.getElementById(id);el.className='step-dot';if(i+1<step)el.classList.add('done');if(i+1===step)el.classList.add('active'); }); }
-    function goToStep(n){ if(n===4){startQuiz();return;} const sc={1:'video1-screen',2:'video2-screen',3:'reg-screen',5:'results-screen'}; const cur=document.querySelector('.screen.active');if(cur)cur.classList.remove('active'); document.getElementById(sc[n]).classList.add('active'); updateDots(n); window.scrollTo(0,0); }
+    function goToStep(n){ if(n===4){startQuiz();return;} if(n===1){const v1=document.getElementById('video1-iframe');if(v1)v1.src=localStorage.getItem('el_video1_url')||DEFAULT_VIDEO1;} const sc={1:'video1-screen',2:'video2-screen',3:'reg-screen',5:'results-screen'}; const cur=document.querySelector('.screen.active');if(cur)cur.classList.remove('active'); document.getElementById(sc[n]).classList.add('active'); updateDots(n); window.scrollTo(0,0); }
     function startQuiz(){
         let ok=true; [{id:'fg-pc',vid:'f-pc'},{id:'fg-co',vid:'f-co'},{id:'fg-nm',vid:'f-nm'},{id:'fg-rd',vid:'f-rd'},{id:'fg-bd',vid:'f-bd'},{id:'fg-wk',vid:'f-wk'}].forEach(f=>{ const el=document.getElementById(f.id); if(!document.getElementById(f.vid).value.trim()){el.classList.add('error');ok=false;}else{el.classList.remove('error');} });
         const rd=document.getElementById('f-rd').value.trim(); if(rd&&!/^[\u3040-\u309F\u30FC\s]+$/.test(rd)){document.getElementById('fg-rd').classList.add('error');document.getElementById('rd-err').textContent='\u3072\u3089\u304c\u306a\u3067\u5165\u529b';ok=false;}
