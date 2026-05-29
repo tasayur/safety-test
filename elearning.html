@@ -362,7 +362,7 @@
     function renderSiteList(){
         const projects=loadProjects(), c=document.getElementById('site-list');
         if(!projects.length){ c.innerHTML='<div class="no-sites">現場が登録されていません。<br>管理者に連絡してください。</div>'; return; }
-        c.innerHTML=projects.map((p,i)=>'<label class="site-option" id="site-opt-'+i+'" onclick="selectSite('+i+')"><input type="radio" name="site" value="'+i+'"><div><div class="site-option-name">'+escHtml(p.name)+'</div><div class="site-option-note">'+(p.videoType==='none'?'ローカル動画なし':'動画あり')+'</div></div></label>').join('');
+        c.innerHTML=projects.map((p,i)=>'<label class="site-option" id="site-opt-'+i+'" onclick="selectSite('+i+')"><input type="radio" name="site" value="'+i+'" onchange="selectSite('+i+')"><div><div class="site-option-name">'+escHtml(p.name)+'</div><div class="site-option-note">'+(p.videoType==='none'?'ローカル動画なし':'動画あり')+'</div></div></label>').join('');
     }
     function selectSite(i){ document.querySelectorAll('.site-option').forEach(el=>el.classList.remove('selected')); const o=document.getElementById('site-opt-'+i); if(o){o.classList.add('selected');o.querySelector('input').checked=true;} }
     function confirmSite(){
