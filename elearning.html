@@ -234,7 +234,7 @@
             <h2><span class="step-badge">STEP 1</span> 動画&#x00B9;を視聴する</h2>
             <p style="font-size:0.88em;color:rgba(255,255,255,0.65);margin-bottom:14px;">安全共通ルールの動画を最後まで視聴してください。</p>
             <div class="video-wrap">
-                <iframe id="video1-iframe" src="" allow="autoplay;encrypted-media" allowfullscreen style="width:100%;height:100%;border:none"></iframe>
+                <video id="video1-player" controls controlsList="nodownload" style="width:100%;height:100%"><source src="video_common.mp4" type="video/mp4"></video>
             </div>
             <label class="video-check">
                 <input type="checkbox" id="video1-check" onchange="document.getElementById('btn-to-video2').disabled=!this.checked">
@@ -356,7 +356,7 @@
           if(saved.length>0) return saved;
         }catch(e){}
         // デフォルト現場（管理者が追加するまでの初期値）
-        return [{name:'HSG1 棚工事',videoType:'drive',videoSrc:'https://drive.google.com/file/d/1w_7vIUnwN4OwgARQkn58kWGQBom_yRUj/preview'}];
+        return [{name:'HSG1 棚工事',videoType:'local',videoSrc:'video_hsg1.mp4'}];
       }
     function saveProjects(list){ localStorage.setItem(LS_KEY,JSON.stringify(list)); }
     function renderSiteList(){
@@ -431,7 +431,7 @@
         if(inp) inp.value=cur;}else{document.getElementById('admin-pw-error').textContent='パスワードが違います';} }
     function switchScreen(from,to){ document.getElementById(from).classList.remove('active'); document.getElementById(to).classList.add('active'); }
     function updateDots(step){ ['dot-1','dot-2','dot-3','dot-4','dot-5'].forEach((id,i)=>{ const el=document.getElementById(id);el.className='step-dot';if(i+1<step)el.classList.add('done');if(i+1===step)el.classList.add('active'); }); }
-    function goToStep(n){ if(n===4){startQuiz();return;} if(n===1){const v1=document.getElementById('video1-iframe');if(v1)v1.src=localStorage.getItem('el_video1_url')||'https://drive.google.com/file/d/131uxaGA3ctL6pyfBTbbvqweEfFLeqYjy/preview';} const sc={1:'video1-screen',2:'video2-screen',3:'reg-screen',5:'results-screen'}; const cur=document.querySelector('.screen.active');if(cur)cur.classList.remove('active'); document.getElementById(sc[n]).classList.add('active'); updateDots(n); window.scrollTo(0,0); }
+    function goToStep(n){ if(n===4){startQuiz();return;}  const sc={1:'video1-screen',2:'video2-screen',3:'reg-screen',5:'results-screen'}; const cur=document.querySelector('.screen.active');if(cur)cur.classList.remove('active'); document.getElementById(sc[n]).classList.add('active'); updateDots(n); window.scrollTo(0,0); }
     function startQuiz(){
         let ok=true; [{id:'fg-pc',vid:'f-pc'},{id:'fg-co',vid:'f-co'},{id:'fg-nm',vid:'f-nm'},{id:'fg-rd',vid:'f-rd'},{id:'fg-bd',vid:'f-bd'},{id:'fg-wk',vid:'f-wk'}].forEach(f=>{ const el=document.getElementById(f.id); if(!document.getElementById(f.vid).value.trim()){el.classList.add('error');ok=false;}else{el.classList.remove('error');} });
         const rd=document.getElementById('f-rd').value.trim(); if(rd&&!/^[\u3040-\u309F\u30FC\s]+$/.test(rd)){document.getElementById('fg-rd').classList.add('error');document.getElementById('rd-err').textContent='\u3072\u3089\u304c\u306a\u3067\u5165\u529b';ok=false;}
