@@ -445,8 +445,8 @@
     function showQuestion(){
         const q=shuffled[currentQ];qMistake=null;
         document.getElementById('q-number').textContent='\u7b2c'+(currentQ+1)+'\u554f'; document.getElementById('q-text').textContent=q.text;
-        document.getElementById('prog-text').textContent='\u554f\u984c '+(currentQ+1)+'/20'; document.getElementById('prog-mistakes').textContent='\u9593\u9055\u3044: '+mistakeCount;
-        document.getElementById('prog-fill').style.width=(currentQ/20*100)+'%';
+        document.getElementById('prog-text').textContent='\u554f\u984c '+(currentQ+1)+'/'+questions.length; document.getElementById('prog-mistakes').textContent='\u9593\u9055\u3044: '+mistakeCount;
+        document.getElementById('prog-fill').style.width=(currentQ/questions.length*100)+'%';
         ['btn-true','btn-false'].forEach(id=>{const b=document.getElementById(id);b.className='answer-btn';b.disabled=false;});
         document.getElementById('feedback').className='feedback'; document.getElementById('retry-hint').style.display='none'; document.getElementById('btn-next').style.display='none';
     }
@@ -455,7 +455,7 @@
         if(ok){ (ans?bT:bF).classList.add('correct');bT.disabled=true;bF.disabled=true; fb.className='feedback correct show'; document.getElementById('fb-title').textContent='\u6b63\u89e3\uff01'; document.getElementById('fb-text').textContent=q.explanation; document.getElementById('retry-hint').style.display='none'; if(qMistake)mistakesList.push(qMistake); const nb=document.getElementById('btn-next');nb.style.display='block';nb.textContent=currentQ===19?'\u7d50\u679c\u3092\u898b\u308b':'\u6b21\u306e\u554f\u984c\u3078 \u2192'; }
         else{ mistakeCount++;document.getElementById('prog-mistakes').textContent='\u9593\u9055\u3044: '+mistakeCount; if(!qMistake)qMistake={question:q.text,yourAnswer:ans?'\u25ef':'\u00d7',correctAnswer:q.answer?'\u25ef':'\u00d7',explanation:q.explanation}; if(ans){bT.classList.add('incorrect');bT.disabled=true;bF.classList.add('correct-hint');}else{bF.classList.add('incorrect');bF.disabled=true;bT.classList.add('correct-hint');} fb.className='feedback incorrect show'; document.getElementById('fb-title').textContent='\u4e0d\u6b63\u89e3'; document.getElementById('fb-text').textContent=q.explanation; document.getElementById('retry-hint').style.display='block'; }
     }
-    function nextQuestion(){ currentQ++;if(currentQ>=20)showResults();else showQuestion(); }
+    function nextQuestion(){ currentQ++;if(currentQ>=questions.length)showResults();else showQuestion(); }
     function showResults(){
         const cur=document.querySelector('.screen.active');if(cur)cur.classList.remove('active');
         document.getElementById('results-screen').classList.add('active');updateDots(5);
